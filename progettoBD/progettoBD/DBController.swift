@@ -5,7 +5,7 @@
 //  Created by Andrea Bello on 08/02/2019.
 //  Copyright © 2019 Boeing 752. All rights reserved.
 //
-
+/*
 import Foundation
 import UIKit
 import SQLite
@@ -119,3 +119,4 @@ extension DBController {
     }
 }
 
+*/
