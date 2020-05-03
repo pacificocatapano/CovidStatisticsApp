@@ -5,7 +5,7 @@
 //  Created by Andrea Bello on 08/02/2019.
 //  Copyright © 2019 Boeing 752. All rights reserved.
 //
-/*
+
 import Foundation
 import UIKit
 import SQLite
@@ -14,30 +14,21 @@ import SQLite3
 class DBController: NSObject {
     static let shared = DBController()
     
-    //private let fileManager = FileManager.default
-    let path = Bundle.main.path(forResource: "ProgettoBD", ofType: "db")!
+    private let null : NSNull = NSNull()
     
-    public var ingredients: [Ingredient] = []
+    //private let fileManager = FileManager.default
+    let path = Bundle.main.path(forResource: "data", ofType: "sqlite")!
     
     override init() {
         super.init()
         //print("DBController init")
-        
-        ingredients = self.getIngredients()
     }
     
-    private func getIngredients() -> [Ingredient] {
+    public func getRegioni() -> [Regioni] {
         do {
             let db = try Connection(path, readonly: true)
-            
-            /*let ingredient = Table("ingredient")
-            let all = Array(try db.prepare(ingredient))
-            //let enName = Expression<String>("enName")
-            return all.map{ row in
-                return row[Expression<String>("enName")]
-            }*/
-            
-            let stmt = try db.prepare("SELECT * FROM Ingredient WHERE Ingredient.isActive = 1 ORDER BY Ingredient.enName ASC")
+    
+            let stmt = try db.prepare("SELECT * FROM REGIONI R ORDER BY R.DENOMINAZIONEREGIONE ASC")
             
             /*for row in stmt {
                 print(row[1] as! String)
@@ -45,14 +36,15 @@ class DBController: NSObject {
             }*/
             
             return stmt.map{ row in
-                return Ingredient(id: row[0] as! Int64,
-                                  idFlavorDB: row[1] as! Int64,
-                                  enName: row[2] as! String,
-                                  itName: row[3] as! String,
-                                  //idNaturalSource: nil,
-                                  idCategory: row[5] as! Int64,
-                                  wikiPage: row[6] as! String,
-                                  isActive: true)
+                let codiceRegione = Int(row[0] as!String)!
+                let denominazioneRegione = row[1] as! String
+                let abitanti = Int(row[2] as! String)
+                let densitàAbitanti = Float(row[3] as! String)
+                let numeroDiAutostrade = Int(row[4] as! String)
+                let numeroDiSuperStrade = Int(row[5] as! String)
+                let numeroDiAereoporti = Int(row[6] as! String)
+                let numeroDiStazioni = Int(row[7] as! String)
+                return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
             }
             
         } catch {
@@ -61,22 +53,30 @@ class DBController: NSObject {
         return []
     }
     
-    public func getMolecules(_ id: Int64) -> [Molecule]{
+    public func getProvincie() -> [Province]{
         do {
             let db = try Connection(path, readonly: true)
             
-            let stmt = try db.prepare("SELECT Molecule.* FROM Composed JOIN Ingredient ON Ingredient.id = Composed.idIngredient JOIN Molecule ON Molecule.id = Composed.idMolecule WHERE Ingredient.id = \(id) ORDER BY Molecule.id ASC")
+            let stmt = try db.prepare("SELECT * FROM PROVINCE P ORDER BY P.DENOMINAZIONEPROVINICE ASC")
    
             return stmt.map{ row in
-                var isSyn = false
-                if row[1] as! Int64 == 1 {
-                    isSyn = true
-                }
-                     
-                return Molecule(id: row[0] as! Int64,
-                                isSynthetic: isSyn,
-                                commonName: row[2] as! String,
-                                iupacName: row[3] as! String)
+                
+                let codiceProvincia = Int(row[0] as!String)!
+                let denominazioneProvincia = row[1] as! String
+                let siglaProvincia = row[2] as! String
+                let regioneAppartenenza = row[3] as! String
+                let latitudine = Float(row[4] as! String)
+                let longitudine = Float(row[5] as! String)
+                let abitanti = Int(row[6] as! String)
+                let densitàAbitanti = Float(row[7] as! String)
+                let estensione = Float(row[8] as! String)
+                let numeroDiScuole = Int(row[9] as! String)
+                let numeroDiAlberghi = Int(row[10] as! String)
+                let numeroDiOspedali = Int(row[11] as! String)
+                let numeroSpostamentiInterni = Int(row[12] as! String)
+                let numeroSpostamnetiEsterni = Int(row[12] as! String)
+                
+                return Province(codiceProvincia: codiceProvincia, denominazioneProvincia: denominazioneProvincia, siglaProvincia: siglaProvincia, regioneAppartenenza: regioneAppartenenza, latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, estensione: estensione!, numeroDiScuole: numeroDiScuole!, numeroDiAlberghi: numeroDiAlberghi ?? -1, numeroDiOspedali: numeroDiOspedali!, numeroSpostamentiInterni: numeroSpostamentiInterni ?? -1, numeroSpostamnetiEsterni: numeroSpostamnetiEsterni ?? -1)
             }
             
         } catch {
@@ -85,21 +85,54 @@ class DBController: NSObject {
         return []
     }
     
-    public func getFlavors(_ ids: [Int64], numberOfFlavors: Int) -> [Flavor] {
+    public func getContagio() -> [Contagio] {
         do {
             let db = try Connection(path, readonly: true)
             
-            var orQueries = ""
-            for id in ids{
-                orQueries += " OR Ingredient.id = \(id)"
-            }
-            
-            let stmt = try db.prepare("Select Count(Flavor.id) as flavorCount, Flavor.* FROM Flavor JOIN Tastes ON Tastes.idFlavor = Flavor.id JOIN Molecule ON Tastes.idMolecule = Molecule.id JOIN Composed ON Composed.idMolecule = Molecule.id JOIN Ingredient ON Composed.idIngredient = Ingredient.id WHERE Ingredient.id = \(ids[0])\(orQueries) GROUP BY Tastes.idFlavor ORDER BY flavorCount DESC LIMIT \(numberOfFlavors)")
+            let stmt = try db.prepare("SELECT * FROM CONTAGIO C ORDER BY C.DATA ASC")
             
             return stmt.map{ row in
                 //return (row[0] as! Int64, Flavor(id: row[1] as! Int64, name: row[2] as! String))
                 //return Flavor(id: row[1] as! Int64, name: (row[2] as! String).capitalized)
-                return Flavor(id: row[1] as! Int64, enName: (row[2] as! String).capitalized, itName: (row[3] as! String).capitalized)
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-DD"
+                let dateObj = dateFormatter.date(from: (row[0] as! String))
+                let provincia = row[1] as! String
+                let numeroCasi = Int(row[2] as! String)
+                
+                return Contagio(data: dateObj!, provincia: provincia, numeroCasi: numeroCasi!)
+            }
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
+    }
+    
+    public func getAndamento() -> [Andamento] {
+        do {
+            let db = try Connection(path, readonly: true)
+            
+            let stmt = try db.prepare("SELECT * FROM ANDAMENTO A ORDER BY A.DATAANDAMNETO ASC")
+            
+            return stmt.map{ row in
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-DD"
+                let dateObj = dateFormatter.date(from: (row[0] as! String))
+                
+                let regione = row[1] as! String
+                let contagi = Int(row[2] as! String)
+                let decessi = Int(row[3] as! String)
+                let guariti = Int(row[4] as! String)
+                let ricoverati = Int(row[5] as! String)
+                let isolamentoDomiciliare = Int(row[6] as! String)
+                let terapiaIntensiva = Int(row[7] as! String)
+                let tamponiEffettuati = Int(row[8] as! String)
+                let totalePositivi = Int(row[9] as! String)
+                
+                return Andamento(data:  dateObj!, regione: regione, contagi: contagi!, decessi: decessi!, guariti: guariti!, ricoverati: ricoverati!, isolamentoDomiciliare: isolamentoDomiciliare!, terapiaIntensiva: terapiaIntensiva!, tamponiEffettuati: tamponiEffettuati!, totalePositivi: totalePositivi!)
             }
             
         } catch {
@@ -119,4 +152,4 @@ extension DBController {
     }
 }
 
-*/
+

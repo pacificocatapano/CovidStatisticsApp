@@ -10,6 +10,10 @@ import UIKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    let dbc = DBController.shared
+    var regioni : [Regioni] = []
+    var contagio : [Contagio] = []
+    
     var nome : String?
     var dettagli: String?
     @IBOutlet weak var StanzaCollectionView: UICollectionView!

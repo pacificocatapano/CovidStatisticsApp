@@ -44,6 +44,23 @@ struct Province : Codable {
         
     }
     
+    init(codiceProvincia: Int, denominazioneProvincia:String, siglaProvincia : String, regioneAppartenenza: String,latitudine: Float, longitudine: Float, abitanti: Int, densitàAbitanti: Float, estensione : Float,numeroDiScuole: Int, numeroDiAlberghi: Int, numeroDiOspedali: Int, numeroSpostamentiInterni: Int, numeroSpostamnetiEsterni : Int) {
+        self.codiceProvincia = codiceProvincia
+        self.denominazioneProvincia = denominazioneProvincia
+        self.siglaProvincia = siglaProvincia
+        self.regioneAppartenenza = regioneAppartenenza
+        self.latitudine = latitudine
+        self.longitudine = longitudine
+        self.abitanti = abitanti
+        self.densitàAbitanti = densitàAbitanti
+        self.estensione = estensione
+        self.numeroDiScuole = numeroDiScuole
+        self.numeroDiAlberghi = numeroDiAlberghi
+        self.numeroDiOspedali = numeroDiOspedali
+        self.numeroSpostamentiInterni = numeroSpostamentiInterni
+        self.numeroSpostamnetiEsterni = numeroSpostamnetiEsterni
+    }
+    
     enum CodingKeys: String, CodingKey {
         case codiceProvincia
         case denominazioneProvincia
@@ -120,6 +137,17 @@ struct Regioni : Codable {
         self.numeroDiStazioni = Int()
     }
     
+    init(codiceRegione: Int, denominazioneRegione:String, abitanti: Int, densitàAbitanti: Float, numeroDiAutostrade: Int, numeroDiSuperStrade: Int, numeroDiAereoporti: Int, numeroDiStazioni: Int) {
+        self.codiceRegione = codiceRegione
+        self.denominazioneRegione = denominazioneRegione
+        self.abitanti = abitanti
+        self.densitàAbitanti = densitàAbitanti
+        self.numeroDiAutostrade = numeroDiAutostrade
+        self.numeroDiSuperStrade = numeroDiSuperStrade
+        self.numeroDiAereoporti = numeroDiAereoporti
+        self.numeroDiStazioni = numeroDiStazioni
+    }
+    
     enum CodingKeys: String, CodingKey {
         case codiceRegione
         case denominazioneRegione
@@ -158,13 +186,19 @@ struct Regioni : Codable {
 
 struct Contagio : Codable {
     var data : Date
-    var provincia : Province
+    var provincia : String
     var numeroCasi : Int
     
     init() {
         self.data = Date()
-        self.provincia = Province()
+        self.provincia = String()
         self.numeroCasi = Int()
+    }
+    
+    init(data: Date, provincia: String, numeroCasi: Int) {
+        self.data = data
+        self.provincia = provincia
+        self.numeroCasi = numeroCasi
     }
     
     enum CodingKeys: String, CodingKey {
@@ -179,9 +213,7 @@ struct Contagio : Codable {
         let dataType = try conteiner.decode(Data.self, forKey: .data)
         self.data = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(dataType) as! Date
         
-        let provinciaType = try conteiner.decode(Data.self, forKey: .provincia)
-        self.provincia = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(provinciaType) as! Province
-        
+        self.provincia = try conteiner.decode(String.self, forKey: .provincia)
         self.numeroCasi = try conteiner.decode(Int.self, forKey: .numeroCasi)
     }
     
@@ -191,9 +223,7 @@ struct Contagio : Codable {
         let dataType = try NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: false)
         try conteiner.encode(dataType, forKey: .data)
         
-        let provinciaType = try NSKeyedArchiver.archivedData(withRootObject: provincia, requiringSecureCoding: false)
-        try conteiner.encode(provinciaType, forKey: .provincia)
-        
+        try conteiner.encode(provincia, forKey: .provincia)
         try conteiner.encode(numeroCasi, forKey: .numeroCasi)
     }
 }
@@ -201,7 +231,7 @@ struct Contagio : Codable {
 struct Andamento: Codable {
     
     var data: Date
-    var regione: Regioni
+    var regione: String
     var contagi : Int
     var decessi : Int
     var guariti : Int
@@ -213,7 +243,7 @@ struct Andamento: Codable {
 
     init() {
         self.data = Date()
-        self.regione = Regioni()
+        self.regione = String()
         self.contagi = Int()
         self.decessi = Int()
         self.guariti = Int()
@@ -222,6 +252,19 @@ struct Andamento: Codable {
         self.terapiaIntensiva = Int()
         self.tamponiEffettuati = Int()
         self.totalePositivi = Int()
+    }
+    
+    init(data: Date, regione: String, contagi: Int, decessi: Int, guariti: Int, ricoverati: Int, isolamentoDomiciliare: Int, terapiaIntensiva: Int, tamponiEffettuati: Int, totalePositivi: Int ) {
+        self.data = data
+        self.regione = regione
+        self.contagi = contagi
+        self.decessi = decessi
+        self.guariti = guariti
+        self.ricoverati = ricoverati
+        self.isolamentoDomiciliare = isolamentoDomiciliare
+        self.terapiaIntensiva = terapiaIntensiva
+        self.tamponiEffettuati = tamponiEffettuati
+        self.totalePositivi = totalePositivi
     }
     
     enum CodingKeys: String, CodingKey {
@@ -243,9 +286,7 @@ struct Andamento: Codable {
         let dataType = try container.decode(Data.self, forKey: .data)
         self.data = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(dataType) as! Date
         
-        let regioneType = try container.decode(Data.self, forKey: .regione)
-        self.regione = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(regioneType) as! Regioni
-        
+        self.regione = try container.decode(String.self, forKey: .regione)
         self.contagi = try container.decode(Int.self, forKey: .contagi)
         self.decessi = try container.decode(Int.self, forKey: .decessi)
         self.guariti = try container.decode(Int.self, forKey: .guariti)
@@ -262,9 +303,7 @@ struct Andamento: Codable {
         let dataType = try NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: false)
         try container.encode(dataType, forKey: .data)
         
-        let regioniType = try NSKeyedArchiver.archivedData(withRootObject: regione, requiringSecureCoding: false)
-        try container.encode(regioniType, forKey: .regione)
-        
+        try container.encode(regione, forKey: .regione)
         try container.encode(contagi, forKey: .contagi)
         try container.encode(decessi, forKey: .decessi)
         try container.encode(guariti, forKey: .guariti)
