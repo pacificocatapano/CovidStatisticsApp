@@ -34,8 +34,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let Test = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SampleCell
-        Test.layer.cornerRadius = 15
+        let Test = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+//        Test.layer.cornerRadius = 15
         return Test
     }
     
