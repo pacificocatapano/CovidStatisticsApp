@@ -17,6 +17,8 @@
 		3E7C51252453773F00DEB311 /* progettoBDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C51242453773F00DEB311 /* progettoBDTests.swift */; };
 		3E7C51302453773F00DEB311 /* progettoBDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */; };
 		3E807246245B211800959B27 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E807245245B211800959B27 /* HomeViewController.swift */; };
+		3ED1F68E245FF8A500C21753 /* InfoRegioniProvinceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1F68D245FF8A500C21753 /* InfoRegioniProvinceViewController.swift */; };
+		3ED1F698245FFDFB00C21753 /* AggiungiDatiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1F697245FFDFB00C21753 /* AggiungiDatiViewController.swift */; };
 		CF40AC5B245B10EF0073A158 /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF40AC5A245B10EF0073A158 /* DBController.swift */; };
 		CFB920D1245B151200657709 /* ProgettoBD.db in Resources */ = {isa = PBXBuildFile; fileRef = CFB920D0245B151200657709 /* ProgettoBD.db */; };
 		CFDF7F1D245EB0C300E34546 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; };
@@ -122,6 +124,8 @@
 		3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progettoBDUITests.swift; sourceTree = "<group>"; };
 		3E7C51312453773F00DEB311 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E807245245B211800959B27 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		3ED1F68D245FF8A500C21753 /* InfoRegioniProvinceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRegioniProvinceViewController.swift; sourceTree = "<group>"; };
+		3ED1F697245FFDFB00C21753 /* AggiungiDatiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggiungiDatiViewController.swift; sourceTree = "<group>"; };
 		CF40AC5A245B10EF0073A158 /* DBController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
 		CFB920D0245B151200657709 /* ProgettoBD.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ProgettoBD.db; sourceTree = "<group>"; };
 		CFDF7F05245EB0B500E34546 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
@@ -192,7 +196,7 @@
 				3E7C51132453773B00DEB311 /* progettoBD.xcdatamodeld */,
 				CF40AC5A245B10EF0073A158 /* DBController.swift */,
 				CFB920D0245B151200657709 /* ProgettoBD.db */,
-				3E807245245B211800959B27 /* HomeViewController.swift */,
+				3ED1F696245FFDD300C21753 /* View Controller */,
 			);
 			path = progettoBD;
 			sourceTree = "<group>";
@@ -213,6 +217,16 @@
 				3E7C51312453773F00DEB311 /* Info.plist */,
 			);
 			path = progettoBDUITests;
+			sourceTree = "<group>";
+		};
+		3ED1F696245FFDD300C21753 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3E807245245B211800959B27 /* HomeViewController.swift */,
+				3ED1F68D245FF8A500C21753 /* InfoRegioniProvinceViewController.swift */,
+				3ED1F697245FFDFB00C21753 /* AggiungiDatiViewController.swift */,
+			);
+			path = "View Controller";
 			sourceTree = "<group>";
 		};
 		CF40ACEF245B11D70073A158 /* Frameworks */ = {
@@ -427,11 +441,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED1F68E245FF8A500C21753 /* InfoRegioniProvinceViewController.swift in Sources */,
 				CFDF7F2E245EB8BA00E34546 /* StructAndExtension.swift in Sources */,
 				3E7C510F2453773B00DEB311 /* ViewController.swift in Sources */,
 				3E7C51152453773B00DEB311 /* progettoBD.xcdatamodeld in Sources */,
 				CFDF7F22245EB7F900E34546 /* ColorID.swift in Sources */,
 				3E7C510B2453773B00DEB311 /* AppDelegate.swift in Sources */,
+				3ED1F698245FFDFB00C21753 /* AggiungiDatiViewController.swift in Sources */,
 				3E7C510D2453773B00DEB311 /* SceneDelegate.swift in Sources */,
 				CF40AC5B245B10EF0073A158 /* DBController.swift in Sources */,
 				3E807246245B211800959B27 /* HomeViewController.swift in Sources */,
