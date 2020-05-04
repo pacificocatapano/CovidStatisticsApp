@@ -10,8 +10,12 @@ import UIKit
 
 class AggiungiDatiViewController: UIViewController {
 
+    @IBAction func cofnirmButtonTapped(_ sender: Any) {
+        
+    }
     @IBAction func segmentedAction(_ sender: Any) {
         let getIndex = segmentedControl.selectedSegmentIndex
+        print ("index segmented control ")
         print (getIndex)
         switch getIndex {
         case 0:
