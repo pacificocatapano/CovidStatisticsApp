@@ -10,21 +10,28 @@ import UIKit
 
 class AggiungiDatiViewController: UIViewController {
 
+    @IBAction func segmentedAction(_ sender: Any) {
+        let getIndex = segmentedControl.selectedSegmentIndex
+        print (getIndex)
+        switch getIndex {
+        case 0:
+            selectRegionProvince.text = "Seleziona regioni"
+        case 1:
+            selectRegionProvince.text = "Seleziona province"
+        default:
+            print("Error segmented control")
+        }
+    }
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var selectRegionProvince: UILabel!
+    @IBOutlet weak var confirmButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
+        
+        
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
