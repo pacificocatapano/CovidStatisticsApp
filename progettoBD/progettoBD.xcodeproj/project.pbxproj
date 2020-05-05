@@ -13,14 +13,13 @@
 		3E7C511A2453773E00DEB311 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E7C51182453773E00DEB311 /* LaunchScreen.storyboard */; };
 		3E7C51252453773F00DEB311 /* progettoBDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C51242453773F00DEB311 /* progettoBDTests.swift */; };
 		3E7C51302453773F00DEB311 /* progettoBDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */; };
-		3E807246245B211800959B27 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E807245245B211800959B27 /* HomeViewController.swift */; };
 		CF00819E2461631C00AD68E8 /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = CF00819D2461631C00AD68E8 /* data.sqlite */; };
 		CF40AC5B245B10EF0073A158 /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF40AC5A245B10EF0073A158 /* DBController.swift */; };
-		CF96C2C5246169C5004491C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF96C2C4246169C5004491C0 /* Main.storyboard */; };
 		CF96C2CC24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CA24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift */; };
 		CF96C2CD24616B05004491C0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2C924616B05004491C0 /* HomeViewController.swift */; };
 		CF96C2CE24616B05004491C0 /* InfoRegioniProvinceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */; };
 		CF96C2CF24616B05004491C0 /* AggiungiDatiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2C824616B04004491C0 /* AggiungiDatiViewController.swift */; };
+		CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF96C2C4246169C5004491C0 /* Main.storyboard */; };
 		CFDF7F1D245EB0C300E34546 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; };
 		CFDF7F1E245EB0C300E34546 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFDF7F22245EB7F900E34546 /* ColorID.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDF7F21245EB7F900E34546 /* ColorID.swift */; };
@@ -120,7 +119,6 @@
 		3E7C512B2453773F00DEB311 /* progettoBDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = progettoBDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progettoBDUITests.swift; sourceTree = "<group>"; };
 		3E7C51312453773F00DEB311 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E807245245B211800959B27 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CF00819D2461631C00AD68E8 /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		CF40AC5A245B10EF0073A158 /* DBController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
 		CF96C2C4246169C5004491C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -198,7 +196,6 @@
 				3E7C511B2453773E00DEB311 /* Info.plist */,
 				CF40AC5A245B10EF0073A158 /* DBController.swift */,
 				CF00819D2461631C00AD68E8 /* data.sqlite */,
-				3E807245245B211800959B27 /* HomeViewController.swift */,
 			);
 			path = progettoBD;
 			sourceTree = "<group>";
@@ -408,7 +405,7 @@
 				3E7C511A2453773E00DEB311 /* LaunchScreen.storyboard in Resources */,
 				CF00819E2461631C00AD68E8 /* data.sqlite in Resources */,
 				3E7C51172453773E00DEB311 /* Assets.xcassets in Resources */,
-				3E7C51122453773B00DEB311 /* Main.storyboard in Resources */,
+				CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
