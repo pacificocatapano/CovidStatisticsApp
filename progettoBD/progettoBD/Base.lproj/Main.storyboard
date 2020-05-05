@@ -193,7 +193,7 @@
         <!--Dati regioni e province-->
         <scene sceneID="jMM-H5-kRz">
             <objects>
-                <viewController id="X1a-qi-Suy" customClass="InfoRegioniProvinceViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DatiRegioniProvince" id="X1a-qi-Suy" customClass="InfoRegioniProvinceViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="23h-Lo-dqz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -339,6 +339,7 @@
                     <navigationItem key="navigationItem" title="Dati regioni e province" id="U9P-1s-9Qg"/>
                     <connections>
                         <outlet property="newData" destination="5Re-MF-QYx" id="aA9-TY-BGh"/>
+                        <outlet property="searchBarInfoRegioniProvince" destination="SpH-8d-L3m" id="v1b-pu-eMO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mvd-dA-vFB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -476,12 +477,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gaB-al-Ytz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4330" y="771"/>
+            <point key="canvasLocation" x="4580" y="806"/>
         </scene>
         <!--Aggiungi Dati View Controller-->
         <scene sceneID="Pi8-4I-cmD">
             <objects>
-                <viewController id="W5U-OM-Ut7" customClass="AggiungiDatiViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="aggiungiDati" id="W5U-OM-Ut7" customClass="AggiungiDatiViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GxF-6o-UDt">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -585,7 +586,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="confirmButton:" destination="W5U-OM-Ut7" eventType="touchUpInside" id="x2K-lf-FlN"/>
                                     <segue destination="Ggw-tv-KAO" kind="show" id="U7u-0z-030"/>
                                 </connections>
                             </button>
@@ -648,7 +648,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZz-Sj-Bj4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2942" y="1417"/>
+            <point key="canvasLocation" x="1958" y="1569"/>
         </scene>
         <!--Dati appena aggiunti-->
         <scene sceneID="vJh-zA-oFv">
@@ -658,18 +658,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" text="Cerca regione o provincia" translatesAutoresizingMaskIntoConstraints="NO" id="AON-Mf-B6a">
-                                <rect key="frame" x="20" y="32" width="374" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Regione X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VT-b6-0hL">
-                                <rect key="frame" x="20" y="124" width="114" height="29"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <rect key="frame" x="20" y="20" width="238" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="8W2-DB-eJr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="v9Q-EO-jhP">
-                                <rect key="frame" x="81" y="185" width="252" height="549"/>
+                                <rect key="frame" x="81" y="87" width="252" height="549"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xhc-By-bUN">
                                         <rect key="frame" x="0.0" y="0.0" width="252" height="130.5"/>
@@ -765,21 +764,40 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nha-QW-3m6">
+                                <rect key="frame" x="108" y="701" width="199" height="38"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.30588235289999999" blue="0.38823529410000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="lJT-KS-0G6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                <state key="normal" title="Ok">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="okButton:" destination="Ggw-tv-KAO" eventType="touchUpInside" id="B9D-Cf-T2Y"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="AON-Mf-B6a" firstAttribute="leading" secondItem="Kqb-dB-C1g" secondAttribute="leadingMargin" id="4aw-Mn-gzS"/>
-                            <constraint firstItem="AON-Mf-B6a" firstAttribute="trailing" secondItem="Kqb-dB-C1g" secondAttribute="trailingMargin" id="Hoq-NL-Pyw"/>
-                            <constraint firstItem="2VT-b6-0hL" firstAttribute="top" secondItem="AON-Mf-B6a" secondAttribute="bottom" constant="36" id="PMq-vD-Y9d"/>
-                            <constraint firstItem="AON-Mf-B6a" firstAttribute="leading" secondItem="2VT-b6-0hL" secondAttribute="leading" id="ZlU-Uu-RQ3"/>
-                            <constraint firstItem="v9Q-EO-jhP" firstAttribute="leading" secondItem="4yf-KH-dOL" secondAttribute="leading" constant="81" id="fAN-Ru-BaF"/>
-                            <constraint firstItem="AON-Mf-B6a" firstAttribute="top" secondItem="4yf-KH-dOL" secondAttribute="top" constant="32" id="nzh-P5-YkV"/>
-                            <constraint firstItem="v9Q-EO-jhP" firstAttribute="top" secondItem="2VT-b6-0hL" secondAttribute="bottom" constant="32" id="ql1-Wy-ikE"/>
-                            <constraint firstItem="AON-Mf-B6a" firstAttribute="centerX" secondItem="v9Q-EO-jhP" secondAttribute="centerX" id="xHS-jh-O89"/>
+                            <constraint firstItem="v9Q-EO-jhP" firstAttribute="leading" secondItem="4yf-KH-dOL" secondAttribute="leading" constant="81" id="4kf-Ml-9ax"/>
+                            <constraint firstItem="2VT-b6-0hL" firstAttribute="leading" secondItem="Kqb-dB-C1g" secondAttribute="leadingMargin" id="9QN-H4-gjl"/>
+                            <constraint firstItem="nha-QW-3m6" firstAttribute="centerX" secondItem="v9Q-EO-jhP" secondAttribute="centerX" id="QVl-Ui-Vjt"/>
+                            <constraint firstItem="2VT-b6-0hL" firstAttribute="top" secondItem="Kqb-dB-C1g" secondAttribute="top" constant="20" symbolic="YES" id="TbW-ra-QFO"/>
+                            <constraint firstItem="nha-QW-3m6" firstAttribute="leading" secondItem="4yf-KH-dOL" secondAttribute="leading" constant="108" id="cxQ-CN-nvg"/>
+                            <constraint firstItem="v9Q-EO-jhP" firstAttribute="centerX" secondItem="Kqb-dB-C1g" secondAttribute="centerX" id="gSP-QF-RhK"/>
+                            <constraint firstItem="4yf-KH-dOL" firstAttribute="trailing" secondItem="2VT-b6-0hL" secondAttribute="trailing" constant="156" id="m1q-Dh-yIM"/>
+                            <constraint firstItem="nha-QW-3m6" firstAttribute="top" secondItem="v9Q-EO-jhP" secondAttribute="bottom" constant="65" id="pSQ-UC-EID"/>
+                            <constraint firstItem="v9Q-EO-jhP" firstAttribute="top" secondItem="2VT-b6-0hL" secondAttribute="bottom" constant="38" id="rl6-m9-zf0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4yf-KH-dOL"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dati per regione e provincia" image="italy-map" id="HRe-xD-CxM"/>
                     <navigationItem key="navigationItem" title="Dati regioni e province" leftItemsSupplementBackButton="YES" largeTitleDisplayMode="always" id="IvE-qm-mXL" userLabel="Dati appena aggiunti">
                         <barButtonItem key="backBarButtonItem" title="Indietro" style="plain" id="cML-tO-0E7"/>
                     </navigationItem>
@@ -787,7 +805,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iLX-fl-3iT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3700" y="1400"/>
+            <point key="canvasLocation" x="3011.594202898551" y="1568.9732142857142"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ExI-Dy-mCB">

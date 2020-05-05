@@ -8,12 +8,14 @@
 
 import UIKit
 
+
 class AggiungiDatiViewController: UIViewController {
-
-
+var ok = false
+/*
     @IBAction func confirmButton(_ sender: Any) {
         performSegue(withIdentifier: "", sender: nil)
     }
+ */
     
     @IBAction func segmentedAction(_ sender: Any) {
         let getIndex = segmentedControl.selectedSegmentIndex
@@ -50,6 +52,18 @@ class AggiungiDatiViewController: UIViewController {
  */
     override func viewDidLoad() {
         super.viewDidLoad()
+        //dismissVc()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
+    }
+/*
+    func dismissVc (){
+        if ok == true {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+ */
 }
