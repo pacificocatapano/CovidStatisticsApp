@@ -30,6 +30,10 @@ class HomeViewController: UIViewController, CalendarViewDataSource, CalendarView
         andamento = dbc.getAndamento()
         province = dbc.getProvincie()
         
+        for prov in province where prov.denominazioneProvincia == "Grosseto" {
+            print(prov)
+        }
+        
         let result = attualmentePositivi()
         
         print(result)

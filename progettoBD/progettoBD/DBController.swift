@@ -154,29 +154,6 @@ class DBController: NSObject {
         return []
     }
     
-    public func getUltimaData() -> Date {
-        do {
-                let db = try Connection(path, readonly: true)
-                
-                let stmt = try db.prepare(" SELECT MAX(D.DATA) FROM DATECAMPIONE D ")
-                
-            var dataArray : [Date] = []
-                
-                dataArray = stmt.map{ row in
-                
-                    let dateObj = (row[0] as! String).toDate()
-                    
-                    return dateObj
-                }
-                
-            return dataArray.last!
-                
-                
-            } catch {
-                print("Unexpected error: \(error)")
-            }
-            return Date()
-        }
     
 }
 
