@@ -8,40 +8,14 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class HomeViewController: UIViewController {
 
-    let dbc = DBController.shared
-    var regioni : [Regioni] = []
-    var contagio : [Contagio] = []
     
-    var nome : String?
-    var dettagli: String?
-    @IBOutlet weak var StanzaCollectionView: UICollectionView!
-    let cellId = "SampleCell"
+    @IBOutlet weak var HomeScrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.tabBar.isHidden = false
-        self.navigationItem.title = nome
-        // Do any additional setup after loading the view.
-        //collectionViewFlow.minimumInteritemSpacing = 36
-        self.StanzaCollectionView.register(UINib(nibName: "SampleCell", bundle: nil), forCellWithReuseIdentifier: cellId)
         
-        self.StanzaCollectionView.delegate = self
-        self.StanzaCollectionView.dataSource = self
-        
+        //HomeScrollView.contentSize = CGSize(width: 230, height: 500)
     }
-    let collectionViewFlow = UICollectionViewFlowLayout()
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let Test = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-//        Test.layer.cornerRadius = 15
-        return Test
-    }
-    
-
 }
