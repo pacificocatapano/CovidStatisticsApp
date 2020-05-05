@@ -8,16 +8,23 @@
 
 import UIKit
 
-class InfoRegioniProvinceViewController: UIViewController {
+class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate {
 
     @IBOutlet weak var searchBarInfoRegioniProvince: UISearchBar!
     @IBOutlet weak var newData: UIButton!
-    
+    /*
+    @IBAction func cancelAction(_ sender: Any) {
+
+    }
+    @IBOutlet weak var cancelButton: UIButton!
+   */
     override func viewDidLoad() {
         super.viewDidLoad()
         newData.layer.cornerRadius = 10
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        searchBarInfoRegioniProvince.delegate = self
+    }
+    
+/*        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -38,6 +45,17 @@ class InfoRegioniProvinceViewController: UIViewController {
     func animateToCenter() {
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: .init(), animations: { () -> Void in
             self.view.center = CGPoint.init(x: self.view.frame.midX, y: self.view.frame.maxY - self.view.frame.height * (0.05 - 0.5))
-        }, completion: nil)
+        }, completion: nil)*/
+    
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Do some search stuff
     }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBarInfoRegioniProvince.text = ""
+        //inserire dismiss keyboard
+    }
+    
 }
+
