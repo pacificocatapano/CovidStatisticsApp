@@ -11,6 +11,10 @@ import UIKit
 class AggiungiDatiViewController: UIViewController {
 
 
+    @IBAction func confirmButton(_ sender: Any) {
+        performSegue(withIdentifier: "", sender: nil)
+    }
+    
     @IBAction func segmentedAction(_ sender: Any) {
         let getIndex = segmentedControl.selectedSegmentIndex
         print ("index segmented control ")
@@ -24,11 +28,26 @@ class AggiungiDatiViewController: UIViewController {
             print("Error segmented control")
         }
     }
+    
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var selectRegionProvince: UILabel!
-    @IBOutlet weak var confirmButton: UIButton!
-    
-    
+
+//******START TEXT FIELDS ******
+    @IBOutlet weak var decessiTextField: UITextField!
+    @IBOutlet weak var guaritiTextField: UITextField!
+    @IBOutlet weak var selezionaRegioneTextField: UITextField!
+    @IBOutlet weak var dataTextField: UITextField!
+    @IBOutlet weak var attualmentePositiviTextField: UITextField!
+    @IBOutlet weak var casiTotaliTextField: UITextField!
+//****END TEXT FIELDS ****
+ 
+/*
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier = "" {
+            
+        }
+    }
+ */
     override func viewDidLoad() {
         super.viewDidLoad()
     }

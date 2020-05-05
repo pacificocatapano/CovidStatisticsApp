@@ -150,6 +150,7 @@
                                     <constraint firstItem="T4A-yc-2Em" firstAttribute="centerX" secondItem="9Nf-RS-Qjt" secondAttribute="centerX" id="L4A-X0-gSS"/>
                                     <constraint firstAttribute="bottom" secondItem="T4A-yc-2Em" secondAttribute="bottom" constant="25" id="bNU-th-agi"/>
                                     <constraint firstAttribute="trailing" secondItem="T4A-yc-2Em" secondAttribute="trailing" id="gRm-61-BMa"/>
+                                    <constraint firstItem="T4A-yc-2Em" firstAttribute="width" secondItem="SaP-9q-RL4" secondAttribute="width" id="gen-Ag-v60"/>
                                     <constraint firstItem="SaP-9q-RL4" firstAttribute="top" secondItem="u2y-Ma-nSv" secondAttribute="top" constant="2" id="tod-yc-EEC"/>
                                     <constraint firstItem="USd-nq-pIs" firstAttribute="bottom" secondItem="T4A-yc-2Em" secondAttribute="bottom" constant="25" id="zYH-XA-15z"/>
                                 </constraints>
@@ -174,6 +175,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" image="Calendar"/>
                             </button>
+                            <connections>
+                                <segue destination="EYo-4Y-gVq" kind="show" id="kgv-ls-bRE"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="414" height="913"/>
@@ -472,7 +476,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gaB-al-Ytz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3014" y="760"/>
+            <point key="canvasLocation" x="4330" y="771"/>
         </scene>
         <!--Aggiungi Dati View Controller-->
         <scene sceneID="Pi8-4I-cmD">
@@ -511,7 +515,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xKF-JL-9hh">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xKF-JL-9hh" userLabel="Guariti Text Field">
                                 <rect key="frame" x="13" y="483" width="101.5" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -522,7 +526,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZHs-Ud-aq9">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZHs-Ud-aq9" userLabel="Decessi Text Field">
                                 <rect key="frame" x="182.5" y="483" width="170.5" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -581,6 +585,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="confirmButton:" destination="W5U-OM-Ut7" eventType="touchUpInside" id="x2K-lf-FlN"/>
                                     <segue destination="Ggw-tv-KAO" kind="show" id="U7u-0z-030"/>
                                 </connections>
                             </button>
@@ -631,8 +636,14 @@
                     <value key="contentSizeForViewInPopover" type="size" width="414" height="1000"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="attualmentePositiviTextField" destination="3Zw-RV-4as" id="yST-PK-231"/>
+                        <outlet property="casiTotaliTextField" destination="EQy-Ov-uS0" id="2ZD-fL-M6n"/>
+                        <outlet property="dataTextField" destination="lOf-4b-6LY" id="vU9-0S-ekc"/>
+                        <outlet property="decessiTextField" destination="ZHs-Ud-aq9" id="tLh-5L-2GI"/>
+                        <outlet property="guaritiTextField" destination="xKF-JL-9hh" id="fQ9-pH-jrD"/>
                         <outlet property="segmentedControl" destination="iwm-1g-uge" id="NmV-0Z-Ztr"/>
                         <outlet property="selectRegionProvince" destination="1GZ-2A-ipe" id="St0-An-8tB"/>
+                        <outlet property="selezionaRegioneTextField" destination="Sgb-uc-vGQ" id="YfV-kr-0Ef"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZz-Sj-Bj4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -642,7 +653,7 @@
         <!--Dati appena aggiunti-->
         <scene sceneID="vJh-zA-oFv">
             <objects>
-                <viewController id="Ggw-tv-KAO" userLabel="Dati appena aggiunti" sceneMemberID="viewController">
+                <viewController id="Ggw-tv-KAO" userLabel="Dati appena aggiunti" customClass="DatiAppenaAggiuntiViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kqb-dB-C1g">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -835,6 +846,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ac4-71-7dA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1048" y="788"/>
+        </scene>
+        <!--Calendar View Controller-->
+        <scene sceneID="CHZ-b9-kJI">
+            <objects>
+                <viewController id="EYo-4Y-gVq" userLabel="Calendar View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nCP-tr-zWa">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="KJD-aB-Ez6"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Calendario" id="HFv-UI-Gje"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f8q-wP-0oB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3013" y="102"/>
         </scene>
     </scenes>
     <resources>

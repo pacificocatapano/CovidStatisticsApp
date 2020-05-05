@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E0814182461529200F99BEC /* DatiAppenaAggiuntiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0814172461529200F99BEC /* DatiAppenaAggiuntiViewController.swift */; };
 		3E7C510B2453773B00DEB311 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C510A2453773B00DEB311 /* AppDelegate.swift */; };
 		3E7C510D2453773B00DEB311 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C510C2453773B00DEB311 /* SceneDelegate.swift */; };
 		3E7C510F2453773B00DEB311 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C510E2453773B00DEB311 /* ViewController.swift */; };
@@ -108,6 +109,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E0814172461529200F99BEC /* DatiAppenaAggiuntiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatiAppenaAggiuntiViewController.swift; sourceTree = "<group>"; };
 		3E7C51072453773B00DEB311 /* progettoBD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = progettoBD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E7C510A2453773B00DEB311 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E7C510C2453773B00DEB311 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 		3ED1F696245FFDD300C21753 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				3E0814172461529200F99BEC /* DatiAppenaAggiuntiViewController.swift */,
 				3E807245245B211800959B27 /* HomeViewController.swift */,
 				3ED1F68D245FF8A500C21753 /* InfoRegioniProvinceViewController.swift */,
 				3ED1F697245FFDFB00C21753 /* AggiungiDatiViewController.swift */,
@@ -447,6 +450,7 @@
 				3E7C51152453773B00DEB311 /* progettoBD.xcdatamodeld in Sources */,
 				CFDF7F22245EB7F900E34546 /* ColorID.swift in Sources */,
 				3E7C510B2453773B00DEB311 /* AppDelegate.swift in Sources */,
+				3E0814182461529200F99BEC /* DatiAppenaAggiuntiViewController.swift in Sources */,
 				3ED1F698245FFDFB00C21753 /* AggiungiDatiViewController.swift in Sources */,
 				3E7C510D2453773B00DEB311 /* SceneDelegate.swift in Sources */,
 				CF40AC5B245B10EF0073A158 /* DBController.swift in Sources */,
