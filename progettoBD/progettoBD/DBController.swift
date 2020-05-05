@@ -30,11 +30,6 @@ class DBController: NSObject {
     
             let stmt = try db.prepare("SELECT * FROM REGIONI R ORDER BY R.DENOMINAZIONEREGIONE ASC")
             
-            /*for row in stmt {
-                print(row[1] as! String)
-                dataToReturn.append(row[1] as! String)
-            }*/
-            
             return stmt.map{ row in
                 let codiceRegione = Int(row[0] as!String)!
                 let denominazioneRegione = row[1] as! String
@@ -44,6 +39,7 @@ class DBController: NSObject {
                 let numeroDiSuperStrade = Int(row[5] as! String)
                 let numeroDiAereoporti = Int(row[6] as! String)
                 let numeroDiStazioni = Int(row[7] as! String)
+                
                 return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
             }
             
@@ -57,7 +53,7 @@ class DBController: NSObject {
         do {
             let db = try Connection(path, readonly: true)
             
-            let stmt = try db.prepare("SELECT * FROM PROVINCE P ORDER BY P.DENOMINAZIONEPROVINICE ASC")
+            let stmt = try db.prepare("SELECT * FROM PROVINCE P ORDER BY P.DENOMINAZIONEPROVINCIA ASC")
    
             return stmt.map{ row in
                 
@@ -76,7 +72,7 @@ class DBController: NSObject {
                 let numeroSpostamentiInterni = Int(row[12] as! String)
                 let numeroSpostamnetiEsterni = Int(row[12] as! String)
                 
-                return Province(codiceProvincia: codiceProvincia, denominazioneProvincia: denominazioneProvincia, siglaProvincia: siglaProvincia, regioneAppartenenza: regioneAppartenenza, latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, estensione: estensione!, numeroDiScuole: numeroDiScuole!, numeroDiAlberghi: numeroDiAlberghi ?? -1, numeroDiOspedali: numeroDiOspedali!, numeroSpostamentiInterni: numeroSpostamentiInterni ?? -1, numeroSpostamnetiEsterni: numeroSpostamnetiEsterni ?? -1)
+                return Province(codiceProvincia: codiceProvincia, denominazioneProvincia: denominazioneProvincia, siglaProvincia: siglaProvincia, regioneAppartenenza: regioneAppartenenza, latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti ?? -1, densitàAbitanti: densitàAbitanti ?? -1, estensione: estensione ?? -1, numeroDiScuole: numeroDiScuole ?? -1, numeroDiAlberghi: numeroDiAlberghi ?? -1, numeroDiOspedali: numeroDiOspedali ?? -1 , numeroSpostamentiInterni: numeroSpostamentiInterni ?? -1, numeroSpostamnetiEsterni: numeroSpostamnetiEsterni ?? -1)
             }
             
         } catch {
@@ -95,13 +91,11 @@ class DBController: NSObject {
                 //return (row[0] as! Int64, Flavor(id: row[1] as! Int64, name: row[2] as! String))
                 //return Flavor(id: row[1] as! Int64, name: (row[2] as! String).capitalized)
                 
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-DD"
-                let dateObj = dateFormatter.date(from: (row[0] as! String))
+                let dateObj = (row[0] as! String).toDate()
                 let provincia = row[1] as! String
                 let numeroCasi = Int(row[2] as! String)
                 
-                return Contagio(data: dateObj!, provincia: provincia, numeroCasi: numeroCasi!)
+                return Contagio(data: dateObj, provincia: provincia, numeroCasi: numeroCasi!)
             }
             
         } catch {
@@ -114,13 +108,11 @@ class DBController: NSObject {
         do {
             let db = try Connection(path, readonly: true)
             
-            let stmt = try db.prepare("SELECT * FROM ANDAMENTO A ORDER BY A.DATAANDAMNETO ASC")
+            let stmt = try db.prepare("SELECT * FROM ANDAMENTO A ORDER BY A.DATAANDAMENTO ASC")
             
             return stmt.map{ row in
                 
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-DD"
-                let dateObj = dateFormatter.date(from: (row[0] as! String))
+                let dateObj = (row[0] as! String).toDate()
                 
                 let regione = row[1] as! String
                 let contagi = Int(row[2] as! String)
@@ -132,7 +124,7 @@ class DBController: NSObject {
                 let tamponiEffettuati = Int(row[8] as! String)
                 let totalePositivi = Int(row[9] as! String)
                 
-                return Andamento(data:  dateObj!, regione: regione, contagi: contagi!, decessi: decessi!, guariti: guariti!, ricoverati: ricoverati!, isolamentoDomiciliare: isolamentoDomiciliare!, terapiaIntensiva: terapiaIntensiva!, tamponiEffettuati: tamponiEffettuati!, totalePositivi: totalePositivi!)
+                return Andamento(data:  dateObj, regione: regione, contagi: contagi!, decessi: decessi!, guariti: guariti!, ricoverati: ricoverati!, isolamentoDomiciliare: isolamentoDomiciliare!, terapiaIntensiva: terapiaIntensiva!, tamponiEffettuati: tamponiEffettuati!, totalePositivi: totalePositivi!)
             }
             
         } catch {
@@ -140,6 +132,52 @@ class DBController: NSObject {
         }
         return []
     }
+    
+    public func getDataArray() -> [Date] {
+        do {
+            let db = try Connection(path, readonly: true)
+            
+            let stmt = try db.prepare(" SELECT * FROM DATECAMPIONE D ")
+            
+            
+            return stmt.map{ row in
+                
+                let dateObj = (row[0] as! String).toDate()
+                return dateObj
+            }
+            
+            
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
+    }
+    
+    public func getUltimaData() -> Date {
+        do {
+                let db = try Connection(path, readonly: true)
+                
+                let stmt = try db.prepare(" SELECT MAX(D.DATA) FROM DATECAMPIONE D ")
+                
+            var dataArray : [Date] = []
+                
+                dataArray = stmt.map{ row in
+                
+                    let dateObj = (row[0] as! String).toDate()
+                    
+                    return dateObj
+                }
+                
+            return dataArray.last!
+                
+                
+            } catch {
+                print("Unexpected error: \(error)")
+            }
+            return Date()
+        }
+    
 }
 
 

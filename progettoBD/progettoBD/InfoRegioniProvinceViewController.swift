@@ -13,15 +13,12 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     @IBOutlet weak var searchBarInfoRegioniProvince: UISearchBar!
     @IBOutlet weak var newData: UIButton!
     
-    let dbc = DBController.shared
-    var regioni : [Regioni] = []
-    var contagio : [Contagio] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         newData.layer.cornerRadius = 10
         searchBarInfoRegioniProvince.delegate = self
+        
         searchBarInfoRegioniProvince.addDoneButton(title: "Close", target: self, selector: #selector(tapDone(sender:)))
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))

@@ -330,3 +330,15 @@ extension UISearchBar {
         self.inputAccessoryView = toolBar//5
     }
 }
+
+extension String {
+  func toDate(withFormat format: String = "yyyy-MM-dd") -> Date {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    guard let date = dateFormatter.date(from: self) else {
+      preconditionFailure("Take a look to your format")
+    }
+    let modifiedDate = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+    return modifiedDate
+  }
+}

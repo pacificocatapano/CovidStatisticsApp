@@ -7,15 +7,42 @@
 //
 
 import UIKit
+import SQLite
 
 class HomeViewController: UIViewController {
 
     
     @IBOutlet weak var HomeScrollView: UIScrollView!
     
+    let dbc = DBController.shared
+    var regioni : [Regioni] = []
+    var contagio : [Contagio] = []
+    var andamento : [Andamento] = []
+    var province : [Province] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //HomeScrollView.contentSize = CGSize(width: 230, height: 500)
+        regioni = dbc.getRegioni()
+        contagio = dbc.getContagio()
+        andamento = dbc.getAndamento()
+        province = dbc.getProvincie()
+        
+        let result = attualmentePositivi()
+        
+        print(result)
     }
+    
+    func attualmentePositivi() -> Int {
+        var result = 0
+        let lastDate = dbc.getUltimaData()
+        
+        print(lastDate)
+        
+        for and in andamento where and.data == lastDate {
+            result += and.totalePositivi
+        }
+        return result
+    }
+    
 }
