@@ -10,69 +10,124 @@ import UIKit
 
 class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    var regioniArray: [Andamento] = []
-    let dbc = DBController.shared
     
-
-    @IBOutlet weak var searchBarInfoRegioniProvince: UISearchBar!
+    
+    
+    var andamentoArray: [Andamento] = []
+    let dbc = DBController.shared
+    var regioniArray :[Regioni] = []
+    var provinceArray : [Province] = []
+    var filteredDataRegioni : [Any] = []
+    var filteredDataProvincie : [Any] = []
+    
     @IBOutlet weak var newData: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var label: UILabel!
     
-    
+    let searchResultTableView = UITableView()
+    var tableViewWidth : CGFloat = 0
+    var tableViewHeight : CGFloat = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        regioniArray = dbc.getRegioniPiùColpite()
+        
+        andamentoArray = dbc.getRegioniPiùColpite()
+        regioniArray = dbc.getRegioni()
+        provinceArray = dbc.getProvincie()
+        
         newData.layer.cornerRadius = 10
-        searchBarInfoRegioniProvince.delegate = self
         
-        searchBarInfoRegioniProvince.addDoneButton(title: "Close", target: self, selector: #selector(tapDone(sender:)))
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
-        self.view.addGestureRecognizer(tapGesture)
+        searchResultTableView.delegate = self
+        searchResultTableView.dataSource = self
         
         tableView.dataSource = self
         tableView.delegate = self
         
+        setupSearchBar()
         
     }
     
-    @objc func tapDone(sender: Any) {
-        searchBarInfoRegioniProvince.text = ""
-        self.view.endEditing(true)
+    var isSearchBarEmpty: Bool {
+      return searchController.searchBar.text?.isEmpty ?? true
     }
     
-    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
-        searchBarInfoRegioniProvince.resignFirstResponder()
+    //MARK: - SEARCHBAR
+    
+    var searchActive : Bool {
+      return searchController.isActive && !isSearchBarEmpty
+    }
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchController.searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchController.isActive = false
+        searchBar.text = ""
+        self.dismiss(animated: true, completion: nil)
+        tableView.reloadData()
+    }
+    
+    private func setupSearchBar(){
+        searchController.searchBar.delegate = self
+        searchController.searchBar.returnKeyType = .done
+        searchController.searchBar.keyboardAppearance = .light
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        searchController.definesPresentationContext = true
+        //        searchBar.barTintColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // Do some search stuff
+        if searchText.isEmpty == true{
+            label.text = "Risultati ricerca"
+            newData.isHidden = true
+            tableViewWidth = tableView.frame.width
+            tableViewHeight = tableView.frame.height
+            tableView.frame = CGRect(x: tableView.frame.origin.x, y: tableView.frame.origin.y, width: view.frame.width - tableView.frame.origin.x, height: view.frame.height - tableView.frame.origin.y)
+            
+            view.addSubview(searchResultTableView)
+            searchResultTableView.tag = 100
+            searchResultTableView.isScrollEnabled = true
+        }
+        filteredDataRegioni = searchText.isEmpty ? regioniArray : regioniArray.filter { (item) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.denominazioneRegione.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+            
+        }
+        filteredDataProvincie = searchText.isEmpty ? provinceArray : provinceArray.filter { (item) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.denominazioneProvincia.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+            
+        }
+        tableView.reloadData()
     }
+
     
+    //MARK: -TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        if searchActive == false {
+            return 5
+        } else {
+            return (filteredDataRegioni.count + filteredDataProvincie.count)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "regioniCell") as! RegioniPiu_ColpiteTableViewCell
-        cell.titleLabel.text = regioniArray[indexPath.row].regione
+        if searchActive == false {
+            cell.titleLabel.text = andamentoArray[indexPath.row].regione
+        } else {
+            if indexPath.row < filteredDataRegioni.count {
+            cell.titleLabel.text = (filteredDataRegioni[indexPath.row] as! Regioni).denominazioneRegione
+            } else {
+                cell.titleLabel.text = (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province).denominazioneProvincia
+            }
+        }
         return cell
     }
-    /*
-    func cinqueRegioniPiùColpite ()-> [Regioni]{
-        var result:[Anda] = []
-        let inutile:[Regioni] = dbc.getRegioniPiùColpite()
-        result.append(inutile[0])
-        result.append(inutile[1])
-        result.append(inutile[2])
-        result.append(inutile[3])
-        result.append(inutile[4])
-        
-        return result
-        
-    }
-
-   */
 }
 
