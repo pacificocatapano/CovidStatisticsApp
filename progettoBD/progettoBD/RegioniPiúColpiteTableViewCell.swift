@@ -9,8 +9,10 @@
 import UIKit
 
 class RegioniPiu_ColpiteTableViewCell: UITableViewCell {
+    
 
     @IBOutlet weak var titleLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

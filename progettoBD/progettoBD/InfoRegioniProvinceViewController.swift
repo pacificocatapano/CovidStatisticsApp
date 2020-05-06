@@ -10,6 +10,8 @@ import UIKit
 
 class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    var regioniArray: [Andamento] = []
+    let dbc = DBController.shared
     
 
     @IBOutlet weak var searchBarInfoRegioniProvince: UISearchBar!
@@ -20,6 +22,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        regioniArray = dbc.getRegioniPiùColpite()
         newData.layer.cornerRadius = 10
         searchBarInfoRegioniProvince.delegate = self
         
@@ -30,6 +33,8 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        
     }
     
     @objc func tapDone(sender: Any) {
@@ -50,9 +55,24 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "regioniCell") as! RegioniPiu_ColpiteTableViewCell
+        cell.titleLabel.text = regioniArray[indexPath.row].regione
+        return cell
+    }
+    /*
+    func cinqueRegioniPiùColpite ()-> [Regioni]{
+        var result:[Anda] = []
+        let inutile:[Regioni] = dbc.getRegioniPiùColpite()
+        result.append(inutile[0])
+        result.append(inutile[1])
+        result.append(inutile[2])
+        result.append(inutile[3])
+        result.append(inutile[4])
+        
+        return result
+        
     }
 
-    
+   */
 }
 
