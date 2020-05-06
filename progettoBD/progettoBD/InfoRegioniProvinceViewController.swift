@@ -8,10 +8,14 @@
 
 import UIKit
 
-class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate {
+class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    
 
     @IBOutlet weak var searchBarInfoRegioniProvince: UISearchBar!
     @IBOutlet weak var newData: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var label: UILabel!
     
     
     override func viewDidLoad() {
@@ -24,6 +28,8 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)
         
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     @objc func tapDone(sender: Any) {
@@ -37,6 +43,14 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Do some search stuff
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
     }
 
     
