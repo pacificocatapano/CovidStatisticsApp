@@ -176,7 +176,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = attualmentePositivi(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - 2]
         let positiviGiornoPrima = attualmentePositivi(selectedDate: giornoPrima)
     
         result = (((attPositivi - positiviGiornoPrima) * 100)/( positiviGiornoPrima ))
@@ -213,7 +213,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = casiTotali(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - 2]
         let casiTotaliGiornoPrima = casiTotali(selectedDate: giornoPrima)
     
         result = (((casiTotaliOggi - casiTotaliGiornoPrima) * 100)/( casiTotaliGiornoPrima ))
@@ -251,7 +251,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = decessi(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - 2]
         let ieri = decessi(selectedDate: giornoPrima)
     
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -289,7 +289,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = guariti(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - 2]
         let ieri = guariti(selectedDate: giornoPrima)
     
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -383,8 +383,6 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             valuesY.append(and.contagi)
         }
         var valuesX : [Int] = Array(0...dateArray.count-1)
-        print(valuesX)
-        print(valuesY)
         for i in 0..<dateArray.count-1 {
             let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
             

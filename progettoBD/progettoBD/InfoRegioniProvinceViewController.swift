@@ -170,6 +170,11 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             controller.regioniArray = regioniArray
             controller.provinceArray = provinceArray
             controller.andamentoArray = andamentoArray
+        } else if segue.identifier == "AddData" {
+            let controller = segue.destination as! AggiungiDatiViewController
+            controller.dateArray = dbc.getDataArray()
+            controller.regioniArray = regioniArray
+            controller.provinceArray = provinceArray
         }
     }
     
