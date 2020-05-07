@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     let dbc = DBController.shared
