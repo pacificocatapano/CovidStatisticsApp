@@ -30,6 +30,7 @@
 		CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF96C2C4246169C5004491C0 /* Main.storyboard */; };
 		CFC4D94E2461ADDE0067494A /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = CFC4D94D2461AC670067494A /* data.sqlite */; };
 		CFC4D9502462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC4D94F2462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift */; };
+		CFC4D955246411360067494A /* DettagliRegioneProviciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC4D954246411360067494A /* DettagliRegioneProviciaViewController.swift */; };
 		CFDF7F1D245EB0C300E34546 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; };
 		CFDF7F1E245EB0C300E34546 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFDF7F22245EB7F900E34546 /* ColorID.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDF7F21245EB7F900E34546 /* ColorID.swift */; };
@@ -146,6 +147,7 @@
 		CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRegioniProvinceViewController.swift; sourceTree = "<group>"; };
 		CFC4D94D2461AC670067494A /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		CFC4D94F2462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegioniPiúColpiteTableViewCell.swift"; sourceTree = "<group>"; };
+		CFC4D954246411360067494A /* DettagliRegioneProviciaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DettagliRegioneProviciaViewController.swift; sourceTree = "<group>"; };
 		CFDF7F05245EB0B500E34546 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 		CFDF7F21245EB7F900E34546 /* ColorID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorID.swift; sourceTree = "<group>"; };
 		CFDF7F2D245EB8BA00E34546 /* StructAndExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructAndExtension.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				CF5496C924619944009E5C42 /* CalendarView */,
 				CF96C2C924616B05004491C0 /* HomeViewController.swift */,
 				CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */,
+				CFC4D954246411360067494A /* DettagliRegioneProviciaViewController.swift */,
 				CFC4D94F2462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift */,
 				CF96C2C824616B04004491C0 /* AggiungiDatiViewController.swift */,
 				CF96C2CA24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift */,
@@ -487,6 +490,7 @@
 				CF5496C524619909009E5C42 /* CalendarHeaderView.swift in Sources */,
 				CF96C2CC24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift in Sources */,
 				CF5496C724619909009E5C42 /* CalendarDayCell.swift in Sources */,
+				CFC4D955246411360067494A /* DettagliRegioneProviciaViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

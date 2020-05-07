@@ -27,7 +27,7 @@ class DBController: NSObject {
     public func getRegioni() -> [Regioni] {
         do {
             let db = try Connection(path, readonly: true)
-    
+            
             let stmt = try db.prepare("SELECT * FROM REGIONI R ORDER BY R.DENOMINAZIONEREGIONE ASC")
             
             return stmt.map{ row in
@@ -54,7 +54,7 @@ class DBController: NSObject {
             let db = try Connection(path, readonly: true)
             
             let stmt = try db.prepare("SELECT * FROM PROVINCE P ORDER BY P.DENOMINAZIONEPROVINCIA ASC")
-   
+            
             return stmt.map{ row in
                 
                 let codiceProvincia = Int(row[0] as!String)!
@@ -155,39 +155,27 @@ class DBController: NSObject {
     }
     
     
-// 5 regioni con più contagi **
-    public func getRegioniPiùColpite() -> [Andamento] {
+    // 5 regioni con più contagi **
+    public func getRegioniPiùColpite() -> [RegioniEAndamento] {
         do {
             let db = try Connection(path, readonly: true)
             
-    //TO DO:aggiustare query
-            let stmt = try db.prepare("SELECT * FROM ANDAMENTO A ORDER BY A.CONTAGI DESC")
-     //*********
+            //TO DO:aggiustare query
+            let stmt = try db.prepare("SELECT A.REGIONE, A.CONTAGI FROM ANDAMENTO A WHERE A.DATAANDAMENTO = (SELECT MAX(D.DATA) FROM DATECAMPIONE D)")
+            //*********
             return stmt.map{ row in
-                    
-                    let dateObj = (row[0] as! String).toDate()
-                    
-                    let regione = row[1] as! String
-                    let contagi = Int(row[2] as! String)
-                    let decessi = Int(row[3] as! String)
-                    let guariti = Int(row[4] as! String)
-                    let ricoverati = Int(row[5] as! String)
-                    let isolamentoDomiciliare = Int(row[6] as! String)
-                    let terapiaIntensiva = Int(row[7] as! String)
-                    let tamponiEffettuati = Int(row[8] as! String)
-                    let totalePositivi = Int(row[9] as! String)
-                    
-                    return Andamento(data:  dateObj, regione: regione, contagi: contagi!, decessi: decessi!, guariti: guariti!, ricoverati: ricoverati!, isolamentoDomiciliare: isolamentoDomiciliare!, terapiaIntensiva: terapiaIntensiva!, tamponiEffettuati: tamponiEffettuati!, totalePositivi: totalePositivi!)
-                }
                 
-            } catch {
-                print("Unexpected error: \(error)")
+                let regione = row[0] as! String
+                let contagi = Int(row[1] as! String)
+                
+                return RegioniEAndamento(regione: regione, contagiTotali: contagi!)
             }
-            return []
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
     }
-    
-    
-    
 }
 
 

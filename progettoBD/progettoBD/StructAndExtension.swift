@@ -315,6 +315,23 @@ struct Andamento: Codable {
     }
 }
 
+struct RegioniEAndamento {
+    var regione : String
+    var contagiTotali: Int
+    
+    init() {
+        self.regione = String()
+        self.contagiTotali = Int()
+    }
+    
+    init(regione: String, contagiTotali: Int) {
+        self.regione = regione
+        self.contagiTotali = contagiTotali
+    }
+    
+   
+}
+
 
 extension UISearchBar {
     

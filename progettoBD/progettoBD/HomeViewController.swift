@@ -37,14 +37,6 @@ class HomeViewController: UIViewController {
     
     var dateToShow = Date()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -90,6 +82,7 @@ class HomeViewController: UIViewController {
         let attPositivi = attualmentePositivi(selectedDate: selectedDate)
         if selectedDate == dateArray.first {
             result = attualmentePositivi(selectedDate: selectedDate)
+            return result
         }
         let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
         let positiviGiornoPrima = attualmentePositivi(selectedDate: giornoPrima)
@@ -126,6 +119,7 @@ class HomeViewController: UIViewController {
         let casiTotaliOggi = casiTotali(selectedDate: selectedDate)
         if selectedDate == dateArray.first {
             result = casiTotali(selectedDate: selectedDate)
+            return result
         }
         let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
         let casiTotaliGiornoPrima = casiTotali(selectedDate: giornoPrima)
@@ -163,6 +157,7 @@ class HomeViewController: UIViewController {
         let oggi = decessi(selectedDate: selectedDate)
         if selectedDate == dateArray.first {
             result = decessi(selectedDate: selectedDate)
+            return result
         }
         let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
         let ieri = decessi(selectedDate: giornoPrima)
@@ -200,6 +195,7 @@ class HomeViewController: UIViewController {
         let oggi = guariti(selectedDate: selectedDate)
         if selectedDate == dateArray.first {
             result = guariti(selectedDate: selectedDate)
+            return result
         }
         let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
         let ieri = guariti(selectedDate: giornoPrima)

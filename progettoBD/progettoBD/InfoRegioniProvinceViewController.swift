@@ -9,14 +9,12 @@
 import UIKit
 
 class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, UITableViewDataSource {
-    
-    
-    
-    
-    var andamentoArray: [Andamento] = []
+
     let dbc = DBController.shared
+    var andamentoArray: [Andamento] = []
     var regioniArray :[Regioni] = []
     var provinceArray : [Province] = []
+    var regioniPiùColpite : [RegioniEAndamento] = []
     var filteredDataRegioni : [Any] = []
     var filteredDataProvincie : [Any] = []
     
@@ -27,12 +25,20 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     let searchResultTableView = UITableView()
     var tableViewWidth : CGFloat = 0
     var tableViewHeight : CGFloat = 0
+    
+    var dataToPass : (Bool, Any) = (true, 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        andamentoArray = dbc.getRegioniPiùColpite()
+        andamentoArray = dbc.getAndamento()
         regioniArray = dbc.getRegioni()
         provinceArray = dbc.getProvincie()
+        
+        //MARK: Ordinamento tramite QUERY
+        regioniPiùColpite = dbc.getRegioniPiùColpite().sorted(by: { (img0: RegioniEAndamento, img1: RegioniEAndamento) -> Bool in
+            return img0.contagiTotali > img1.contagiTotali //MARK: Ordinamneto decrescente, se si vuole il crescente basta mettere <
+        })
         
         newData.layer.cornerRadius = 10
         
@@ -41,7 +47,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         
         tableView.dataSource = self
         tableView.delegate = self
-        
+        tableView.tableFooterView = UIView() //Rimuove le celle vuote della tableView
         setupSearchBar()
         
     }
@@ -119,7 +125,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "regioniCell") as! RegioniPiu_ColpiteTableViewCell
         if searchActive == false {
-            cell.titleLabel.text = andamentoArray[indexPath.row].regione
+            cell.titleLabel.text = regioniPiùColpite[indexPath.row].regione
         } else {
             if indexPath.row < filteredDataRegioni.count {
             cell.titleLabel.text = (filteredDataRegioni[indexPath.row] as! Regioni).denominazioneRegione
@@ -128,6 +134,59 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             }
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        if searchActive == false {
+            let selectedItem = regioniPiùColpite[indexPath.row]
+            dataToPass = (true, getRegioneData(regioneName: selectedItem.regione))
+        } else {
+            if indexPath.row < filteredDataRegioni.count {
+                let selectedItem = (filteredDataRegioni[indexPath.row] as! Regioni)
+                dataToPass = (true, selectedItem)
+            } else {
+                let selectedItem = (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province)
+                dataToPass = (false, selectedItem)
+            }
+        }
+        
+        self.performSegue(withIdentifier: "ShowInfo", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowInfo" {
+            let controller = segue.destination as! DettagliRegioneProviciaViewController
+            //controller.editButton.isEnabled = false
+            controller.dataToSet = dataToPass
+            controller.regioniArray = regioniArray
+            controller.provinceArray = provinceArray
+            controller.andamentoArray = andamentoArray
+        }
+    }
+    
+    func getRegioneData (regioneName: String) -> Regioni {
+        for reg in regioniArray where reg.denominazioneRegione == regioneName {
+            return reg
+        }
+        return Regioni()
+    }
+
+    //MARK: - Non serve più, fatta da query
+    func getRegioniPiùColpite() -> [RegioniEAndamento] {
+        var result : [RegioniEAndamento] = []
+        
+        for reg in regioniArray {
+            var sum = 0
+            for and in andamentoArray where and.regione == reg.denominazioneRegione {
+                sum += and.contagi
+            }
+            result.append(RegioniEAndamento(regione: reg.denominazioneRegione, contagiTotali: sum))
+        }
+        
+        return result
     }
 }
 
