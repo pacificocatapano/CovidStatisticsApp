@@ -203,6 +203,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
         let oggi = guaritiRegione(selectedDate: selectedDate, regione: regione)
         if selectedDate == dateArray.first {
             result = guaritiRegione(selectedDate: selectedDate, regione: regione)
+            return result
         }
         let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
         let ieri = guaritiRegione(selectedDate: giornoPrima, regione: regione)

@@ -48,6 +48,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView() //Rimuove le celle vuote della tableView
+        tableView.isScrollEnabled = true
         setupSearchBar()
         
     }
@@ -70,8 +71,11 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchController.isActive = false
         searchBar.text = ""
-        self.dismiss(animated: true, completion: nil)
+        newData.isHidden = false
+        label.text = "Le 5 Regioni con più contagi"
+        label.adjustsFontSizeToFitWidth = true
         tableView.reloadData()
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func setupSearchBar(){
@@ -88,6 +92,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        label.text = "Risultati ricerca"
         if searchText.isEmpty == true{
             label.text = "Risultati ricerca"
             newData.isHidden = true
@@ -130,7 +135,9 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             if indexPath.row < filteredDataRegioni.count {
             cell.titleLabel.text = (filteredDataRegioni[indexPath.row] as! Regioni).denominazioneRegione
             } else {
+                if (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province).denominazioneProvincia.lowercased() != "in fase di definizione/aggiornamento"{
                 cell.titleLabel.text = (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province).denominazioneProvincia
+                }
             }
         }
         return cell

@@ -176,6 +176,23 @@ class DBController: NSObject {
         }
         return []
     }
+    
+    public func getMaxContagio() -> Int {
+           do {
+               let db = try Connection(path, readonly: true)
+               
+               //TO DO:aggiustare query
+               let stmt = try db.prepare("SELECT MAX(A.CONTAGI) FROM ANDAMENTO A WHERE A.DATAANDAMENTO = (SELECT MAX(D.DATA) FROM DATECAMPIONE D)")
+               //*********
+            
+            let result : Int = stmt.row[0]
+               print(result)
+            return result
+           } catch {
+               print("Unexpected error: \(error)")
+           }
+           return Int()
+       }
 }
 
 

@@ -8,8 +8,88 @@
 
 import UIKit
 import SQLite
+import Charts
 
-class HomeViewController: UIViewController {
+enum Option {
+    case toggleValues
+    case toggleIcons
+    case toggleHighlight
+    case animateX
+    case animateY
+    case animateXY
+    case saveToGallery
+    case togglePinchZoom
+    case toggleAutoScaleMinMax
+    case toggleData
+    case toggleBarBorders
+    // CandleChart
+    case toggleShadowColorSameAsCandle
+    case toggleShowCandleBar
+    // CombinedChart
+    case toggleLineValues
+    case toggleBarValues
+    case removeDataSet
+    // CubicLineSampleFillFormatter
+    case toggleFilled
+    case toggleCircles
+    case toggleCubic
+    case toggleHorizontalCubic
+    case toggleStepped
+    // HalfPieChartController
+    case toggleXValues
+    case togglePercent
+    case toggleHole
+    case spin
+    case drawCenter
+    // RadarChart
+    case toggleXLabels
+    case toggleYLabels
+    case toggleRotate
+    case toggleHighlightCircle
+    
+    var label: String {
+        switch self {
+        case .toggleValues: return "Toggle Y-Values"
+        case .toggleIcons: return "Toggle Icons"
+        case .toggleHighlight: return "Toggle Highlight"
+        case .animateX: return "Animate X"
+        case .animateY: return "Animate Y"
+        case .animateXY: return "Animate XY"
+        case .saveToGallery: return "Save to Camera Roll"
+        case .togglePinchZoom: return "Toggle PinchZoom"
+        case .toggleAutoScaleMinMax: return "Toggle auto scale min/max"
+        case .toggleData: return "Toggle Data"
+        case .toggleBarBorders: return "Toggle Bar Borders"
+        // CandleChart
+        case .toggleShadowColorSameAsCandle: return "Toggle shadow same color"
+        case .toggleShowCandleBar: return "Toggle show candle bar"
+        // CombinedChart
+        case .toggleLineValues: return "Toggle Line Values"
+        case .toggleBarValues: return "Toggle Bar Values"
+        case .removeDataSet: return "Remove Random Set"
+        // CubicLineSampleFillFormatter
+        case .toggleFilled: return "Toggle Filled"
+        case .toggleCircles: return "Toggle Circles"
+        case .toggleCubic: return "Toggle Cubic"
+        case .toggleHorizontalCubic: return "Toggle Horizontal Cubic"
+        case .toggleStepped: return "Toggle Stepped"
+        // HalfPieChartController
+        case .toggleXValues: return "Toggle X-Values"
+        case .togglePercent: return "Toggle Percent"
+        case .toggleHole: return "Toggle Hole"
+        case .spin: return "Spin"
+        case .drawCenter: return "Draw CenterText"
+        // RadarChart
+        case .toggleXLabels: return "Toggle X-Labels"
+        case .toggleYLabels: return "Toggle Y-Labels"
+        case .toggleRotate: return "Toggle Rotate"
+        case .toggleHighlightCircle: return "Toggle highlight circle"
+        }
+    }
+}
+
+
+class HomeViewController: UIViewController, ChartViewDelegate {
 
     
     @IBOutlet weak var navBar: UINavigationItem!
@@ -22,6 +102,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var variazioneDecessi: UILabel!
     @IBOutlet weak var numeroGuariti: UILabel!
     @IBOutlet weak var variazioneGuariti: UILabel!
+    @IBOutlet weak var grafico: LineChartView!
     
     @IBOutlet weak var HomeScrollView: UIScrollView!
     @IBOutlet weak var calendarButton: UIBarButtonItem!
@@ -34,6 +115,7 @@ class HomeViewController: UIViewController {
     var andamento : [Andamento] = []
     var province : [Province] = []
     var dateArray : [Date] = []
+    var options: [Option]!
     
     var dateToShow = Date()
     
@@ -47,12 +129,16 @@ class HomeViewController: UIViewController {
         province = dbc.getProvincie()
         dateArray = dbc.getDataArray()
         
+        crateChart()
+        
         dateToShow = dateArray.last!
         navigationController?.navigationBar.prefersLargeTitles = true
         labelPositivi(selectedDate: dateToShow)
         labelCasiTotali(selectedDate: dateToShow)
         labelDecessi(selectedDate: dateToShow)
         labelGuariti(selectedDate: dateToShow)
+        
+        setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
     }
     
     //MARK: - AttualmentePositivi
@@ -243,45 +329,6 @@ class HomeViewController: UIViewController {
         toolBar.setItems([flexible, barButton], animated: false)//4
         toolBar.tag = 300
         view.addSubview(toolBar)
-//        let style = CalendarView.Style()
-//
-//
-//        style.cellShape                = .bevel(8.0)
-//        style.cellColorDefault         = UIColor.clear
-//        style.cellColorToday           = UIColor(red:1.00, green:0.84, blue:0.64, alpha:1.00)
-//        style.cellSelectedBorderColor  = UIColor(red:1.00, green:0.63, blue:0.24, alpha:1.00)
-//        style.cellEventColor           = UIColor(red:1.00, green:0.63, blue:0.24, alpha:1.00)
-//        style.headerTextColor          = UIColor.gray
-//
-//        style.cellTextColorDefault     = UIColor(red: 249/255, green: 180/255, blue: 139/255, alpha: 1.0)
-//        style.cellTextColorToday       = UIColor.orange
-//        style.cellTextColorWeekend     = UIColor(red: 237/255, green: 103/255, blue: 73/255, alpha: 1.0)
-//        style.cellColorOutOfRange      = UIColor(red: 249/255, green: 226/255, blue: 212/255, alpha: 1.0)
-//
-//        style.headerBackgroundColor    = UIColor.white
-//        style.weekdaysBackgroundColor  = UIColor.white
-//        style.firstWeekday             = .monday
-//
-//        style.locale                   = Locale(identifier: "it_IT")
-//
-//        style.cellFont = UIFont(name: "Helvetica", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
-//        style.headerFont = UIFont(name: "Helvetica", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
-//        style.weekdaysFont = UIFont(name: "Helvetica", size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
-//
-//
-//        calendarView.style = style
-//
-//        calendarView.frame = CGRect(x: view1.frame.origin.x + 5, y: view1.frame.origin.y + 5, width: view1.frame.width - 10, height: view.frame.height - 5)
-//        calendarView.direction = .horizontal
-//        calendarView.multipleSelectionEnable = false
-//        calendarView.marksWeekends = true
-//
-//
-//
-//        calendarView.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1.0)
-//
-//        view.addSubview(calendarView)
-//        calendarView.tag = 200
     }
     
     @objc func saveDate() {
@@ -319,26 +366,68 @@ class HomeViewController: UIViewController {
         view.viewWithTag(300)?.removeFromSuperview()
     }
     
-//    func startDate() -> Date {
-//
-//        let date = dbc.getDataArray()[0]
-//
-//          return date
-//      }
-//
-//      func endDate() -> Date {
-//
-//          return Date()
-//
-//      }
-//
-//    func calendar(_ calendar: CalendarView, didSelectDate date: Date, withEvents events: [CalendarEvent]) {
-//        return
-//    }
-//
-//    func calendar(_ calendar : CalendarView, didScrollToMonth date : Date) {
-//        return
-//    }
+    //MARK: -Grafico
+    func crateChart() {
+        self.options = [.toggleValues,
+                        .toggleFilled,
+                        .toggleCircles,
+                        .toggleCubic,
+                        .toggleStepped,
+                        .toggleHighlight,
+                        .animateX,
+                        .animateY,
+                        .animateXY,
+                        .saveToGallery,
+                        .togglePinchZoom,
+                        .toggleAutoScaleMinMax,
+                        .toggleData]
+
+        grafico.delegate = self
+        
+        grafico.chartDescription?.enabled = false
+
+        grafico.leftAxis.enabled = false
+        grafico.rightAxis.drawAxisLineEnabled = false
+        grafico.xAxis.drawAxisLineEnabled = false
+        
+        grafico.drawBordersEnabled = false
+        grafico.setScaleEnabled(true)
+
+        let l = grafico.legend
+        l.horizontalAlignment = .right
+        l.verticalAlignment = .top
+        l.orientation = .vertical
+        l.drawInside = false
+    }
+    
+    func setDataCount(_ count: Int, range: UInt32) {
+        let colors = ColorManager.allColors
+        
+        let block: (Int) -> ChartDataEntry = { (i) -> ChartDataEntry in
+            let val = Double(arc4random_uniform(range) + 3)
+            return ChartDataEntry(x: Double(i), y: val)
+        }
+        let dataSets = (0..<3).map { i -> LineChartDataSet in
+            let yVals = (0..<count).map(block)
+            let set = LineChartDataSet(entries: yVals, label: "DataSet \(i)")
+            set.lineWidth = 2.5
+            set.circleRadius = 4
+            set.circleHoleRadius = 2
+            let color = colors[i % colors.count]
+            set.setColor(color)
+            set.setCircleColor(color)
+            
+            return set
+        }
+        
+        dataSets[0].lineDashLengths = [5, 5]
+        dataSets[0].colors = ChartColorTemplates.vordiplom()
+        dataSets[0].circleColors = ChartColorTemplates.vordiplom()
+        
+        let data = LineChartData(dataSets: dataSets)
+        data.setValueFont(.systemFont(ofSize: 7, weight: .light))
+        grafico.data = data
+    }
     
 }
 
