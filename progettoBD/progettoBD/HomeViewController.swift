@@ -374,8 +374,6 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     
     //MARK: -Grafico
     func createChart() {
-        
-        
         grafico.noDataText = "No data available"
         var dataEntries: [ChartDataEntry] = []
         var valuesY : [Int] = []
@@ -388,10 +386,30 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             
         dataEntries.append(dataEntry)
         }
-        let lineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Contagi")
-        lineChartDataSet.colors = [ColorManager.mainRedColor]
+        grafico.rightAxis.enabled = false
+        grafico.backgroundColor = UIColor.white
+        grafico.gridBackgroundColor = UIColor.white
+        grafico.xAxis.labelPosition = .bottom
+        grafico.xAxis.setLabelCount(5, force: false)
+        //grafico.animate(xAxisDuration: 2.5)
+        
+        
+        //Line Casi Totali
+        let CasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Casi Totali")
+        CasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+        CasiTotaliLineChartDataSet.lineWidth = 3
+        CasiTotaliLineChartDataSet.drawCirclesEnabled = false
+        CasiTotaliLineChartDataSet.mode = .cubicBezier
+        
+        /* nel caso volessimo l'area
+        CasiTotaliLineChartDataSet.fill = UIColor.white
+        CasiTotaliLineChartDataSet.fillAlpha = 0.8
+        CasiTotaliLineChartDataSet.drawFilledEnabled = true
+        */
+        
         let dataGraph = LineChartData()
-        dataGraph.addDataSet(lineChartDataSet)
+        dataGraph.addDataSet(CasiTotaliLineChartDataSet)
+        dataGraph.setDrawValues(false)
         grafico.data = dataGraph
         
         
