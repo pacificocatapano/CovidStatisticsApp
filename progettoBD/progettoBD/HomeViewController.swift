@@ -10,6 +10,8 @@ import UIKit
 import SQLite
 import Charts
 
+
+//MARK: - Grafico opzioni fuori dalla classe
 enum Option {
     case toggleValues
     case toggleIcons
@@ -87,7 +89,7 @@ enum Option {
         }
     }
 }
-
+//FINE OPZIONI GRAFICO
 
 class HomeViewController: UIViewController, ChartViewDelegate {
 
@@ -129,7 +131,10 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         province = dbc.getProvincie()
         dateArray = dbc.getDataArray()
         
-        crateChart()
+        createChart()
+        grafico.pinchZoomEnabled = false
+        grafico.doubleTapToZoomEnabled = false
+        grafico.drawGridBackgroundEnabled = true
         
         dateToShow = dateArray.last!
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -137,8 +142,9 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         labelCasiTotali(selectedDate: dateToShow)
         labelDecessi(selectedDate: dateToShow)
         labelGuariti(selectedDate: dateToShow)
-        
+       /*
         setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
+        updateSetData()*/
     }
     
     //MARK: - AttualmentePositivi
@@ -367,7 +373,31 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     }
     
     //MARK: -Grafico
-    func crateChart() {
+    func createChart() {
+        
+        
+        grafico.noDataText = "No data available"
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in andamento {
+            valuesY.append(and.contagi)
+        }
+        var valuesX : [Int] = Array(0...dateArray.count-1)
+        print(valuesX)
+        print(valuesY)
+        for i in 0..<dateArray.count-1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            
+        dataEntries.append(dataEntry)
+        }
+        let lineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Contagi")
+        lineChartDataSet.colors = [ColorManager.mainRedColor]
+        let dataGraph = LineChartData()
+        dataGraph.addDataSet(lineChartDataSet)
+        grafico.data = dataGraph
+        
+        
+        /*
         self.options = [.toggleValues,
                         .toggleFilled,
                         .toggleCircles,
@@ -381,9 +411,10 @@ class HomeViewController: UIViewController, ChartViewDelegate {
                         .togglePinchZoom,
                         .toggleAutoScaleMinMax,
                         .toggleData]
-
-        grafico.delegate = self
+*/
         
+        
+/*
         grafico.chartDescription?.enabled = false
 
         grafico.leftAxis.enabled = false
@@ -398,6 +429,11 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         l.verticalAlignment = .top
         l.orientation = .vertical
         l.drawInside = false
+ */
+        
+        
+        
+        
     }
     
     func setDataCount(_ count: Int, range: UInt32) {
@@ -429,5 +465,15 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         grafico.data = data
     }
     
+    var shouldHideData: Bool = false
+    
+    func updateSetData (){
+        if self.shouldHideData == true {
+            grafico.data = nil
+            return
+        }else{
+            setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
+        }
+    }
 }
 
