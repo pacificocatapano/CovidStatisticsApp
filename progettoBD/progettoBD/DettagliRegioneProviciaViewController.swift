@@ -48,14 +48,13 @@ class DettagliRegioneProviciaViewController: UIViewController {
         if dataToSet.0 == true {
             navBar.title = (dataToSet.1 as! Regioni).denominazioneRegione
             selectedRegione = dataToSet.1 as! Regioni
-        } else {
-            navBar.title = (dataToSet.1 as! Province).denominazioneProvincia
-            selectedProvincia = dataToSet.1 as! Province
-            contagioArray = dbc.getContagio()
         }
         
         dateArray = dbc.getDataArray()
         dateToShow = dateArray.last!
+        
+        checkDati(selectedDate: dateToShow)
+        
         if dataToSet.0 == true {
             labelPositiviRegione(selectedDate: dateToShow, Regione: selectedRegione)
             labelDecessiRegione(selectedDate: dateToShow, regione: selectedRegione)
@@ -63,6 +62,20 @@ class DettagliRegioneProviciaViewController: UIViewController {
             labelCasiTotaliRegione(selectedDate: dateToShow, regione: selectedRegione)
         }
         // Do any additional setup after loading the view.
+    }
+    
+    var exit = false
+    var ricorsion = 1
+    
+    
+    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
+    func checkDati(selectedDate : Date) {
+        for and in andamentoArray where and.data == selectedDate && and.regione == (dataToSet.1 as! Regioni).denominazioneRegione {
+            dateToShow = and.data
+            return
+        }
+        ricorsion += 1
+        checkDati(selectedDate: dateArray[dateArray.count - ricorsion])
     }
     
     //MARK: - attualmentePositiviRegione
@@ -94,7 +107,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
             result = attualmentePositiviRegione(selectedDate: selectedDate, regione: regione)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let positiviGiornoPrima = attualmentePositiviRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((attPositivi - positiviGiornoPrima) * 100)/( positiviGiornoPrima ))
@@ -130,7 +143,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
         if selectedDate == dateArray.first {
             result = casiTotaliRegione(selectedDate: selectedDate, regione: regione)
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let casiTotaliGiornoPrima = casiTotaliRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((casiTotaliOggi - casiTotaliGiornoPrima) * 100)/( casiTotaliGiornoPrima ))
@@ -167,7 +180,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
         if selectedDate == dateArray.first {
             result = decessiRegione(selectedDate: selectedDate, regione: regione)
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let ieri = decessiRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -205,7 +218,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
             result = guaritiRegione(selectedDate: selectedDate, regione: regione)
             return result
         }
-        let giornoPrima = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate)!
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let ieri = guaritiRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -232,7 +245,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
         dataPicker = UIDatePicker(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*2/3, width: view.frame.width, height: view.frame.height/3))
         
         dataPicker.minimumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.first!)!
-        dataPicker.maximumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.last!)!
+        dataPicker.maximumDate = dateArray[dateArray.count - 1 - ricorsion]
         dataPicker.backgroundColor = UIColor.white
         dataPicker.datePickerMode = .date
         dataPicker.tag = 200

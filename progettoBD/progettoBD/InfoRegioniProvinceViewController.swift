@@ -13,6 +13,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     var andamentoArray: [Andamento] = []
     var regioniArray :[Regioni] = []
     var provinceArray : [Province] = []
+    var dateArray : [Date] = []
     var regioniPiùColpite : [RegioniEAndamento] = []
     var filteredDataRegioni : [Any] = []
     var filteredDataProvincie : [Any] = []
@@ -27,15 +28,27 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     var dataToPass : (Bool, Any) = (true, 0)
     
+    var dateToShow : Date = Date()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         andamentoArray = dbc.getAndamento()
         regioniArray = dbc.getRegioni()
         provinceArray = dbc.getProvincie()
+        dateArray = dbc.getDataArray()
+        
+         dateToShow = dateArray.last!
+        
+        chekAllRegione(selectedDate: dateToShow)
+        
+        
+        for and in andamentoArray where and.data == dateToShow {
+            regioniPiùColpite.append(RegioniEAndamento(regione: and.regione, contagiTotali: and.contagi))
+        }
         
         //MARK: Ordinamento tramite QUERY
-        regioniPiùColpite = dbc.getRegioniPiùColpite().sorted(by: { (img0: RegioniEAndamento, img1: RegioniEAndamento) -> Bool in
+        regioniPiùColpite = regioniPiùColpite.sorted(by: { (img0: RegioniEAndamento, img1: RegioniEAndamento) -> Bool in
             return img0.contagiTotali > img1.contagiTotali //MARK: Ordinamneto decrescente, se si vuole il crescente basta mettere <
         })
         
@@ -50,6 +63,27 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         tableView.isScrollEnabled = true
         setupSearchBar()
         
+    }
+    
+    var exit = false
+    var ricorsion = 1
+    
+    func chekAllRegione(selectedDate : Date) {
+    if exit == true {
+        return
+    } else {
+        var result = 0
+        for and in andamentoArray where and.data == selectedDate {
+            result += 1
+        }
+        if result != 21 {
+            ricorsion += 1
+            chekAllRegione(selectedDate: dateArray[dateArray.count - ricorsion])
+        } else {
+            exit = true
+            dateToShow = selectedDate
+        }
+    }
     }
     
     var isSearchBarEmpty: Bool {
@@ -120,6 +154,9 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     //MARK: -TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive == false {
+            if regioniPiùColpite.count < 5 {
+                return regioniPiùColpite.count
+            }
             return 5
         } else {
             return (filteredDataRegioni.count + filteredDataProvincie.count)
@@ -148,22 +185,27 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         if searchActive == false {
             let selectedItem = regioniPiùColpite[indexPath.row]
             dataToPass = (true, getRegioneData(regioneName: selectedItem.regione))
+            self.performSegue(withIdentifier: "ShowInfoRegione", sender: self)
+            tableView.deselectRow(at: indexPath, animated: true)
         } else {
             if indexPath.row < filteredDataRegioni.count {
                 let selectedItem = (filteredDataRegioni[indexPath.row] as! Regioni)
                 dataToPass = (true, selectedItem)
+                self.performSegue(withIdentifier: "ShowInfoRegione", sender: self)
+                tableView.deselectRow(at: indexPath, animated: true)
             } else {
                 let selectedItem = (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province)
                 dataToPass = (false, selectedItem)
+                self.performSegue(withIdentifier: "ShowInfoProvincia", sender: self)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
         }
         
-        self.performSegue(withIdentifier: "ShowInfo", sender: self)
-        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowInfo" {
+        if segue.identifier == "ShowInfoRegione" {
             let controller = segue.destination as! DettagliRegioneProviciaViewController
             //controller.editButton.isEnabled = false
             controller.dataToSet = dataToPass
@@ -172,9 +214,12 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             controller.andamentoArray = andamentoArray
         } else if segue.identifier == "AddData" {
             let controller = segue.destination as! AggiungiDatiViewController
-            controller.dateArray = dbc.getDataArray()
             controller.regioniArray = regioniArray
             controller.provinceArray = provinceArray
+        } else if segue.identifier == "ShowInfoProvincia" {
+            let controller = segue.destination as! ShowDatiProvinciaViewController
+            controller.provinciaSelezionata = dataToPass.1 as! Province
+            controller.navBar.title = (dataToPass.1 as! Province).denominazioneProvincia
         }
     }
     

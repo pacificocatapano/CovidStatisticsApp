@@ -21,49 +21,102 @@ class DatiAppenaAggiuntiViewController: UIViewController {
     @IBOutlet weak var variazioneDecessiTotaleLabel: UILabel!
     @IBOutlet weak var guaritiLabel: UILabel!
     @IBOutlet weak var varazioneGuaritiLabel: UILabel!
+    @IBOutlet weak var attualmentePositiviStack: UIStackView!
+    @IBOutlet weak var decessiStack: UIStackView!
+    @IBOutlet weak var guaritiStack: UIStackView!
     
     let dbc = DBController.shared
     var regioneAggiunta : Andamento = Andamento()
     var regioneArray : [Regioni] = []
     var dateArray : [Date] = []
     var andamento : [Andamento] = []
+    var provinciaAggiunta : Contagio = Contagio()
+    var provinceArray : [Province] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dateArray = dbc.getDataArray()
+        if regioneAggiunta.regione != Andamento().regione {
         andamento = dbc.getAndamento()
+        dateArray.append(regioneAggiunta.data)
         
         titleLabel.text = regioneAggiunta.regione
         labelDecessi(selectedDate: regioneAggiunta.data)
         labelGuariti(selectedDate: regioneAggiunta.data)
         labelCasiTotali(selectedDate: regioneAggiunta.data)
-        labelPositivi(selectedDate: regioneAggiunta.data)
+        labelPositiviRegione(selectedDate: regioneAggiunta.data)
         // Do any additional setup after loading the view.
+        } else if provinciaAggiunta.provincia != Contagio().provincia {
+            var nomeProvincia = ""
+            for prov in provinceArray where prov.denominazioneProvincia == provinciaAggiunta.provincia {
+                nomeProvincia = prov.denominazioneProvincia
+            }
+            dateArray.append(provinciaAggiunta.data)
+            titleLabel.text = nomeProvincia
+            attualmentePositiviStack.isHidden = true
+            decessiStack.isHidden = true
+            guaritiStack.isHidden = true
+            labelCasiTotaliProvincia(selectedDate: provinciaAggiunta.data)
+        }
     }
     
     @IBAction func okButton(_ sender: Any) {
         let vc = storyboard?.instantiateViewController(identifier: "aggiungiDati") as! AggiungiDatiViewController
         self.dismiss(animated: true, completion: {
+            self.dbc.setAndamento(andamento: self.regioneAggiunta)
             vc.ok = true
-            //vc.dismissVc()
             vc.viewDidLoad()
         })
         
     }
-
-    //MARK: - AttualmentePositivi
-    func labelPositivi(selectedDate: Date){
-        attualmentePositiviLabel.text = "\(Int(attualmentePositivi(selectedDate: selectedDate)))"
+    //MARK: -CasiTotaliProvincia
+    func labelCasiTotaliProvincia(selectedDate: Date){
+        casiTotaliLabel.text = "\(Int(provinciaAggiunta.numeroCasi))"
         
-        let deltaPositivi = String(format: "%.2f", variazioneAttualmentePositivi(selectedDate: selectedDate))
-        let variazioneNumericaAttualmentePositivi : Int = (regioneAggiunta.totalePositivi) - Int( attualmentePositivi(selectedDate: dateArray[dateArray.count - 2]))
-        if variazioneAttualmentePositivi(selectedDate: selectedDate) > 0 {
+        let deltaPositivi = String(format: "%.2f", variazioneCasiTotaliProvincia(selectedDate: selectedDate))
+        let variazioneNumerica: Int = Int(casiTotaliProvincia(selectedDate: selectedDate) - casiTotaliProvincia(selectedDate: dateArray[dateArray.count - 2]))
+        
+        if variazioneCasiTotali(selectedDate: selectedDate) > 0 {
+            variazioneCasiTotaliLabel.text = "+\(variazioneNumerica)  (+\(deltaPositivi)%)"
+        } else {
+            variazioneCasiTotaliLabel.text = "\(variazioneNumerica)  (\(deltaPositivi)%)"
+        }
+    }
+    
+    func casiTotaliProvincia(selectedDate : Date) -> Float {
+        var result: Float = 0
+        
+        for con in dbc.getContagio() where con.data == selectedDate && con.provincia == "\(provinciaAggiunta.provincia)" {
+            result += Float(con.numeroCasi)
+        }
+        return result
+    }
+    
+    func variazioneCasiTotaliProvincia(selectedDate: Date) -> Float {
+        var result: Float = 0
+        let casiTotaliOggi = provinciaAggiunta.numeroCasi
+        
+        let giornoPrima = dateArray[dateArray.count - 2]
+        let casiTotaliGiornoPrima = casiTotaliProvincia(selectedDate: giornoPrima)
+        
+        result = (((Float(casiTotaliOggi) - casiTotaliGiornoPrima) * 100)/( casiTotaliGiornoPrima ))
+        return result
+    }
+    
+    //MARK: - AttualmentePositiviRegione
+    func labelPositiviRegione(selectedDate: Date){
+        attualmentePositiviLabel.text = "\(regioneAggiunta.totalePositivi)"
+        
+        let deltaPositivi = String(format: "%.2f", variazioneAttualmentePositiviRegione(selectedDate: selectedDate))
+        let variazioneNumericaAttualmentePositivi : Int = (regioneAggiunta.totalePositivi) - Int( attualmentePositiviRegione(selectedDate: dateArray[dateArray.count - 2]))
+        if variazioneAttualmentePositiviRegione(selectedDate: selectedDate) > 0 {
             variazionePositiviLabel.text = "+\(variazioneNumericaAttualmentePositivi)  (+\(deltaPositivi)%)"
         } else {
             variazionePositiviLabel.text = "\(variazioneNumericaAttualmentePositivi)  (\(deltaPositivi)%)"
         }
     }
     
-    func attualmentePositivi(selectedDate : Date) -> Float {
+    func attualmentePositiviRegione(selectedDate : Date) -> Float {
         var result: Float = 0
         
         for and in andamento where and.data == selectedDate && and.regione == regioneAggiunta.regione {
@@ -73,23 +126,19 @@ class DatiAppenaAggiuntiViewController: UIViewController {
         return result
     }
     
-    func variazioneAttualmentePositivi(selectedDate: Date) -> Float {
+    func variazioneAttualmentePositiviRegione(selectedDate: Date) -> Float {
         var result: Float = 0
         let attPositivi = regioneAggiunta.totalePositivi
-        if selectedDate == dateArray.first {
-            result = attualmentePositivi(selectedDate: selectedDate)
-            return result
-        }
         let giornoPrima = dateArray[dateArray.count - 2]
-        let positiviGiornoPrima = attualmentePositivi(selectedDate: giornoPrima)
+        let positiviGiornoPrima = attualmentePositiviRegione(selectedDate: giornoPrima)
     
         result = (((Float(attPositivi) - positiviGiornoPrima) * 100)/( positiviGiornoPrima ))
         return result
     }
     
-    //MARK: - CasiTotali
+    //MARK: - CasiTotaliRegione
     func labelCasiTotali( selectedDate : Date){
-        casiTotaliLabel.text = "\(Int(casiTotali(selectedDate: selectedDate)))"
+        casiTotaliLabel.text = "\(regioneAggiunta.contagi)"
         
         let deltaPositivi = String(format: "%.2f", variazioneCasiTotali(selectedDate: selectedDate))
         let variazioneNumericaCasiTotali: Int = regioneAggiunta.contagi - Int(casiTotali(selectedDate: dateArray[dateArray.count - 2]))
@@ -112,10 +161,7 @@ class DatiAppenaAggiuntiViewController: UIViewController {
     func variazioneCasiTotali(selectedDate: Date) -> Float {
         var result: Float = 0
         let casiTotaliOggi = Float(regioneAggiunta.contagi)
-        if selectedDate == dateArray.first {
-            result = casiTotali(selectedDate: selectedDate)
-            return result
-        }
+
         let giornoPrima = dateArray[dateArray.count - 2]
         let casiTotaliGiornoPrima = casiTotali(selectedDate: giornoPrima)
     
@@ -126,7 +172,7 @@ class DatiAppenaAggiuntiViewController: UIViewController {
     
     //MARK: - Decessi Ultimo Giorno
     func labelDecessi(selectedDate : Date){
-        decessiLabel.text = "\(Int(decessi(selectedDate: selectedDate)))"
+        decessiLabel.text = "\(regioneAggiunta.decessi)"
         
         let deltaPositivi = String(format: "%.2f", variazioneDecessiFunc(selectedDate: selectedDate))
         let variazioneNumericaDecessi: Int = regioneAggiunta.decessi -  Int(decessi(selectedDate: dateArray[dateArray.count - 2]))
@@ -164,7 +210,7 @@ class DatiAppenaAggiuntiViewController: UIViewController {
     
     //MARK: - Guariti Ultimo Giorno
     func labelGuariti(selectedDate: Date){
-        guaritiLabel.text = "\(Int(guariti(selectedDate:selectedDate)))"
+        guaritiLabel.text = "\(regioneAggiunta.guariti)"
         
         let deltaPositivi = String(format: "%.2f", variazioneGuaritiFunc(selectedDate: selectedDate))
         let variazioneNumericaGuariti: Int = regioneAggiunta.guariti - Int( guariti(selectedDate: dateArray[dateArray.count - 2]))

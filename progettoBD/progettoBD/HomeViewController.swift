@@ -92,7 +92,7 @@ enum Option {
 //FINE OPZIONI GRAFICO
 
 class HomeViewController: UIViewController, ChartViewDelegate {
-
+    
     
     @IBOutlet weak var navBar: UINavigationItem!
     
@@ -105,6 +105,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var numeroGuariti: UILabel!
     @IBOutlet weak var variazioneGuariti: UILabel!
     @IBOutlet weak var grafico: LineChartView!
+    @IBOutlet weak var zoomOutButton: UIButton!
     
     @IBOutlet weak var HomeScrollView: UIScrollView!
     @IBOutlet weak var calendarButton: UIBarButtonItem!
@@ -131,20 +132,58 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         province = dbc.getProvincie()
         dateArray = dbc.getDataArray()
         
+        dateToShow = dateArray.last!
+        chekAllRegione(selectedDate: dateToShow)
+        
         createChart()
-        grafico.pinchZoomEnabled = false
-        grafico.doubleTapToZoomEnabled = false
+        grafico.pinchZoomEnabled = true
+        grafico.doubleTapToZoomEnabled = true
         grafico.drawGridBackgroundEnabled = true
         
-        dateToShow = dateArray.last!
+        zoomOutButton.titleLabel?.text = "ZoomOut"
+        zoomOutButton.backgroundColor = UIColor.white
+        zoomOutButton.addTarget(self, action: #selector(zoomOutButtonAction), for: .touchUpInside)
+        
+        
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        
+        
         labelPositivi(selectedDate: dateToShow)
         labelCasiTotali(selectedDate: dateToShow)
         labelDecessi(selectedDate: dateToShow)
         labelGuariti(selectedDate: dateToShow)
-       /*
-        setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
-        updateSetData()*/
+        /*
+         setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
+         updateSetData()*/
+    }
+    
+    @objc func zoomOutButtonAction() {
+        grafico.zoomOut()
+    }
+    
+    var exit = false
+    var ricorsion = 1
+    
+    
+    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
+    func chekAllRegione(selectedDate : Date) {
+        if exit == true {
+            return
+        } else {
+            var result = 0
+            for and in andamento where and.data == selectedDate {
+                result += 1
+            }
+            if result != 21 {
+                ricorsion += 1
+                chekAllRegione(selectedDate: dateArray[dateArray.count - ricorsion])
+            } else {
+                exit = true
+                dateToShow = selectedDate
+            }
+        }
+        
     }
     
     //MARK: - AttualmentePositivi
@@ -176,9 +215,9 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = attualmentePositivi(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = dateArray[dateArray.count - 2]
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let positiviGiornoPrima = attualmentePositivi(selectedDate: giornoPrima)
-    
+        
         result = (((attPositivi - positiviGiornoPrima) * 100)/( positiviGiornoPrima ))
         return result
     }
@@ -213,9 +252,9 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = casiTotali(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = dateArray[dateArray.count - 2]
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let casiTotaliGiornoPrima = casiTotali(selectedDate: giornoPrima)
-    
+        
         result = (((casiTotaliOggi - casiTotaliGiornoPrima) * 100)/( casiTotaliGiornoPrima ))
         return result
     }
@@ -251,9 +290,9 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = decessi(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = dateArray[dateArray.count - 2]
+        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let ieri = decessi(selectedDate: giornoPrima)
-    
+        
         result = (((oggi - ieri) * 100)/( ieri ))
         return result
     }
@@ -289,9 +328,23 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             result = guariti(selectedDate: selectedDate)
             return result
         }
-        let giornoPrima = dateArray[dateArray.count - 2]
+        
+        var giornoPrima: Date = Date ()
+        if Calendar.current.date(byAdding: .day, value: -1, to: selectedDate) == dateArray[dateArray.count - ricorsion - 1] {
+            giornoPrima = dateArray[dateArray.count - ricorsion - 1]
+        } else {
+            var i = 0
+            for date in dateArray {
+                if date == selectedDate {
+                    giornoPrima = dateArray[i-1]
+                    break
+                }
+                i += 1
+            }
+        }
+        print(giornoPrima)
         let ieri = guariti(selectedDate: giornoPrima)
-    
+        
         result = (((oggi - ieri) * 100)/( ieri ))
         return result
     }
@@ -299,7 +352,6 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     
     @IBAction func changeDate(_ sender: Any) {
         showCalendar()
-        print("OK")
     }
     
     func showCalendar(){
@@ -314,7 +366,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         dismissView.tag = 100
         
         dataPicker = UIDatePicker(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*2/3, width: view.frame.width, height: view.frame.height/3))
-        
+        dataPicker.date = Calendar.current.date(byAdding: .day, value: -1, to: dateToShow)!
         dataPicker.minimumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.first!)!
         dataPicker.maximumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.last!)!
         dataPicker.backgroundColor = UIColor.white
@@ -340,8 +392,15 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     @objc func saveDate() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-DD"
+        let oldDate = dateToShow
         dateToShow = Calendar.current.date(byAdding: .day, value: 1, to: dataPicker.date)!
         
+        if dateToShow > oldDate {
+            
+            ricorsion = dateToShow.interval(ofComponent: .day, fromDate: oldDate)
+        } else {
+            ricorsion = oldDate.interval(ofComponent: .day, fromDate: dateToShow)
+        }
         labelDecessi(selectedDate: dateToShow)
         labelGuariti(selectedDate: dateToShow)
         labelPositivi(selectedDate: dateToShow)
@@ -377,14 +436,16 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         grafico.noDataText = "No data available"
         var dataEntries: [ChartDataEntry] = []
         var valuesY : [Int] = []
-        for and in andamento {
-            valuesY.append(and.contagi)
+        
+        
+        for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+            valuesY.append(Int(and.1))
         }
-        var valuesX : [Int] = Array(0...dateArray.count-1)
-        for i in 0..<dateArray.count-1 {
+        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+        for i in 0..<dateArray.count-ricorsion {
             let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
             
-        dataEntries.append(dataEntry)
+            dataEntries.append(dataEntry)
         }
         grafico.rightAxis.enabled = false
         grafico.backgroundColor = UIColor.white
@@ -402,10 +463,10 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         CasiTotaliLineChartDataSet.mode = .cubicBezier
         
         /* nel caso volessimo l'area
-        CasiTotaliLineChartDataSet.fill = UIColor.white
-        CasiTotaliLineChartDataSet.fillAlpha = 0.8
-        CasiTotaliLineChartDataSet.drawFilledEnabled = true
-        */
+         CasiTotaliLineChartDataSet.fill = UIColor.white
+         CasiTotaliLineChartDataSet.fillAlpha = 0.8
+         CasiTotaliLineChartDataSet.drawFilledEnabled = true
+         */
         
         let dataGraph = LineChartData()
         dataGraph.addDataSet(CasiTotaliLineChartDataSet)
@@ -414,38 +475,38 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         
         
         /*
-        self.options = [.toggleValues,
-                        .toggleFilled,
-                        .toggleCircles,
-                        .toggleCubic,
-                        .toggleStepped,
-                        .toggleHighlight,
-                        .animateX,
-                        .animateY,
-                        .animateXY,
-                        .saveToGallery,
-                        .togglePinchZoom,
-                        .toggleAutoScaleMinMax,
-                        .toggleData]
-*/
+         self.options = [.toggleValues,
+         .toggleFilled,
+         .toggleCircles,
+         .toggleCubic,
+         .toggleStepped,
+         .toggleHighlight,
+         .animateX,
+         .animateY,
+         .animateXY,
+         .saveToGallery,
+         .togglePinchZoom,
+         .toggleAutoScaleMinMax,
+         .toggleData]
+         */
         
         
-/*
-        grafico.chartDescription?.enabled = false
-
-        grafico.leftAxis.enabled = false
-        grafico.rightAxis.drawAxisLineEnabled = false
-        grafico.xAxis.drawAxisLineEnabled = false
-        
-        grafico.drawBordersEnabled = false
-        grafico.setScaleEnabled(true)
-
-        let l = grafico.legend
-        l.horizontalAlignment = .right
-        l.verticalAlignment = .top
-        l.orientation = .vertical
-        l.drawInside = false
- */
+        /*
+         grafico.chartDescription?.enabled = false
+         
+         grafico.leftAxis.enabled = false
+         grafico.rightAxis.drawAxisLineEnabled = false
+         grafico.xAxis.drawAxisLineEnabled = false
+         
+         grafico.drawBordersEnabled = false
+         grafico.setScaleEnabled(true)
+         
+         let l = grafico.legend
+         l.horizontalAlignment = .right
+         l.verticalAlignment = .top
+         l.orientation = .vertical
+         l.drawInside = false
+         */
         
         
         
@@ -493,3 +554,17 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     }
 }
 
+
+
+extension Date {
+    
+    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
+        
+        let currentCalendar = Calendar.current
+        
+        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
+        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
+        
+        return end - start
+    }
+}

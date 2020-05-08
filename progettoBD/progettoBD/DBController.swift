@@ -17,11 +17,46 @@ class DBController: NSObject {
     private let null : NSNull = NSNull()
     
     //private let fileManager = FileManager.default
-    let path = Bundle.main.path(forResource: "data", ofType: "sqlite")!
+    var path = Bundle.main.path(forResource: "data", ofType: "sqlite")!
+    
+    func copyDatabaseIfNeeded() {
+           // Move database file from bundle to documents folder
+
+           let fileManager = FileManager.default
+
+           let documentsUrl = fileManager.urls(for: .documentDirectory,
+                                                       in: .userDomainMask)
+
+           guard documentsUrl.count != 0 else {
+               return // Could not find documents URL
+           }
+
+           let finalDatabaseURL = documentsUrl.first!.appendingPathComponent("data.sqlite")
+
+           if !( (try? finalDatabaseURL.checkResourceIsReachable()) ?? false) {
+               print("DB does not exist in documents folder")
+
+               let documentsURL = Bundle.main.resourceURL?.appendingPathComponent("data.sqlite")
+
+               do {
+                     try fileManager.copyItem(atPath: (documentsURL?.path)!, toPath: finalDatabaseURL.path)
+                     } catch let error as NSError {
+                       print("Couldn't copy file to final location! Error:\(error.description)")
+               }
+
+           } else {
+               print("Database file found at path: \(finalDatabaseURL.path)")
+           }
+
+        path = finalDatabaseURL.absoluteString
+       }
+
     
     override init() {
         super.init()
-        //print("DBController init")
+        if path == Bundle.main.path(forResource: "data", ofType: "sqlite")! {
+            copyDatabaseIfNeeded()
+        }
     }
     
     public func getRegioni() -> [Regioni] {
@@ -88,10 +123,11 @@ class DBController: NSObject {
             let stmt = try db.prepare("SELECT * FROM CONTAGIO C ORDER BY C.DATA ASC")
             
             return stmt.map{ row in
-                //return (row[0] as! Int64, Flavor(id: row[1] as! Int64, name: row[2] as! String))
-                //return Flavor(id: row[1] as! Int64, name: (row[2] as! String).capitalized)
                 
-                let dateObj = (row[0] as! String).toDate()
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
                 let provincia = row[1] as! String
                 let numeroCasi = Int(row[2] as! String)
                 
@@ -112,7 +148,10 @@ class DBController: NSObject {
             
             return stmt.map{ row in
                 
-                let dateObj = (row[0] as! String).toDate()
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
                 
                 let regione = row[1] as! String
                 let contagi = Int(row[2] as! String)
@@ -142,7 +181,11 @@ class DBController: NSObject {
             
             return stmt.map{ row in
                 
-                let dateObj = (row[0] as! String).toDate()
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
+                
                 return dateObj
             }
             
@@ -156,13 +199,18 @@ class DBController: NSObject {
     
     
     // 5 regioni con più contagi **
-    public func getRegioniPiùColpite() -> [RegioniEAndamento] {
+    public func getRegioniPiùColpite(selectedDate: Date) -> [RegioniEAndamento] {
         do {
             let db = try Connection(path, readonly: true)
             
+            var dateString = "\(selectedDate)"
+            let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+            dateString.removeSubrange(range)
+            
             //TO DO:aggiustare query
-            let stmt = try db.prepare("SELECT A.REGIONE, A.CONTAGI FROM ANDAMENTO A WHERE A.DATAANDAMENTO = (SELECT MAX(D.DATA) FROM DATECAMPIONE D)")
+            let stmt = try db.prepare("SELECT A.REGIONE, A.CONTAGI FROM ANDAMENTO A WHERE A.DATAANDAMENTO = \(dateString)")
             //*********
+            
             return stmt.map{ row in
                 
                 let regione = row[0] as! String
@@ -186,7 +234,6 @@ class DBController: NSObject {
                //*********
             
             let result : Int = stmt.row[0]
-               print(result)
             return result
            } catch {
                print("Unexpected error: \(error)")
@@ -202,7 +249,10 @@ class DBController: NSObject {
             
             return stmt.map{ row in
                 
-                let dateObj = (row[0] as! String).toDate()
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
                 
                 let regione = row[1] as! String
                 let contagi = Int(row[2] as! String)
@@ -222,6 +272,115 @@ class DBController: NSObject {
         }
         return []
     }
+    
+    public func getArrayAndamentoPerGrafico() -> [(Date,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)]{
+        do {
+            let db = try Connection(path, readonly: true)
+            
+            let stmt = try db.prepare("SELECT a.dataAndamento, SUM(A.contagi), SUM(A.decessi), SUM(A.guariti), SUM(A.ricoverati), SUM(A.isolamentodomiciliare), SUM(A.terapiaintensiva), SUM(A.tamponieffettuati), SUM(A.totalePositivi) FROM andamento A GROUP BY a.dataandamento")
+            
+            return stmt.map{ row in
+                
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
+                
+                let contagi = row[1] as! Int64
+                let decessi = row[2] as! Int64
+                let guariti = (row[3] as! Int64)
+                let ricoverati = (row[4] as! Int64)
+                let isolamentoDomiciliare = (row[5] as! Int64)
+                let terapiaIntensiva = (row[6] as! Int64)
+                let tamponiEffettuati = (row[7] as! Int64)
+                let totalePositivi = (row[8] as! Int64)
+                
+                let result :(Date,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64) = (dateObj, contagi,decessi,guariti,ricoverati,isolamentoDomiciliare,terapiaIntensiva,tamponiEffettuati,totalePositivi)
+                
+                return result
+            }
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
+    }
+    
+    public func setAndamento(andamento: Andamento){
+        do {
+            let db = try Connection(path, readonly: false)
+            
+            var dateString = "\(andamento.data)"
+            let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+            dateString.removeSubrange(range)
+            let dateObj = dateString.toDate()
+            
+            let dateTable = Table("DATECAMPIONE")
+            var data = Expression<Date>("data")
+            
+            let insertData = dateTable.insert(data <- dateObj)
+            
+            let andamentoTable = Table("ANDAMENTO")
+            data = Expression<Date>("dataAndamento")
+            let regione = Expression<String>("regione")
+            let contagi = Expression<String>("contagi")
+            let decessi = Expression<String>("decessi")
+            let guariti = Expression<String>("guariti")
+            let ricoverati = Expression<String>("ricoverati")
+            let isolamentoDomiciliare = Expression<String>("isolamentoDomiciliare")
+            let terapiaIntensiva = Expression<String>("terapiaIntensiva")
+            let tamponiEffettuati = Expression<String>("tamponiEffettuati")
+            let totalePositivi = Expression<String>("totalePositivi")
+            
+            let insertAndamento = andamentoTable.insert(data <- dateObj, regione <- andamento.regione,contagi <- "\(andamento.contagi)", decessi <- "\(andamento.decessi)", guariti <- "\(andamento.guariti)", ricoverati <- "\(andamento.ricoverati)", isolamentoDomiciliare <- "\(andamento.isolamentoDomiciliare)", terapiaIntensiva <- "\(andamento.terapiaIntensiva)", tamponiEffettuati <- "\(andamento.tamponiEffettuati)", totalePositivi <- "\(andamento.totalePositivi)")
+            
+            
+            try db.run(insertData)
+            try db.run(insertAndamento)
+            
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+    }
+    
+    public func setContagio(contagio: Contagio) {
+        do {
+            let db = try Connection(path, readonly: false)
+            
+            var dateString = "\(contagio.data)"
+            let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+            dateString.removeSubrange(range)
+            let dateObj = dateString.toDate()
+            
+            var check = false
+            
+            for date in getDataArray() {
+                if date == contagio.data {
+                    check = true
+                    break
+                }
+            }
+            
+            if check == false {
+                let dateTable = Table("DATECAMPIONE")
+                let data = Expression<Date>("data")
+                let insertData = dateTable.insert(data <- dateObj)
+                try db.run(insertData)
+            }
+            
+            let contagioTable = Table("CONTAGIO")
+            let data = Expression<Date>("data")
+            let provincia = Expression<String>("provincia")
+            let casi = Expression<String>("casi")
+            
+            let newContagioData = contagioTable.insert(data <- dateObj, provincia <- contagio.provincia, casi <- "\(contagio.numeroCasi)" )
+            try db.run(newContagioData)
+        }  catch {
+            print("Unexpected error: \(error)")
+        }
+    }
+    
 }
 
 

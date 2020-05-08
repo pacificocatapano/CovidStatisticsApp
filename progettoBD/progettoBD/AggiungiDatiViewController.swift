@@ -9,7 +9,7 @@
 import UIKit
 
 
-class AggiungiDatiViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class AggiungiDatiViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIScrollViewDelegate {
 
     
 var ok = false
@@ -36,8 +36,16 @@ var ok = false
     @IBOutlet weak var terapiaIntensivaTextFiel: UITextField!
     @IBOutlet weak var isolamentoDomiciliareTextField: UITextField!
     @IBOutlet weak var tamponiEffettuati: UITextField!
-    
 //****END TEXT FIELDS ****
+    //MARK: -Label
+    @IBOutlet weak var positiviLabel: UILabel!
+    @IBOutlet weak var guaritiLabel: UILabel!
+    @IBOutlet weak var decessiLabel: UILabel!
+    @IBOutlet weak var ricoveratiLabel: UILabel!
+    @IBOutlet weak var terapiaIntensivaLabel: UILabel!
+    @IBOutlet weak var isolamentoDomiciliareLabel: UILabel!
+    @IBOutlet weak var tamponiEffettuatiLabel: UILabel!
+    
     @IBOutlet weak var stackView: UIStackView!
     
 
@@ -50,12 +58,19 @@ var ok = false
     var textFieldNumber : Int = 0
     let bar = UIToolbar()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         date.minimumDate = dateArray.last
         date.maximumDate = Date()
         dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
+        scrollView.delegate = self
         
         ConfirmButton.backgroundColor = ColorManager.mainRedColor
         ConfirmButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
@@ -73,7 +88,7 @@ var ok = false
         isolamentoDomiciliareTextField.keyboardType = .numberPad
         tamponiEffettuati.keyboardType = .numberPad
         
-        let next = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(doneTapped))
+        let next = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(doneTapped))
         bar.items = [next]
         bar.sizeToFit()
         decessiTextField.inputAccessoryView = bar
@@ -90,8 +105,17 @@ var ok = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        if ok == true {
+            self.dismiss(animated: false, completion: nil)
+        }
     }
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+       if scrollView.contentOffset.x > 0 || scrollView.contentOffset.x < 0 {
+          scrollView.contentOffset.x = 0
+       }
+    }
+    
     @IBAction func segmentedAction(_ sender: Any) {
         let getIndex = segmentedControl.selectedSegmentIndex
         switch getIndex {
@@ -99,10 +123,36 @@ var ok = false
             selectRegionProvince.text = "Seleziona regioni"
             dataPickerView.reloadAllComponents()
             dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
+            decessiTextField.isHidden = false
+            guaritiTextField.isHidden = false
+            tamponiEffettuati.isHidden = false
+            terapiaIntensivaTextFiel.isHidden = false
+            ricoveratiTextFiel.isHidden = false
+            isolamentoDomiciliareTextField.isHidden = false
+            decessiLabel.isHidden = false
+            guaritiLabel.isHidden = false
+            positiviLabel.text = "Nuovi Positivi"
+            ricoveratiLabel.isHidden = false
+            terapiaIntensivaLabel.isHidden = false
+            tamponiEffettuatiLabel.isHidden = false
+            isolamentoDomiciliareLabel.isHidden = false
         case 1:
             selectRegionProvince.text = "Seleziona province"
             dataPickerView.reloadAllComponents()
             dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
+            decessiTextField.isHidden = true
+            guaritiTextField.isHidden = true
+            tamponiEffettuati.isHidden = true
+            terapiaIntensivaTextFiel.isHidden = true
+            ricoveratiTextFiel.isHidden = true
+            isolamentoDomiciliareTextField.isHidden = true
+            decessiLabel.isHidden = true
+            guaritiLabel.isHidden = true
+            positiviLabel.text = "Casi Totali"
+            ricoveratiLabel.isHidden = true
+            terapiaIntensivaLabel.isHidden = true
+            tamponiEffettuatiLabel.isHidden = true
+            isolamentoDomiciliareLabel.isHidden = true
         default:
             print("Error segmented control")
         }
@@ -154,7 +204,12 @@ var ok = false
     
     @objc func doneTapped() {
         if textFieldNumber == 0 {
-            guaritiTextField.becomeFirstResponder()
+            if segmentedControl.selectedSegmentIndex == 0 {
+                guaritiTextField.becomeFirstResponder()
+            } else {
+                let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(goToResultPage))
+                bar.items = [done]
+            }
         } else if textFieldNumber == 1 {
             decessiTextField.becomeFirstResponder()
         } else if textFieldNumber == 2 {
@@ -171,65 +226,80 @@ var ok = false
     }
     
     @objc func goToResultPage(){
+        
+        for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione && and.data == date.date {
+            let alertView = UIAlertController()
+            alertView.title = "Dati già presenti"
+            alertView.message = "I dati del giorno \(and.data) in \(and.regione) sono già presenti"
+            alertView.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        }
         if segmentedControl.selectedSegmentIndex == 0 {
         self.performSegue(withIdentifier: "ShowAddedResultRegione", sender: self)
         } else {
             
         }
     }
-   
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == attualmentePositiviTextField {
-            textFieldNumber = 0
-        } else if textField == guaritiTextField {
-            textFieldNumber = 1
-        }  else if textField == decessiTextField {
-            textFieldNumber = 2
-        } else if textField == ricoveratiTextFiel {
-            textFieldNumber = 3
-        } else if textField == terapiaIntensivaTextFiel {
-            textFieldNumber = 4
-        } else if textField == isolamentoDomiciliareTextField{
-            textFieldNumber = 5
-        } else if textField == tamponiEffettuati {
-            textFieldNumber = 6
-        }
+            if textField == attualmentePositiviTextField {
+                textFieldNumber = 0
+            } else if textField == guaritiTextField {
+                textFieldNumber = 1
+            }  else if textField == decessiTextField {
+                textFieldNumber = 2
+            } else if textField == ricoveratiTextFiel {
+                textFieldNumber = 3
+            } else if textField == terapiaIntensivaTextFiel {
+                textFieldNumber = 4
+            } else if textField == isolamentoDomiciliareTextField{
+                textFieldNumber = 5
+            } else if textField == tamponiEffettuati {
+                textFieldNumber = 6
+            }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowAddedResultRegione" {
             let controller = segue.destination as! DatiAppenaAggiuntiViewController
-            controller.regioneArray = regioniArray
             
-            andamentoArray = dbc.getAndamentoLastDate()
-            
-            
-            var decessi = Int(decessiTextField.text ?? "0")!
-            var positivi = Int(attualmentePositiviTextField.text ?? "0")!
-            var guariti = Int(guaritiTextField.text ?? "0")!
-            var ricoverati = Int(ricoveratiTextFiel.text ?? "0")!
-            var terapiaIntensiva = Int(terapiaIntensivaTextFiel.text ?? "0")!
-            var isolamento = Int(isolamentoDomiciliareTextField.text ?? "0")!
-            var tamponi = Int(tamponiEffettuati.text ?? "0")!
-            
-            for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione {
-                decessi += and.decessi
-                positivi += and.totalePositivi
-                guariti += and.guariti
-                ricoverati += and.ricoverati
-                terapiaIntensiva += and.terapiaIntensiva
-                isolamento += and.isolamentoDomiciliare
-                tamponi += and.tamponiEffettuati
+            if segmentedControl.selectedSegmentIndex == 0 {
+                controller.regioneArray = regioniArray
+                andamentoArray = dbc.getAndamentoLastDate()
+                
+                
+                var decessi = Int(decessiTextField.text ?? "0")!
+                var positivi = Int(attualmentePositiviTextField.text ?? "0")!
+                var guariti = Int(guaritiTextField.text ?? "0")!
+                var ricoverati = Int(ricoveratiTextFiel.text ?? "0")!
+                var terapiaIntensiva = Int(terapiaIntensivaTextFiel.text ?? "0")!
+                var isolamento = Int(isolamentoDomiciliareTextField.text ?? "0")!
+                var tamponi = Int(tamponiEffettuati.text ?? "0")!
+                
+                for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione {
+                    decessi += and.decessi
+                    positivi += and.totalePositivi
+                    guariti += and.guariti
+                    ricoverati += and.ricoverati
+                    terapiaIntensiva += and.terapiaIntensiva
+                    isolamento += and.isolamentoDomiciliare
+                    tamponi += and.tamponiEffettuati
+                }
+                
+                let newAndamentoData = Andamento(data: date.date, regione: regioniArray[pickerViewIndex].denominazioneRegione, contagi: decessi + positivi + guariti, decessi: decessi, guariti: guariti, ricoverati: ricoverati, isolamentoDomiciliare: isolamento, terapiaIntensiva: terapiaIntensiva, tamponiEffettuati: tamponi, totalePositivi: positivi)
+                
+                
+                controller.regioneAggiunta = newAndamentoData
+            } else {
+                controller.provinceArray = provinceArray
+                
+                let casi = Int(attualmentePositiviTextField.text ?? "0")
+                
+                controller.provinciaAggiunta = Contagio(data: date.date, provincia: provinceArray[pickerViewIndex].denominazioneProvincia, numeroCasi: casi!)
             }
-            
-            let newAndamentoData = Andamento(data: date.date, regione: regioniArray[pickerViewIndex].denominazioneRegione, contagi: decessi + positivi + guariti, decessi: decessi, guariti: guariti, ricoverati: ricoverati, isolamentoDomiciliare: isolamento, terapiaIntensiva: terapiaIntensiva, tamponiEffettuati: tamponi, totalePositivi: positivi)
-            
-            
-            controller.regioneAggiunta = newAndamentoData
         }
     }
     
-  
+    
 /*
     func dismissVc (){
         if ok == true {
