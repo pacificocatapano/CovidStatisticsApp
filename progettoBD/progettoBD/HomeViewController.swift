@@ -133,13 +133,13 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         dateArray = dbc.getDataArray()
         
         dateToShow = dateArray.last!
-        chekAllRegione(selectedDate: dateToShow)
-        
+        checkAllRegion(selectedDate: dateToShow)
+        /*
         createChart()
         grafico.pinchZoomEnabled = true
         grafico.doubleTapToZoomEnabled = true
         grafico.drawGridBackgroundEnabled = true
-        
+        */
         zoomOutButton.titleLabel?.text = "ZoomOut"
         zoomOutButton.backgroundColor = UIColor.white
         zoomOutButton.addTarget(self, action: #selector(zoomOutButtonAction), for: .touchUpInside)
@@ -153,9 +153,6 @@ class HomeViewController: UIViewController, ChartViewDelegate {
         labelCasiTotali(selectedDate: dateToShow)
         labelDecessi(selectedDate: dateToShow)
         labelGuariti(selectedDate: dateToShow)
-        /*
-         setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
-         updateSetData()*/
     }
     
     @objc func zoomOutButtonAction() {
@@ -166,8 +163,8 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     var ricorsion = 1
     
     
-    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
-    func chekAllRegione(selectedDate : Date) {
+    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno fin quando non trova quello con tutti i dati
+    func checkAllRegion(selectedDate : Date) {
         if exit == true {
             return
         } else {
@@ -177,7 +174,7 @@ class HomeViewController: UIViewController, ChartViewDelegate {
             }
             if result != 21 {
                 ricorsion += 1
-                chekAllRegione(selectedDate: dateArray[dateArray.count - ricorsion])
+                checkAllRegion(selectedDate: dateArray[dateArray.count - ricorsion])
             } else {
                 exit = true
                 dateToShow = selectedDate
@@ -433,126 +430,115 @@ class HomeViewController: UIViewController, ChartViewDelegate {
     
     //MARK: -Grafico
     func createChart() {
+        //impostazioni grafico
         grafico.noDataText = "No data available"
-        var dataEntries: [ChartDataEntry] = []
-        var valuesY : [Int] = []
-        
-        
-        for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
-            valuesY.append(Int(and.1))
-        }
-        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
-        for i in 0..<dateArray.count-ricorsion {
-            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
-            
-            dataEntries.append(dataEntry)
-        }
         grafico.rightAxis.enabled = false
         grafico.backgroundColor = UIColor.white
         grafico.gridBackgroundColor = UIColor.white
         grafico.xAxis.labelPosition = .bottom
         grafico.xAxis.setLabelCount(5, force: false)
-        //grafico.animate(xAxisDuration: 2.5)
         
-        
-        //Line Casi Totali
-        let CasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Casi Totali")
-        CasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
-        CasiTotaliLineChartDataSet.lineWidth = 3
-        CasiTotaliLineChartDataSet.drawCirclesEnabled = false
-        CasiTotaliLineChartDataSet.mode = .cubicBezier
-        
-        /* nel caso volessimo l'area
-         CasiTotaliLineChartDataSet.fill = UIColor.white
-         CasiTotaliLineChartDataSet.fillAlpha = 0.8
-         CasiTotaliLineChartDataSet.drawFilledEnabled = true
-         */
-        
+        //aggiungere dati al grafico
         let dataGraph = LineChartData()
-        dataGraph.addDataSet(CasiTotaliLineChartDataSet)
+        
+        dataGraph.addDataSet(lineCasiTotali())
+        dataGraph.addDataSet(lineAttualmentePositivi())
+        dataGraph.addDataSet(lineGuariti())
+        dataGraph.addDataSet(lineDecessi())
+        
         dataGraph.setDrawValues(false)
         grafico.data = dataGraph
         
-        
-        /*
-         self.options = [.toggleValues,
-         .toggleFilled,
-         .toggleCircles,
-         .toggleCubic,
-         .toggleStepped,
-         .toggleHighlight,
-         .animateX,
-         .animateY,
-         .animateXY,
-         .saveToGallery,
-         .togglePinchZoom,
-         .toggleAutoScaleMinMax,
-         .toggleData]
-         */
-        
-        
-        /*
-         grafico.chartDescription?.enabled = false
-         
-         grafico.leftAxis.enabled = false
-         grafico.rightAxis.drawAxisLineEnabled = false
-         grafico.xAxis.drawAxisLineEnabled = false
-         
-         grafico.drawBordersEnabled = false
-         grafico.setScaleEnabled(true)
-         
-         let l = grafico.legend
-         l.horizontalAlignment = .right
-         l.verticalAlignment = .top
-         l.orientation = .vertical
-         l.drawInside = false
-         */
-        
-        
-        
-        
     }
     
-    func setDataCount(_ count: Int, range: UInt32) {
-        let colors = ColorManager.allColors
-        
-        let block: (Int) -> ChartDataEntry = { (i) -> ChartDataEntry in
-            let val = Double(arc4random_uniform(range) + 3)
-            return ChartDataEntry(x: Double(i), y: val)
-        }
-        let dataSets = (0..<3).map { i -> LineChartDataSet in
-            let yVals = (0..<count).map(block)
-            let set = LineChartDataSet(entries: yVals, label: "DataSet \(i)")
-            set.lineWidth = 2.5
-            set.circleRadius = 4
-            set.circleHoleRadius = 2
-            let color = colors[i % colors.count]
-            set.setColor(color)
-            set.setCircleColor(color)
-            
-            return set
-        }
-        
-        dataSets[0].lineDashLengths = [5, 5]
-        dataSets[0].colors = ChartColorTemplates.vordiplom()
-        dataSets[0].circleColors = ChartColorTemplates.vordiplom()
-        
-        let data = LineChartData(dataSets: dataSets)
-        data.setValueFont(.systemFont(ofSize: 7, weight: .light))
-        grafico.data = data
-    }
     
-    var shouldHideData: Bool = false
+        func lineCasiTotali() -> LineChartDataSet{
+           var dataEntries: [ChartDataEntry] = []
+           var valuesY : [Int] = []
+           for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+               valuesY.append(Int(and.1))
+           }
+           let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+           for i in 0..<dateArray.count-ricorsion {
+               let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+               dataEntries.append(dataEntry)
+           }
+           
+           let CasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Casi Totali")
+          CasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+          CasiTotaliLineChartDataSet.lineWidth = 3
+          CasiTotaliLineChartDataSet.drawCirclesEnabled = false
+          CasiTotaliLineChartDataSet.mode = .cubicBezier
+           
+           return CasiTotaliLineChartDataSet
+       }
+       
+       func lineAttualmentePositivi() -> LineChartDataSet{
+           var dataEntries: [ChartDataEntry] = []
+           var valuesY : [Int] = []
+           for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+               valuesY.append(Int(and.8))
+           }
+           let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+            for i in 0..<dateArray.count-ricorsion {
+                 let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+                 dataEntries.append(dataEntry)
+             }
+           
+           let attualmentePositiviLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Attualmente Positivi")
+          attualmentePositiviLineChartDataSet.colors = [ColorManager.lighterRed]
+          attualmentePositiviLineChartDataSet.lineWidth = 3
+          attualmentePositiviLineChartDataSet.drawCirclesEnabled = false
+          attualmentePositiviLineChartDataSet.mode = .cubicBezier
+           
+           return attualmentePositiviLineChartDataSet
+       }
+       
+       func lineGuariti() -> LineChartDataSet{
+              var dataEntries: [ChartDataEntry] = []
+              var valuesY : [Int] = []
+              for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+                  valuesY.append(Int(and.3))
+              }
+              let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+               for i in 0..<dateArray.count-ricorsion {
+                    let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+                    dataEntries.append(dataEntry)
+                }
+              
+              let guaritiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Guariti")
+             guaritiLineChartDataSet.colors = [ColorManager.green]
+             guaritiLineChartDataSet.lineWidth = 3
+             guaritiLineChartDataSet.drawCirclesEnabled = false
+             guaritiLineChartDataSet.mode = .cubicBezier
+           
+              return guaritiLineChartDataSet
+          }
+       
+       func lineDecessi() -> LineChartDataSet{
+           var dataEntries: [ChartDataEntry] = []
+           var valuesY : [Int] = []
+         for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+               valuesY.append(Int(and.2))
+           }
+           let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+            for i in 0..<dateArray.count-ricorsion {
+                 let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+                 dataEntries.append(dataEntry)
+             }
+           
+           let decessiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Decessi")
+          decessiLineChartDataSet.colors = [ColorManager.black]
+          decessiLineChartDataSet.lineWidth = 3
+          decessiLineChartDataSet.drawCirclesEnabled = false
+          decessiLineChartDataSet.mode = .cubicBezier
+        
+           return decessiLineChartDataSet
+       }
     
-    func updateSetData (){
-        if self.shouldHideData == true {
-            grafico.data = nil
-            return
-        }else{
-            setDataCount(dateArray.count, range: UInt32(dbc.getMaxContagio() + 100))
-        }
-    }
 }
+
+
 
 
 
