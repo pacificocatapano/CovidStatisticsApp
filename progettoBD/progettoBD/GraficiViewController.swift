@@ -112,6 +112,8 @@ class GraficiViewController: UIViewController {
         grafico1View.gridBackgroundColor = UIColor.white
         grafico1View.xAxis.labelPosition = .bottom
         grafico1View.xAxis.setLabelCount(5, force: false)
+        grafico1View.animate(xAxisDuration: 3.0, easingOption: .linear)
+
         
         //aggiungere dati al grafico
         let dataGraph = LineChartData()
@@ -134,6 +136,7 @@ class GraficiViewController: UIViewController {
         grafico2View.gridBackgroundColor = UIColor.white
         grafico2View.xAxis.labelPosition = .bottom
         grafico2View.xAxis.setLabelCount(5, force: false)
+        grafico2View.animate(xAxisDuration: 3.0, easingOption: .linear)
         
         //aggiungere dati al grafico
         let dataGraph = LineChartData()

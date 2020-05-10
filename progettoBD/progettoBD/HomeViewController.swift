@@ -93,7 +93,6 @@ enum Option {
 
 class HomeViewController: UIViewController, ChartViewDelegate {
     
-    
     @IBOutlet weak var navBar: UINavigationItem!
     
     @IBOutlet weak var numeroPositivi: UILabel!
