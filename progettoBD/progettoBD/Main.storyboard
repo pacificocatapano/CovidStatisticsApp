@@ -1009,7 +1009,7 @@
             </objects>
             <point key="canvasLocation" x="1048" y="788"/>
         </scene>
-        <!--Title-->
+        <!--Grafici-->
         <scene sceneID="CCB-IX-tgp">
             <objects>
                 <viewController id="vKM-Ow-vWc" customClass="GraficiViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
@@ -1130,7 +1130,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="K71-bH-Kwz"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="vQE-1K-x18"/>
+                    <navigationItem key="navigationItem" title="Grafici" id="vQE-1K-x18"/>
                     <connections>
                         <outlet property="grafico1Button" destination="0LZ-0h-pXy" id="92X-p4-rMl"/>
                         <outlet property="grafico1Label" destination="6AG-hf-Q2A" id="6Pw-uY-9wX"/>
@@ -1277,7 +1277,7 @@
     <resources>
         <image name="Calendar" width="32" height="30"/>
         <image name="arrow.up.left.and.arrow.down.right" catalog="system" width="64" height="56"/>
-        <image name="bars-chart" width="32" height="32"/>
+        <image name="bars-chart" width="16" height="16"/>
         <image name="house" catalog="system" width="64" height="54"/>
         <image name="italy-map" width="15" height="17.5"/>
     </resources>
