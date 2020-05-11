@@ -70,12 +70,13 @@ class DBController: NSObject {
                 let denominazioneRegione = row[1] as! String
                 let abitanti = Int(row[2] as! String)
                 let densitàAbitanti = Float(row[3] as! String)
-                let numeroDiAutostrade = Int(row[4] as! String)
-                let numeroDiSuperStrade = Int(row[5] as! String)
-                let numeroDiAereoporti = Int(row[6] as! String)
-                let numeroDiStazioni = Int(row[7] as! String)
+                let estensione = Float(row[4] as! String)
+                let numeroDiAutostrade = Int(row[5] as! String)
+                let numeroDiSuperStrade = Int(row[6] as! String)
+                let numeroDiAereoporti = Int(row[7] as! String)
+                let numeroDiStazioni = Int(row[8] as! String)
                 
-                return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
+                return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, estensione: estensione ?? -1, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
             }
             
         } catch {
@@ -100,14 +101,15 @@ class DBController: NSObject {
                 let longitudine = Float(row[5] as! String)
                 let abitanti = Int(row[6] as! String)
                 let densitàAbitanti = Float(row[7] as! String)
-                let estensione = Float(row[8] as! String)
-                let numeroDiScuole = Int(row[9] as! String)
-                let numeroDiAlberghi = Int(row[10] as! String)
-                let numeroDiOspedali = Int(row[11] as! String)
-                let numeroSpostamentiInterni = Int(row[12] as! String)
+                let numeroDiScuole = Int(row[8] as! String)
+                let numeroDiAlberghi = Int(row[9] as! String)
+                let numeroDiOspedali = Int(row[10] as! String)
+                let numeroSpostamentiInterni = Int(row[11] as! String)
                 let numeroSpostamnetiEsterni = Int(row[12] as! String)
                 
-                return Province(codiceProvincia: codiceProvincia, denominazioneProvincia: denominazioneProvincia, siglaProvincia: siglaProvincia, regioneAppartenenza: regioneAppartenenza, latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti ?? -1, densitàAbitanti: densitàAbitanti ?? -1, estensione: estensione ?? -1, numeroDiScuole: numeroDiScuole ?? -1, numeroDiAlberghi: numeroDiAlberghi ?? -1, numeroDiOspedali: numeroDiOspedali ?? -1 , numeroSpostamentiInterni: numeroSpostamentiInterni ?? -1, numeroSpostamnetiEsterni: numeroSpostamnetiEsterni ?? -1)
+                let estensione = Float(abitanti ?? 0)/(densitàAbitanti ?? 1)
+                
+                return Province(codiceProvincia: codiceProvincia, denominazioneProvincia: denominazioneProvincia, siglaProvincia: siglaProvincia, regioneAppartenenza: regioneAppartenenza, latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti ?? -1, densitàAbitanti: densitàAbitanti ?? -1,estensione: estensione, numeroDiScuole: numeroDiScuole ?? -1, numeroDiAlberghi: numeroDiAlberghi ?? -1, numeroDiOspedali: numeroDiOspedali ?? -1 , numeroSpostamentiInterni: numeroSpostamentiInterni ?? -1, numeroSpostamnetiEsterni: numeroSpostamnetiEsterni ?? -1)
             }
             
         } catch {

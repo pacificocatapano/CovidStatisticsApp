@@ -16,6 +16,26 @@
 		3E7C51252453773F00DEB311 /* progettoBDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C51242453773F00DEB311 /* progettoBDTests.swift */; };
 		3E7C51302453773F00DEB311 /* progettoBDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */; };
 		CF40AC5B245B10EF0073A158 /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF40AC5A245B10EF0073A158 /* DBController.swift */; };
+		CF4378D52469ADD80075E9DB /* GoogleMapsBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378D42469ADD80075E9DB /* GoogleMapsBase.framework */; };
+		CF4378D82469ADE50075E9DB /* GoogleMapsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378D62469ADE40075E9DB /* GoogleMapsCore.framework */; };
+		CF4378D92469ADE50075E9DB /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378D72469ADE50075E9DB /* GoogleMaps.framework */; };
+		CF4378DB2469ADFF0075E9DB /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF4378DA2469ADFE0075E9DB /* GoogleMaps.bundle */; };
+		CF4378DD2469AE120075E9DB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378DC2469AE120075E9DB /* Accelerate.framework */; };
+		CF4378DF2469AE1D0075E9DB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378DE2469AE1D0075E9DB /* CoreData.framework */; };
+		CF4378E12469AE220075E9DB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378E02469AE220075E9DB /* CoreGraphics.framework */; };
+		CF4378E32469AE2C0075E9DB /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378E22469AE2C0075E9DB /* CoreImage.framework */; };
+		CF4378E52469AE310075E9DB /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378E42469AE310075E9DB /* CoreLocation.framework */; };
+		CF4378E72469AE3B0075E9DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378E62469AE3B0075E9DB /* CoreTelephony.framework */; };
+		CF4378E92469AE410075E9DB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378E82469AE400075E9DB /* CoreText.framework */; };
+		CF4378EB2469AE4A0075E9DB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378EA2469AE4A0075E9DB /* GLKit.framework */; };
+		CF4378ED2469AE530075E9DB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378EC2469AE530075E9DB /* ImageIO.framework */; };
+		CF4378EF2469AE690075E9DB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378EE2469AE690075E9DB /* libc++.tbd */; };
+		CF4378F12469AE760075E9DB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F02469AE760075E9DB /* libz.tbd */; };
+		CF4378F32469AE800075E9DB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F22469AE800075E9DB /* OpenGLES.framework */; };
+		CF4378F52469AE8B0075E9DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F42469AE8B0075E9DB /* QuartzCore.framework */; };
+		CF4378F72469AE940075E9DB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F62469AE940075E9DB /* SystemConfiguration.framework */; };
+		CF4378F92469AE9A0075E9DB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F82469AE990075E9DB /* UIKit.framework */; };
+		CF4378FB2469BF910075E9DB /* progettoBD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4378FA2469BF910075E9DB /* progettoBD.swift */; };
 		CF96C2CC24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CA24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift */; };
 		CF96C2CD24616B05004491C0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2C924616B05004491C0 /* HomeViewController.swift */; };
 		CF96C2CE24616B05004491C0 /* InfoRegioniProvinceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */; };
@@ -141,6 +161,26 @@
 		3E7C512F2453773F00DEB311 /* progettoBDUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progettoBDUITests.swift; sourceTree = "<group>"; };
 		3E7C51312453773F00DEB311 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF40AC5A245B10EF0073A158 /* DBController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
+		CF4378D42469ADD80075E9DB /* GoogleMapsBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsBase.framework; sourceTree = "<group>"; };
+		CF4378D62469ADE40075E9DB /* GoogleMapsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsCore.framework; sourceTree = "<group>"; };
+		CF4378D72469ADE50075E9DB /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		CF4378DA2469ADFE0075E9DB /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		CF4378DC2469AE120075E9DB /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CF4378DE2469AE1D0075E9DB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CF4378E02469AE220075E9DB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CF4378E22469AE2C0075E9DB /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		CF4378E42469AE310075E9DB /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CF4378E62469AE3B0075E9DB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		CF4378E82469AE400075E9DB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		CF4378EA2469AE4A0075E9DB /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		CF4378EC2469AE530075E9DB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		CF4378EE2469AE690075E9DB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		CF4378F02469AE760075E9DB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		CF4378F22469AE800075E9DB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		CF4378F42469AE8B0075E9DB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CF4378F62469AE940075E9DB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CF4378F82469AE990075E9DB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CF4378FA2469BF910075E9DB /* progettoBD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progettoBD.swift; sourceTree = "<group>"; };
 		CF96C2C4246169C5004491C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CF96C2C824616B04004491C0 /* AggiungiDatiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggiungiDatiViewController.swift; sourceTree = "<group>"; };
 		CF96C2C924616B05004491C0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -162,8 +202,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF4378F92469AE9A0075E9DB /* UIKit.framework in Frameworks */,
+				CF4378F72469AE940075E9DB /* SystemConfiguration.framework in Frameworks */,
+				CF4378F52469AE8B0075E9DB /* QuartzCore.framework in Frameworks */,
+				CF4378F32469AE800075E9DB /* OpenGLES.framework in Frameworks */,
+				CF4378F12469AE760075E9DB /* libz.tbd in Frameworks */,
+				CF4378EF2469AE690075E9DB /* libc++.tbd in Frameworks */,
+				CF4378ED2469AE530075E9DB /* ImageIO.framework in Frameworks */,
+				CF4378EB2469AE4A0075E9DB /* GLKit.framework in Frameworks */,
+				CF4378E92469AE410075E9DB /* CoreText.framework in Frameworks */,
+				CF4378E72469AE3B0075E9DB /* CoreTelephony.framework in Frameworks */,
+				CF4378E52469AE310075E9DB /* CoreLocation.framework in Frameworks */,
+				CF4378E32469AE2C0075E9DB /* CoreImage.framework in Frameworks */,
+				CF4378E12469AE220075E9DB /* CoreGraphics.framework in Frameworks */,
+				CF4378DF2469AE1D0075E9DB /* CoreData.framework in Frameworks */,
+				CF4378DD2469AE120075E9DB /* Accelerate.framework in Frameworks */,
+				CF4378D52469ADD80075E9DB /* GoogleMapsBase.framework in Frameworks */,
 				CFDF7F1D245EB0C300E34546 /* SQLite.framework in Frameworks */,
 				3E375EC5246442C200C65C51 /* Charts.framework in Frameworks */,
+				CF4378D92469ADE50075E9DB /* GoogleMaps.framework in Frameworks */,
+				CF4378D82469ADE50075E9DB /* GoogleMapsCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +255,10 @@
 			isa = PBXGroup;
 			children = (
 				CFC4D96E246428B20067494A /* Charts.xcodeproj */,
+				CF4378D42469ADD80075E9DB /* GoogleMapsBase.framework */,
+				CF4378D72469ADE50075E9DB /* GoogleMaps.framework */,
+				CF4378D62469ADE40075E9DB /* GoogleMapsCore.framework */,
+				CF4378DA2469ADFE0075E9DB /* GoogleMaps.bundle */,
 				CFDF7F05245EB0B500E34546 /* SQLite.xcodeproj */,
 				3E7C51092453773B00DEB311 /* progettoBD */,
 				3E7C51232453773F00DEB311 /* progettoBDTests */,
@@ -223,6 +285,7 @@
 				3E7C510C2453773B00DEB311 /* SceneDelegate.swift */,
 				CFDF7F21245EB7F900E34546 /* ColorID.swift */,
 				CFDF7F2D245EB8BA00E34546 /* StructAndExtension.swift */,
+				CF4378FA2469BF910075E9DB /* progettoBD.swift */,
 				CF96C2C4246169C5004491C0 /* Main.storyboard */,
 				CFBFADB6246588680020526F /* GraficiViewController.swift */,
 				CF96C2C924616B05004491C0 /* HomeViewController.swift */,
@@ -262,6 +325,21 @@
 		CF40ACEF245B11D70073A158 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF4378F82469AE990075E9DB /* UIKit.framework */,
+				CF4378F62469AE940075E9DB /* SystemConfiguration.framework */,
+				CF4378F42469AE8B0075E9DB /* QuartzCore.framework */,
+				CF4378F22469AE800075E9DB /* OpenGLES.framework */,
+				CF4378F02469AE760075E9DB /* libz.tbd */,
+				CF4378EE2469AE690075E9DB /* libc++.tbd */,
+				CF4378EC2469AE530075E9DB /* ImageIO.framework */,
+				CF4378EA2469AE4A0075E9DB /* GLKit.framework */,
+				CF4378E82469AE400075E9DB /* CoreText.framework */,
+				CF4378E62469AE3B0075E9DB /* CoreTelephony.framework */,
+				CF4378E42469AE310075E9DB /* CoreLocation.framework */,
+				CF4378E22469AE2C0075E9DB /* CoreImage.framework */,
+				CF4378E02469AE220075E9DB /* CoreGraphics.framework */,
+				CF4378DE2469AE1D0075E9DB /* CoreData.framework */,
+				CF4378DC2469AE120075E9DB /* Accelerate.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -465,6 +543,7 @@
 				CFC4D94E2461ADDE0067494A /* data.sqlite in Resources */,
 				3E7C51172453773E00DEB311 /* Assets.xcassets in Resources */,
 				CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */,
+				CF4378DB2469ADFF0075E9DB /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +573,7 @@
 				CF96C2CE24616B05004491C0 /* InfoRegioniProvinceViewController.swift in Sources */,
 				CFBFADC22465AAAD0020526F /* ShowDatiProvinciaViewController.swift in Sources */,
 				CF96C2CF24616B05004491C0 /* AggiungiDatiViewController.swift in Sources */,
+				CF4378FB2469BF910075E9DB /* progettoBD.swift in Sources */,
 				3E7C510B2453773B00DEB311 /* AppDelegate.swift in Sources */,
 				CFBFADB7246588680020526F /* GraficiViewController.swift in Sources */,
 				CF96C2CD24616B05004491C0 /* HomeViewController.swift in Sources */,
@@ -668,6 +748,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PMV6XJ5354;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = progettoBD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -686,6 +770,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PMV6XJ5354;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = progettoBD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

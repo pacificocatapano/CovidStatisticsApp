@@ -8,8 +8,9 @@
 
 import UIKit
 import Charts
+import GoogleMaps
 
-class ShowDatiProvinciaViewController: UIViewController {
+class ShowDatiProvinciaViewController: UIViewController, GMSMapViewDelegate {
     
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var casiTotaliView: UILabel!
@@ -33,12 +34,57 @@ class ShowDatiProvinciaViewController: UIViewController {
     var datiVariazione:[(Date, Int64)] = []
     var arrayDataForGrafici : [(Date, Int64)] = []
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    var mapView1 = GMSMapView()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navBar.title = provinciaSelezionata.denominazioneProvincia
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.navigationBar.tintColor = ColorManager.mainRedColor
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        let originY = navigationController?.navigationBar.frame.maxY
+        
+        var camera = GMSCameraPosition.camera(withLatitude: 41.8928, longitude: 12.4837, zoom: 5.0)
+        
+        mapView1 = GMSMapView.map(withFrame: CGRect(x: view.frame.origin.x, y: originY!, width: view.frame.width, height: view.frame.height/4), camera: camera)
+        
+        self.view.addSubview(mapView1)
+        mapView1.mapType = .normal
+        
+        progettoBD.getLocation(fromAddress: provinciaSelezionata.denominazioneProvincia , completion: {(location) -> Void in
+            
+            if location != nil {
+                camera = GMSCameraPosition.camera(withLatitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude), zoom: self.provinciaSelezionata.estensione/150)
+                self.mapView1.animate(to: camera)
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
+                marker.title = self.provinciaSelezionata.denominazioneProvincia
+                marker.snippet = "Italia"
+                marker.map = self.mapView1
+                marker.appearAnimation = .pop
+                
+                var alberghi = ""
+                
+                if self.provinciaSelezionata.numeroDiAlberghi < 0 {
+                    alberghi = ": (Non disponibile)"
+                } else {
+                    alberghi = "\(self.provinciaSelezionata.numeroDiAlberghi)"
+                }
+                
+                marker.snippet = "Population : \(self.provinciaSelezionata.abitanti) \n Scuole: \(self.provinciaSelezionata.numeroDiScuole) \n Alberghi \(alberghi) \n Ospedali: \(self.provinciaSelezionata.numeroDiOspedali)"
+            }
+        })
+        
+        mapView1.settings.zoomGestures = true
         
         contagioArray = dbc.getContagio()
         dateArray = dbc.getDataArray()
@@ -60,6 +106,32 @@ class ShowDatiProvinciaViewController: UIViewController {
         grafico2Button.backgroundColor = UIColor.clear
         // Do any additional setup after loading the view.
     }
+    
+    //MARK: - MapView
+    
+    let geocoder = GMSGeocoder()
+    
+    
+    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
+        mapView.clear()
+    }
+    
+    func mapView(_ mapView: GMSMapView, idleAt cameraPosition: GMSCameraPosition) {
+        geocoder.reverseGeocodeCoordinate(cameraPosition.target) { (response, error) in
+            guard error == nil else {
+                return
+            }
+            
+            if let result = response?.firstResult() {
+                let marker = GMSMarker()
+                marker.position = cameraPosition.target
+                marker.title = result.lines?[0]
+                marker.snippet = result.lines?[1]
+                marker.map = mapView
+            }
+        }
+    }
+    
     
     var exit = false
     var ricorsion = 1

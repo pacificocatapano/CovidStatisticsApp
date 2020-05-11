@@ -8,8 +8,9 @@
 
 import UIKit
 import Charts
+import GoogleMaps
 
-class DettagliRegioneProviciaViewController: UIViewController {
+class DettagliRegioneProviciaViewController: UIViewController,UIScrollViewDelegate, GMSMapViewDelegate {
     
     var dataToSet : (Bool, Any) = (true, 0)
     var selectedRegione = Regioni()
@@ -22,6 +23,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
     
     @IBOutlet weak var navBar: UINavigationItem!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var numeroPositivi: UILabel!
     @IBOutlet weak var variazionePositivi: UILabel!
     @IBOutlet weak var numeroCasiTotali: UILabel!
@@ -38,15 +40,22 @@ class DettagliRegioneProviciaViewController: UIViewController {
     @IBOutlet weak var grafico2Label: UILabel!
     @IBOutlet weak var grafico2view: LineChartView!
     @IBOutlet weak var grafico2Button: UIButton!
+    @IBOutlet weak var mapView: GMSMapView!
     
     var dataPicker = UIDatePicker()
     var datiVariazione:[(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
     var arrayDataForGrafici : [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    var mapView1 = GMSMapView()
+    
+    var lon = Float()
+    var lat = Float()
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(false)
         navigationController?.navigationBar.tintColor = ColorManager.mainRedColor
-        
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func viewDidLoad() {
@@ -57,11 +66,37 @@ class DettagliRegioneProviciaViewController: UIViewController {
             selectedRegione = dataToSet.1 as! Regioni
         }
         
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        let originY = navigationController?.navigationBar.frame.maxY
+        
+        var camera = GMSCameraPosition.camera(withLatitude: 41.8928, longitude: 12.4837, zoom: 5.0)
+        
+        mapView1 = GMSMapView.map(withFrame: CGRect(x: view.frame.origin.x, y: originY!, width: view.frame.width, height: view.frame.height/4), camera: camera)
+        
+        self.view.addSubview(mapView1)
+        mapView1.mapType = .hybrid
+        
+        progettoBD.getLocation(fromAddress: selectedRegione.denominazioneRegione , completion: {(location) -> Void in
+            
+            if location != nil {
+                self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude)))
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
+                marker.title = self.selectedRegione.denominazioneRegione
+                marker.snippet = "Italia"
+                marker.map = self.mapView1
+                marker.appearAnimation = .pop
+                marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n Autostrade e SS \(self.selectedRegione.numeroDiAutostrade + self.selectedRegione.numeroDiSuperStrade)"
+            }
+        })
+        
+        mapView1.settings.zoomGestures = true
+        
         dateArray = dbc.getDataArray()
         dateToShow = dateArray.last!
         
         checkDati(selectedDate: dateToShow)
-        
         
         arrayDataForGrafici = dbc.getArrayAndamentoPerGraficoRegione(regione: selectedRegione.denominazioneRegione)
         datiVariazione = variazione()
@@ -82,11 +117,34 @@ class DettagliRegioneProviciaViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    //MARK: - MapView
+    
+    let geocoder = GMSGeocoder()
+    
+    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
+        mapView.clear()
+    }
+    
+    func mapView(_ mapView: GMSMapView, idleAt cameraPosition: GMSCameraPosition) {
+        geocoder.reverseGeocodeCoordinate(cameraPosition.target) { (response, error) in
+            guard error == nil else {
+                return
+            }
+            
+            if let result = response?.firstResult() {
+                let marker = GMSMarker()
+                marker.position = cameraPosition.target
+                marker.title = result.lines?[0]
+                marker.snippet = result.lines?[1]
+                marker.map = mapView
+            }
+        }
+    }
+    
+    //MARK: - Cambia il giorno da mostare
     var exit = false
     var ricorsion = 1
     
-    
-    //MARK: - Cambia il giorno da mostare
     func checkDati(selectedDate : Date) {
         for and in andamentoArray where and.data == selectedDate && and.regione == (dataToSet.1 as! Regioni).denominazioneRegione {
             dateToShow = and.data
@@ -619,14 +677,5 @@ class DettagliRegioneProviciaViewController: UIViewController {
         return result
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
+

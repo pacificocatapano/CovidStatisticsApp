@@ -31,8 +31,16 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     var dateToShow : Date = Date()
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         addDataButton.backgroundColor = ColorManager.mainRedColor
         
@@ -70,6 +78,11 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        navigationController?.navigationItem.title = ""
+    }
+    
     var exit = false
     var ricorsion = 1
     
@@ -100,11 +113,14 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     var searchActive : Bool {
       return searchController.isActive && !isSearchBarEmpty
     }
+    
     let searchController = UISearchController(searchResultsController: nil)
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.endEditing(true)
     }
+    
+    
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchController.isActive = false
@@ -216,6 +232,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             controller.dataToSet = dataToPass
             controller.regioniArray = regioniArray
             controller.andamentoArray = andamentoArray
+            controller.navBar.title = (dataToPass.1 as! Regioni).denominazioneRegione
         } else if segue.identifier == "AddData" {
             let controller = segue.destination as! AggiungiDatiViewController
             controller.regioniArray = regioniArray
@@ -223,7 +240,6 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         } else if segue.identifier == "ShowInfoProvincia" {
             let controller = segue.destination as! ShowDatiProvinciaViewController
             controller.provinciaSelezionata = dataToPass.1 as! Province
-            controller.navBar.title = (dataToPass.1 as! Province).denominazioneProvincia
         }
     }
     
