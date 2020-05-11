@@ -63,7 +63,6 @@ class DatiAppenaAggiuntiViewController: UIViewController {
     @IBAction func okButton(_ sender: Any) {
         let vc = storyboard?.instantiateViewController(identifier: "aggiungiDati") as! AggiungiDatiViewController
         self.dismiss(animated: true, completion: {
-            self.dbc.setAndamento(andamento: self.regioneAggiunta)
             vc.ok = true
             vc.viewDidLoad()
         })

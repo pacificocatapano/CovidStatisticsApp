@@ -706,9 +706,6 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="Ggw-tv-KAO" kind="show" identifier="ShowAddedResultRegione" id="U7u-0z-030"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -753,11 +750,12 @@
                         <outlet property="tamponiEffettuatiLabel" destination="ZEV-VH-EZN" id="Abj-rv-Tgd"/>
                         <outlet property="terapiaIntensivaLabel" destination="O9B-7q-skL" id="6gR-u1-rQM"/>
                         <outlet property="terapiaIntensivaTextFiel" destination="Dgk-NM-M4B" id="5HS-m4-fAi"/>
+                        <segue destination="Ggw-tv-KAO" kind="show" identifier="ShowAddedResultRegione" id="fbb-uX-yMk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZz-Sj-Bj4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1958" y="1815"/>
+            <point key="canvasLocation" x="1958" y="2269"/>
         </scene>
         <!--Dati appena aggiunti-->
         <scene sceneID="vJh-zA-oFv">
@@ -928,7 +926,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iLX-fl-3iT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3012" y="1815"/>
+            <point key="canvasLocation" x="3203" y="2269"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ExI-Dy-mCB">

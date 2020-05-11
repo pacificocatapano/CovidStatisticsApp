@@ -10,16 +10,16 @@ import UIKit
 
 
 class AggiungiDatiViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIScrollViewDelegate {
-
     
-var ok = false
-/*
-    @IBAction func confirmButton(_ sender: Any) {
-        performSegue(withIdentifier: "", sender: nil)
-    }
- */
     
-
+    var ok = false
+    /*
+     @IBAction func confirmButton(_ sender: Any) {
+     performSegue(withIdentifier: "", sender: nil)
+     }
+     */
+    
+    
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var dataPickerView: UIPickerView!
@@ -28,7 +28,7 @@ var ok = false
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var selectRegionProvince: UILabel!
     @IBOutlet weak var ConfirmButton: UIButton!
-//******START TEXT FIELDS ******
+    //******START TEXT FIELDS ******
     @IBOutlet weak var decessiTextField: UITextField!
     @IBOutlet weak var guaritiTextField: UITextField!
     @IBOutlet weak var attualmentePositiviTextField: UITextField!
@@ -36,7 +36,7 @@ var ok = false
     @IBOutlet weak var terapiaIntensivaTextFiel: UITextField!
     @IBOutlet weak var isolamentoDomiciliareTextField: UITextField!
     @IBOutlet weak var tamponiEffettuati: UITextField!
-//****END TEXT FIELDS ****
+    //****END TEXT FIELDS ****
     //MARK: -Label
     @IBOutlet weak var positiviLabel: UILabel!
     @IBOutlet weak var guaritiLabel: UILabel!
@@ -48,7 +48,7 @@ var ok = false
     
     @IBOutlet weak var stackView: UIStackView!
     
-
+    
     let dbc = DBController.shared
     var regioniArray : [Regioni] = []
     var provinceArray : [Province] = []
@@ -112,11 +112,11 @@ var ok = false
             self.dismiss(animated: false, completion: nil)
         }
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-       if scrollView.contentOffset.x > 0 || scrollView.contentOffset.x < 0 {
-          scrollView.contentOffset.x = 0
-       }
+        if scrollView.contentOffset.x > 0 || scrollView.contentOffset.x < 0 {
+            scrollView.contentOffset.x = 0
+        }
     }
     
     @IBAction func segmentedAction(_ sender: Any) {
@@ -174,7 +174,7 @@ var ok = false
         } else {
             return provinceArray.count
         }
-       }
+    }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if segmentedControl.selectedSegmentIndex == 0 {
@@ -186,23 +186,23 @@ var ok = false
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
-         pickerViewIndex = row
-     }
+        pickerViewIndex = row
+    }
     
     
     @objc func keyboardWillShow(notification:NSNotification){
-
+        
         let userInfo = notification.userInfo!
         var keyboardFrame:CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         keyboardFrame = self.view.convert(keyboardFrame, from: nil)
-
+        
         var contentInset:UIEdgeInsets = self.scrollView.contentInset
-            contentInset.bottom = keyboardFrame.size.height + 40
+        contentInset.bottom = keyboardFrame.size.height + 40
         scrollView.contentInset = contentInset
     }
-
+    
     @objc func keyboardWillHide(notification:NSNotification){
-
+        
         let contentInset:UIEdgeInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInset
     }
@@ -232,17 +232,24 @@ var ok = false
     
     @objc func goToResultPage(){
         
-        for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione && and.data == date.date {
-            let alertView = UIAlertController()
-            alertView.title = "Dati già presenti"
-            alertView.message = "I dati del giorno \(and.data) in \(and.regione) sono già presenti"
-            alertView.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        }
+        
         if segmentedControl.selectedSegmentIndex == 0 {
-        self.performSegue(withIdentifier: "ShowAddedResultRegione", sender: self)
+            for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione && and.data == date.date {
+                let alertView = UIAlertController()
+                alertView.title = "Dati già presenti"
+                alertView.message = "I dati del giorno \(and.data) in \(and.regione) sono già presenti"
+                alertView.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            }
+            
         } else {
-            self.performSegue(withIdentifier: "ShowInfoProvincia", sender: self)
+            for con in dbc.getContagio() where con.provincia == "\(provinceArray[pickerViewIndex].codiceProvincia)" && con.data == date.date{
+                let alertView = UIAlertController()
+                alertView.title = "Dati già presenti"
+                alertView.message = "I dati del giorno \(con.data) in \(provinceArray[pickerViewIndex].denominazioneProvincia) sono già presenti"
+                alertView.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            }
         }
+        self.performSegue(withIdentifier: "ShowAddedResultRegione", sender: self)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -304,25 +311,28 @@ var ok = false
                 
                 let newAndamentoData = Andamento(data: date.date, regione: regioniArray[pickerViewIndex].denominazioneRegione, contagi: decessi + positivi + guariti, decessi: decessi, guariti: guariti, ricoverati: ricoverati, isolamentoDomiciliare: isolamento, terapiaIntensiva: terapiaIntensiva, tamponiEffettuati: tamponi, totalePositivi: positivi)
                 
+                dbc.setAndamento(andamento: newAndamentoData)
                 
                 controller.regioneAggiunta = newAndamentoData
             } else {
                 controller.provinceArray = provinceArray
                 
-                let casi = Int(attualmentePositiviTextField.text ?? "0")
+                let casi = Int(attualmentePositiviTextField.text ?? "") ?? 0
                 
-                controller.provinciaAggiunta = Contagio(data: date.date, provincia: provinceArray[pickerViewIndex].denominazioneProvincia, numeroCasi: casi!)
+                dbc.setContagio(contagio:  Contagio(data: date.date, provincia: provinceArray[pickerViewIndex].denominazioneProvincia, numeroCasi: casi))
+                
+                controller.provinciaAggiunta = Contagio(data: date.date, provincia: provinceArray[pickerViewIndex].denominazioneProvincia, numeroCasi: casi)
             }
         }
     }
     
     
-/*
-    func dismissVc (){
-        if ok == true {
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
- */
+    /*
+     func dismissVc (){
+     if ok == true {
+     self.dismiss(animated: true, completion: nil)
+     }
+     }
+     */
     
 }
