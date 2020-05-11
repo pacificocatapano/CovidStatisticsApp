@@ -35,7 +35,9 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         
         andamentoArray = dbc.getAndamento()
         regioniArray = dbc.getRegioni()
-        provinceArray = dbc.getProvincie()
+        for prov in dbc.getProvincie() where prov.denominazioneProvincia != "In fase di definizione/aggiornamento" {
+            provinceArray.append(prov)
+        }
         dateArray = dbc.getDataArray()
         
          dateToShow = dateArray.last!

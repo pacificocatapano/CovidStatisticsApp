@@ -56,12 +56,18 @@ class GraficiViewController: UIViewController {
         
         arrayDataForGrafici = dbc.getArrayAndamentoPerGrafico()
         
+        
+        
         regioni = dbc.getRegioni()
            contagio = dbc.getContagio()
            andamento = dbc.getAndamento()
            province = dbc.getProvincie()
            dateArray = dbc.getDataArray()
          
+        dateToShow = dateArray.last!
+        
+        checkAllRegion(selectedDate: dateToShow)
+        
            createGrafico1()
            grafico1View.doubleTapToZoomEnabled = true
            grafico1View.drawGridBackgroundEnabled = true

@@ -120,6 +120,7 @@ var ok = false
         let getIndex = segmentedControl.selectedSegmentIndex
         switch getIndex {
         case 0:
+            attualmentePositiviTextField.endEditing(true)
             selectRegionProvince.text = "Seleziona regioni"
             dataPickerView.reloadAllComponents()
             dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
@@ -137,6 +138,7 @@ var ok = false
             tamponiEffettuatiLabel.isHidden = false
             isolamentoDomiciliareLabel.isHidden = false
         case 1:
+            attualmentePositiviTextField.endEditing(true)
             selectRegionProvince.text = "Seleziona province"
             dataPickerView.reloadAllComponents()
             dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
@@ -144,6 +146,7 @@ var ok = false
             guaritiTextField.isHidden = true
             tamponiEffettuati.isHidden = true
             terapiaIntensivaTextFiel.isHidden = true
+            attualmentePositiviTextField.text = ""
             ricoveratiTextFiel.isHidden = true
             isolamentoDomiciliareTextField.isHidden = true
             decessiLabel.isHidden = true
@@ -190,9 +193,7 @@ var ok = false
         keyboardFrame = self.view.convert(keyboardFrame, from: nil)
 
         var contentInset:UIEdgeInsets = self.scrollView.contentInset
-        if contentInset.bottom < keyboardFrame.size.height + 40{
             contentInset.bottom = keyboardFrame.size.height + 40
-        }
         scrollView.contentInset = contentInset
     }
 
@@ -241,7 +242,10 @@ var ok = false
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        if segmentedControl.selectedSegmentIndex == 0 {
             if textField == attualmentePositiviTextField {
+                let next = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(doneTapped))
+                bar.items = [next]
                 textFieldNumber = 0
             } else if textField == guaritiTextField {
                 textFieldNumber = 1
@@ -255,7 +259,16 @@ var ok = false
                 textFieldNumber = 5
             } else if textField == tamponiEffettuati {
                 textFieldNumber = 6
+                let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(goToResultPage))
+                bar.items = [done]
             }
+        } else {
+            if textField == attualmentePositiviTextField {
+                let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(goToResultPage))
+                bar.items = [done]
+                textFieldNumber = 6
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -267,13 +280,13 @@ var ok = false
                 andamentoArray = dbc.getAndamentoLastDate()
                 
                 
-                var decessi = Int(decessiTextField.text ?? "0")!
-                var positivi = Int(attualmentePositiviTextField.text ?? "0")!
-                var guariti = Int(guaritiTextField.text ?? "0")!
-                var ricoverati = Int(ricoveratiTextFiel.text ?? "0")!
-                var terapiaIntensiva = Int(terapiaIntensivaTextFiel.text ?? "0")!
-                var isolamento = Int(isolamentoDomiciliareTextField.text ?? "0")!
-                var tamponi = Int(tamponiEffettuati.text ?? "0")!
+                var decessi = Int(decessiTextField.text ?? "") ?? 0
+                var positivi = Int(attualmentePositiviTextField.text ?? "") ?? 0
+                var guariti = Int(guaritiTextField.text ?? "") ?? 0
+                var ricoverati = Int(ricoveratiTextFiel.text ?? "") ?? 0
+                var terapiaIntensiva = Int(terapiaIntensivaTextFiel.text ?? "") ?? 0
+                var isolamento = Int(isolamentoDomiciliareTextField.text ?? "") ?? 0
+                var tamponi = Int(tamponiEffettuati.text ?? "") ?? 0
                 
                 for and in andamentoArray where and.regione == regioniArray[pickerViewIndex].denominazioneRegione {
                     decessi += and.decessi
