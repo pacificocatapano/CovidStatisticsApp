@@ -45,7 +45,7 @@ class GraficiViewController: UIViewController {
     var options: [Option]!
     var dateArray : [Date] = []
     var dateToShow = Date()
-    
+    var datiVariazione:[(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,13 +65,13 @@ class GraficiViewController: UIViewController {
            dateArray = dbc.getDataArray()
          
         dateToShow = dateArray.last!
-        
         checkAllRegion(selectedDate: dateToShow)
-        
-           createGrafico1()
-           grafico1View.doubleTapToZoomEnabled = true
-           grafico1View.drawGridBackgroundEnabled = true
-           grafico1View.pinchZoomEnabled = true
+        datiVariazione = variazione()
+
+        createGrafico1()
+        grafico1View.doubleTapToZoomEnabled = true
+        grafico1View.drawGridBackgroundEnabled = true
+        grafico1View.pinchZoomEnabled = true
            
            createGrafico2()
            grafico2View.doubleTapToZoomEnabled = true
@@ -82,6 +82,8 @@ class GraficiViewController: UIViewController {
         grafico3View.doubleTapToZoomEnabled = true
         grafico3View.drawGridBackgroundEnabled = true
         grafico3View.pinchZoomEnabled = true
+        
+        
         
     }
     
@@ -146,7 +148,10 @@ class GraficiViewController: UIViewController {
         
         //aggiungere dati al grafico
         let dataGraph = LineChartData()
-        
+        dataGraph.addDataSet(lineDeltaAttPos())
+        dataGraph.addDataSet(lineDeltaCasiTotali())
+        dataGraph.addDataSet(lineDeltaGuariti())
+        dataGraph.addDataSet(lineDeltaDecessi())
         
         dataGraph.setDrawValues(false)
         grafico2View.data = dataGraph
@@ -260,9 +265,9 @@ class GraficiViewController: UIViewController {
     func lineDeltaAttPos() -> LineChartDataSet{
         var dataEntries: [ChartDataEntry] = []
         var valuesY : [Int] = []
-    //MANCANTE QUERY VARIAZIONE
-      for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
-            valuesY.append(Int(and.2))
+        
+      for and in datiVariazione where and.0 <= dateToShow {
+        valuesY.append(Int(and.8))
         }
         let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
          for i in 0..<dateArray.count-ricorsion {
@@ -270,14 +275,75 @@ class GraficiViewController: UIViewController {
               dataEntries.append(dataEntry)
           }
         
-        let DeltaAttPosLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Decessi")
-       DeltaAttPosLineChartDataSet.colors = [ColorManager.black]
+        let DeltaAttPosLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Attualmente positivi")
+       DeltaAttPosLineChartDataSet.colors = [ColorManager.lighterRed]
        DeltaAttPosLineChartDataSet.lineWidth = 3
        DeltaAttPosLineChartDataSet.drawCirclesEnabled = false
        DeltaAttPosLineChartDataSet.mode = .cubicBezier
      
         return DeltaAttPosLineChartDataSet
     }
+    
+    func lineDeltaCasiTotali() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+      for and in datiVariazione where and.0 <= dateToShow {
+        valuesY.append(Int(and.1))
+        }
+        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+         for i in 0..<dateArray.count-ricorsion {
+              let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+              dataEntries.append(dataEntry)
+          }
+        let DeltaCasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Casi totali")
+       DeltaCasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+       DeltaCasiTotaliLineChartDataSet.lineWidth = 3
+       DeltaCasiTotaliLineChartDataSet.drawCirclesEnabled = false
+       DeltaCasiTotaliLineChartDataSet.mode = .cubicBezier
+        return DeltaCasiTotaliLineChartDataSet
+    }
+    
+    func lineDeltaGuariti() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+      for and in datiVariazione where and.0 <= dateToShow {
+        valuesY.append(Int(and.2))
+        }
+        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+         for i in 0..<dateArray.count-ricorsion {
+              let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+              dataEntries.append(dataEntry)
+          }
+        let DeltaGuaritiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Guariti")
+       DeltaGuaritiLineChartDataSet.colors = [ColorManager.green]
+       DeltaGuaritiLineChartDataSet.lineWidth = 3
+       DeltaGuaritiLineChartDataSet.drawCirclesEnabled = false
+       DeltaGuaritiLineChartDataSet.mode = .cubicBezier
+        return DeltaGuaritiLineChartDataSet
+    }
+    
+    func lineDeltaDecessi() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+      for and in datiVariazione where and.0 <= dateToShow {
+        valuesY.append(Int(and.3))
+        }
+        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+         for i in 0..<dateArray.count-ricorsion {
+              let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+              dataEntries.append(dataEntry)
+          }
+        let DeltaDecessiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Decessi")
+       DeltaDecessiLineChartDataSet.colors = [ColorManager.black]
+       DeltaDecessiLineChartDataSet.lineWidth = 3
+       DeltaDecessiLineChartDataSet.drawCirclesEnabled = false
+       DeltaDecessiLineChartDataSet.mode = .cubicBezier
+        return DeltaDecessiLineChartDataSet
+    }
+    
     
     func barNuoviContagi() -> BarChartDataSet{
         var dataEntries: [BarChartDataEntry] = []
@@ -293,7 +359,6 @@ class GraficiViewController: UIViewController {
         let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Totale positivi")
         nuoviContagiBarChartDataSet.colors = [ColorManager.lighterRed]
         nuoviContagiBarChartDataSet.barBorderWidth = 0.5
-        print(valuesX)
         return nuoviContagiBarChartDataSet
     }
     
@@ -311,8 +376,30 @@ class GraficiViewController: UIViewController {
         let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Tamponi effettuati")
         nuoviContagiBarChartDataSet.colors = [ColorManager.grey]
         nuoviContagiBarChartDataSet.barBorderWidth = 0.5
-        print(valuesX)
         return nuoviContagiBarChartDataSet
+    }
+    
+    
+//MARK: -VARIAZIONI
+    func variazione() -> [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)]{
+        var result: [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
+        var previousIndex = -1
+        for and in arrayDataForGrafici {
+            if previousIndex == -1{
+                result.append(and)
+                previousIndex += 1
+            }else{
+                var toAppend: (Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64) = arrayDataForGrafici[previousIndex]
+                let dateDifference = and.0.interval(ofComponent: .day, fromDate: toAppend.0)
+                let newData = Calendar.current.date(byAdding: .day, value: dateDifference, to: toAppend.0)
+                toAppend = (newData, and.1 - toAppend.1, and.2 - toAppend.2,and.3-toAppend.3, and.4 - toAppend.4, and.5 - toAppend.5,and.6-toAppend.6, and.7 - toAppend.7, and.8 - toAppend.8) as! (Date, Int64, Int64, Int64, Int64, Int64, Int64, Int64, Int64)
+                
+                print(toAppend)
+                result.append(toAppend)
+                previousIndex += 1
+            }
+        }
+        return result
     }
     
 }
