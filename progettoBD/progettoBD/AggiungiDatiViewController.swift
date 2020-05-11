@@ -72,6 +72,9 @@ var ok = false
         dataPickerView.selectRow(pickerViewIndex, inComponent: 0, animated: true)
         scrollView.delegate = self
         
+        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 15)]
+        UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .selected)
+        
         ConfirmButton.backgroundColor = ColorManager.mainRedColor
         ConfirmButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         ConfirmButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
@@ -120,6 +123,7 @@ var ok = false
         let getIndex = segmentedControl.selectedSegmentIndex
         switch getIndex {
         case 0:
+            
             attualmentePositiviTextField.endEditing(true)
             selectRegionProvince.text = "Seleziona regioni"
             dataPickerView.reloadAllComponents()
@@ -237,7 +241,7 @@ var ok = false
         if segmentedControl.selectedSegmentIndex == 0 {
         self.performSegue(withIdentifier: "ShowAddedResultRegione", sender: self)
         } else {
-            
+            self.performSegue(withIdentifier: "ShowInfoProvincia", sender: self)
         }
     }
     

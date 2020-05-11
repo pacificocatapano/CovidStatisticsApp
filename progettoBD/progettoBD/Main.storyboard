@@ -11,15 +11,15 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="progettoBD" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Nf-RS-Qjt">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Nf-RS-Qjt">
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="T4A-yc-2Em" userLabel="Contiene tutto">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="930"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="636"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HeY-c3-fTE">
                                                 <rect key="frame" x="123" y="0.0" width="168.5" height="130.5"/>
@@ -113,22 +113,6 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JUM-fA-ewy" customClass="LineChartView" customModule="Charts">
-                                                <rect key="frame" x="5.5" y="674" width="403" height="256"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyB-u1-HdO">
-                                                        <rect key="frame" x="349" y="8" width="46" height="46"/>
-                                                        <state key="normal" title="Button"/>
-                                                    </button>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="uyB-u1-HdO" firstAttribute="top" secondItem="JUM-fA-ewy" secondAttribute="top" constant="8" id="1Aj-pq-DjU"/>
-                                                    <constraint firstAttribute="trailing" secondItem="uyB-u1-HdO" secondAttribute="trailing" constant="8" id="3mY-x6-KmO"/>
-                                                    <constraint firstAttribute="height" constant="256" id="HVE-Mn-XZS"/>
-                                                    <constraint firstItem="uyB-u1-HdO" firstAttribute="leading" secondItem="JUM-fA-ewy" secondAttribute="leading" constant="349" id="ees-Uk-jJf"/>
-                                                    <constraint firstAttribute="bottom" secondItem="uyB-u1-HdO" secondAttribute="bottom" constant="202" id="wz7-pW-wcU"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" id="v7A-Sx-Mao"/>
@@ -137,7 +121,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="T4A-yc-2Em" firstAttribute="top" secondItem="9Nf-RS-Qjt" secondAttribute="top" id="E9Z-hJ-45g"/>
-                                    <constraint firstItem="JUM-fA-ewy" firstAttribute="width" secondItem="9Nf-RS-Qjt" secondAttribute="height" multiplier="207:404" id="J9s-iy-rmA"/>
                                     <constraint firstAttribute="bottom" secondItem="T4A-yc-2Em" secondAttribute="bottom" constant="6" id="frl-86-OEj"/>
                                     <constraint firstAttribute="trailing" secondItem="T4A-yc-2Em" secondAttribute="trailing" id="jfX-r7-AYA"/>
                                     <constraint firstItem="T4A-yc-2Em" firstAttribute="leading" secondItem="9Nf-RS-Qjt" secondAttribute="leading" id="xHB-gh-yZr"/>
@@ -173,7 +156,6 @@
                     <connections>
                         <outlet property="HomeScrollView" destination="9Nf-RS-Qjt" id="dDa-FU-A1g"/>
                         <outlet property="calendarButton" destination="BYo-tl-ZrL" id="svX-rg-3ku"/>
-                        <outlet property="grafico" destination="JUM-fA-ewy" id="Wqm-Ha-ZrA"/>
                         <outlet property="navBar" destination="Ckg-vS-ArV" id="8F7-wH-xG9"/>
                         <outlet property="numeroCasiTotali" destination="HgV-D7-r2X" id="RfJ-zQ-NJV"/>
                         <outlet property="numeroDecessi" destination="Br9-HD-z7X" id="Aud-gg-9cw"/>
@@ -183,7 +165,6 @@
                         <outlet property="variazioneDecessi" destination="mSe-tQ-s8Z" id="dag-ii-iVJ"/>
                         <outlet property="variazioneGuariti" destination="j8Z-Qc-pot" id="JLK-nw-adn"/>
                         <outlet property="variazionePositivi" destination="ovg-1v-weM" id="mTc-ri-bBW"/>
-                        <outlet property="zoomOutButton" destination="uyB-u1-HdO" id="ayo-zW-Y0y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
