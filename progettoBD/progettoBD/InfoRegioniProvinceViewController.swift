@@ -21,6 +21,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     @IBOutlet weak var newData: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var addDataButton: UIButton!
     
     let searchResultTableView = UITableView()
     var tableViewWidth : CGFloat = 0
@@ -32,6 +33,8 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addDataButton.backgroundColor = ColorManager.mainRedColor
         
         andamentoArray = dbc.getAndamento()
         regioniArray = dbc.getRegioni()
@@ -117,11 +120,11 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         searchController.searchBar.delegate = self
         searchController.searchBar.returnKeyType = .done
         searchController.searchBar.keyboardAppearance = .light
+        searchController.searchBar.tintColor = ColorManager.mainRedColor
         self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.obscuresBackgroundDuringPresentation = false
         searchController.definesPresentationContext = true
-        //        searchBar.barTintColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = true
     }

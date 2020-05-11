@@ -15,12 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="© Catapano Pacifico, Giugliano Salvatore 2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2la-oH-aQr">
-                                <rect key="frame" x="20" y="788" width="374" height="32"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="TMQ-Of-RoC">
                                 <rect key="frame" x="57" y="303" width="300" height="300"/>
                                 <constraints>
@@ -33,8 +27,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Elaborato per il Professore Masciari Elio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgS-lV-xA2">
-                                <rect key="frame" x="46.5" y="828" width="321" height="32"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="© Catapano Pacifico, Giugliano Salvatore 2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2la-oH-aQr">
+                                <rect key="frame" x="20" y="772" width="374" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Elaborato per il Professore Masciari Elio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GgS-lV-xA2">
+                                <rect key="frame" x="46" y="812" width="321" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="GgS-lV-xA2" secondAttribute="height" multiplier="321:32" id="6Nf-tL-eIX"/>
                                 </constraints>
@@ -47,16 +47,20 @@
                         <constraints>
                             <constraint firstItem="2la-oH-aQr" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0357143" id="7ds-iu-7pD"/>
                             <constraint firstItem="2la-oH-aQr" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="AhD-cJ-3DP"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GgS-lV-xA2" secondAttribute="trailing" constant="46.5" id="FfR-0t-6e2"/>
                             <constraint firstItem="GgS-lV-xA2" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0357143" id="JPT-uz-zGl"/>
                             <constraint firstItem="GgS-lV-xA2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Mg4-7O-3pD"/>
                             <constraint firstItem="kc3-mc-MiY" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SSR-BR-BZy"/>
                             <constraint firstItem="TMQ-Of-RoC" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.334821" id="W7Y-A3-zDf"/>
+                            <constraint firstItem="2la-oH-aQr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="WYz-20-mRI"/>
                             <constraint firstItem="kc3-mc-MiY" firstAttribute="top" secondItem="TMQ-Of-RoC" secondAttribute="bottom" constant="8" id="b5A-Ug-pAI"/>
                             <constraint firstItem="TMQ-Of-RoC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="cr7-uN-vZp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2la-oH-aQr" secondAttribute="trailing" constant="20" id="fNC-Tc-6Go"/>
                             <constraint firstItem="TMQ-Of-RoC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hcU-5N-0HA"/>
                             <constraint firstItem="GgS-lV-xA2" firstAttribute="top" secondItem="2la-oH-aQr" secondAttribute="bottom" constant="8" id="jAl-Dr-6bb"/>
                             <constraint firstItem="kc3-mc-MiY" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0379464" id="k82-Zx-0an"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GgS-lV-xA2" secondAttribute="bottom" constant="2" id="xNz-3f-ocl"/>
+                            <constraint firstItem="GgS-lV-xA2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="46.5" id="kFO-K4-b1c"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GgS-lV-xA2" secondAttribute="bottom" constant="18" id="xNz-3f-ocl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

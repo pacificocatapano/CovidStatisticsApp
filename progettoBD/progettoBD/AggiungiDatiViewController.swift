@@ -65,7 +65,7 @@ class AggiungiDatiViewController: UIViewController, UIPickerViewDelegate, UIPick
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        ConfirmButton.titleLabel?.adjustsFontSizeToFitWidth = true
         
         date.minimumDate = dateArray.last
         date.maximumDate = Date()
@@ -94,6 +94,7 @@ class AggiungiDatiViewController: UIViewController, UIPickerViewDelegate, UIPick
         let next = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(doneTapped))
         bar.items = [next]
         bar.sizeToFit()
+        bar.tintColor = ColorManager.mainRedColor
         decessiTextField.inputAccessoryView = bar
         guaritiTextField.inputAccessoryView = bar
         attualmentePositiviTextField.inputAccessoryView = bar

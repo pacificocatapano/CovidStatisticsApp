@@ -50,7 +50,7 @@ class GraficiViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        grafico1Label.text = "Andamento Epidemia"
+        grafico1Label.text = "Andamento Pandemia"
         grafico2Label.text = "Variazione Giornaliera"
         grafico3Label.text = "Rapporto Tamponi/Contagi"
         
@@ -87,15 +87,24 @@ class GraficiViewController: UIViewController {
         grafico2Button.tintColor = ColorManager.mainRedColor
         grafico3Button.tintColor = ColorManager.mainRedColor
         
-        grafico1Button.backgroundColor = UIColor.clear
-        grafico2Button.backgroundColor = UIColor.clear
-        grafico3Button.backgroundColor = UIColor.clear
-        
         grafico1Button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.50).cgColor
         grafico1Button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         grafico1Button.layer.shadowOpacity = 6.0
         grafico1Button.layer.shadowRadius = 10.0
         grafico1Button.layer.masksToBounds = false
+        
+        grafico2Button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.50).cgColor
+        grafico2Button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        grafico2Button.layer.shadowOpacity = 6.0
+        grafico2Button.layer.shadowRadius = 10.0
+        grafico2Button.layer.masksToBounds = false
+
+        grafico3Button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.50).cgColor
+        grafico3Button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        grafico3Button.layer.shadowOpacity = 6.0
+        grafico3Button.layer.shadowRadius = 10.0
+        grafico3Button.layer.masksToBounds = false
+
         
     }
     

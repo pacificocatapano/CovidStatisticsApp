@@ -19,7 +19,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="T4A-yc-2Em" userLabel="Contiene tutto">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="636"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="802"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HeY-c3-fTE">
                                                 <rect key="frame" x="123" y="0.0" width="168.5" height="130.5"/>
@@ -113,8 +113,13 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5r-V3-SVL">
+                                                <rect key="frame" x="87" y="674" width="240" height="128"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                            </view>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="M5r-V3-SVL" firstAttribute="height" secondItem="T4A-yc-2Em" secondAttribute="height" multiplier="0.159601" id="CXP-wy-ehG"/>
                                             <constraint firstAttribute="width" constant="414" id="v7A-Sx-Mao"/>
                                         </constraints>
                                     </stackView>
@@ -218,14 +223,14 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Re-MF-QYx">
-                                <rect key="frame" x="32" y="727" width="350" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Re-MF-QYx">
+                                <rect key="frame" x="70" y="737" width="274" height="50"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.30588235289999999" blue="0.38823529410000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="5Re-MF-QYx" secondAttribute="height" multiplier="35:6" id="GFd-rA-v4W"/>
+                                    <constraint firstAttribute="width" secondItem="5Re-MF-QYx" secondAttribute="height" multiplier="273:50" id="bcx-bM-eUj"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Aggiungi nuovi dati">
+                                <state key="normal" title="  Aggiungi nuovi dati  ">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -242,7 +247,6 @@
                             <constraint firstItem="ddG-mx-ynD" firstAttribute="top" secondItem="03Y-kg-aZ4" secondAttribute="top" id="Iei-zA-obZ"/>
                             <constraint firstItem="9zi-Hi-5o8" firstAttribute="top" secondItem="ddG-mx-ynD" secondAttribute="bottom" constant="8" id="Ok2-Lz-rjk"/>
                             <constraint firstItem="5Re-MF-QYx" firstAttribute="centerX" secondItem="03Y-kg-aZ4" secondAttribute="centerX" id="c7f-F8-Arz"/>
-                            <constraint firstItem="5Re-MF-QYx" firstAttribute="width" secondItem="23h-Lo-dqz" secondAttribute="height" multiplier="25:64" id="jYr-n0-IlF"/>
                             <constraint firstItem="03Y-kg-aZ4" firstAttribute="trailing" secondItem="9zi-Hi-5o8" secondAttribute="trailing" id="jl0-V2-FPm"/>
                             <constraint firstItem="03Y-kg-aZ4" firstAttribute="bottom" secondItem="9zi-Hi-5o8" secondAttribute="bottom" id="lnX-5f-wrO"/>
                             <constraint firstItem="ddG-mx-ynD" firstAttribute="leading" secondItem="03Y-kg-aZ4" secondAttribute="leading" constant="20" id="qhi-2V-saT"/>
@@ -251,6 +255,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Dati regioni e province" id="U9P-1s-9Qg"/>
                     <connections>
+                        <outlet property="addDataButton" destination="5Re-MF-QYx" id="SR9-an-lsm"/>
                         <outlet property="label" destination="ddG-mx-ynD" id="pWS-jr-7yl"/>
                         <outlet property="newData" destination="5Re-MF-QYx" id="aA9-TY-BGh"/>
                         <outlet property="tableView" destination="9zi-Hi-5o8" id="d7T-Kn-r6S"/>
@@ -786,7 +791,7 @@
                         <constraints>
                             <constraint firstItem="Hpf-AY-h4y" firstAttribute="top" secondItem="141-oT-7F3" secondAttribute="top" constant="20" id="2c8-Ud-ofB"/>
                             <constraint firstItem="9kI-3V-9EC" firstAttribute="leading" secondItem="141-oT-7F3" secondAttribute="leading" id="6Fw-ib-Kxv"/>
-                            <constraint firstItem="141-oT-7F3" firstAttribute="bottom" secondItem="HdP-d8-XKk" secondAttribute="bottom" id="La8-u0-Vm4"/>
+                            <constraint firstAttribute="bottom" secondItem="HdP-d8-XKk" secondAttribute="bottom" constant="34" id="La8-u0-Vm4"/>
                             <constraint firstItem="iwm-1g-uge" firstAttribute="top" secondItem="Hpf-AY-h4y" secondAttribute="bottom" constant="20" id="PUR-9S-DLY"/>
                             <constraint firstItem="HdP-d8-XKk" firstAttribute="width" secondItem="GxF-6o-UDt" secondAttribute="height" multiplier="199:842" id="TkG-uW-4Lb"/>
                             <constraint firstItem="HdP-d8-XKk" firstAttribute="height" secondItem="Pz9-7m-xcG" secondAttribute="height" multiplier="0.5" id="bxv-WQ-IRo"/>
@@ -1087,7 +1092,6 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0LZ-0h-pXy">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="0LZ-0h-pXy" secondAttribute="height" multiplier="1:1" id="CzA-qS-wDW"/>
                                                         </constraints>
@@ -1117,7 +1121,6 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ir-Rv-LlR">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="1Ir-Rv-LlR" secondAttribute="height" multiplier="1:1" id="TNh-jo-Z1r"/>
                                                         </constraints>
@@ -1147,7 +1150,6 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcO-Vz-95r">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="LcO-Vz-95r" secondAttribute="height" multiplier="1:1" id="jWT-XO-SVo"/>
                                                         </constraints>
