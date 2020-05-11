@@ -166,7 +166,7 @@ class GraficiViewController: UIViewController {
         let dataGraph = BarChartData()
         
         dataGraph.addDataSet(barNuoviContagi())
-        dataGraph.setDrawValues(false)
+        dataGraph.setDrawValues(true)
         grafico3View.data = dataGraph
         
     }
@@ -286,14 +286,15 @@ class GraficiViewController: UIViewController {
             valuesY.append(Int(and.1))
         }
         let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
-         for i in 0..<dateArray.count-ricorsion {
+         for i in 0..<dateArray.count - ricorsion + 1 {
               let dataEntry = BarChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
               dataEntries.append(dataEntry)
           }
         
         
         let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Nuovi Contagi")
-       nuoviContagiBarChartDataSet.colors = [ColorManager.lighterRed]
+        nuoviContagiBarChartDataSet.colors = [ColorManager.lighterRed]
+        nuoviContagiBarChartDataSet.barBorderColor = ColorManager.lighterRed
         nuoviContagiBarChartDataSet.barBorderWidth = 0.2
         print(valuesX)
         return nuoviContagiBarChartDataSet
