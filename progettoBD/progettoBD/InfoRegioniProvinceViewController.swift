@@ -212,7 +212,6 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             //controller.editButton.isEnabled = false
             controller.dataToSet = dataToPass
             controller.regioniArray = regioniArray
-            controller.provinceArray = provinceArray
             controller.andamentoArray = andamentoArray
         } else if segue.identifier == "AddData" {
             let controller = segue.destination as! AggiungiDatiViewController

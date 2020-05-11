@@ -273,7 +273,7 @@
                                 <rect key="frame" x="0.0" y="140" width="414" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="iUS-da-Pcy" userLabel="Contiene tutto">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="802"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1750"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-JP-x1f">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
@@ -386,8 +386,68 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grafico 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMf-fD-8NA">
+                                                <rect key="frame" x="155.5" y="840" width="103" height="29"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YVW-kG-RyI" userLabel="Grafico1 View" customClass="LineChartView" customModule="Charts">
+                                                <rect key="frame" x="20" y="907" width="374" height="286"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0b-ud-UmB">
+                                                        <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="grafico1ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="mDY-o2-vCb"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="Z0b-ud-UmB" secondAttribute="bottom" constant="232" id="Dby-Ke-7s9"/>
+                                                    <constraint firstItem="Z0b-ud-UmB" firstAttribute="leading" secondItem="YVW-kG-RyI" secondAttribute="leading" constant="320" id="KFp-jY-q4G"/>
+                                                    <constraint firstAttribute="width" secondItem="YVW-kG-RyI" secondAttribute="height" multiplier="17:13" id="iS3-D2-ye4"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Z0b-ud-UmB" secondAttribute="trailing" constant="8" id="jQw-V6-IM7"/>
+                                                    <constraint firstItem="Z0b-ud-UmB" firstAttribute="top" secondItem="YVW-kG-RyI" secondAttribute="top" constant="8" id="rMC-nJ-dng"/>
+                                                    <constraint firstItem="Z0b-ud-UmB" firstAttribute="height" secondItem="YVW-kG-RyI" secondAttribute="height" multiplier="0.160839" id="tfo-N6-OvN"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grafico 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L27-Ia-JkF">
+                                                <rect key="frame" x="155.5" y="1231" width="103" height="29"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Lx-3m-eQJ" customClass="LineChartView" customModule="Charts">
+                                                <rect key="frame" x="20" y="1298" width="374" height="286"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BoI-fb-SOn">
+                                                        <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="grafico2ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="wSm-yG-N3f"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="BoI-fb-SOn" firstAttribute="height" secondItem="8Lx-3m-eQJ" secondAttribute="height" multiplier="0.160839" id="Mqe-E0-tzi"/>
+                                                    <constraint firstItem="BoI-fb-SOn" firstAttribute="leading" secondItem="8Lx-3m-eQJ" secondAttribute="leading" constant="320" id="UkN-vo-Pqd"/>
+                                                    <constraint firstAttribute="bottom" secondItem="BoI-fb-SOn" secondAttribute="bottom" constant="232" id="Wkn-Bj-bcb"/>
+                                                    <constraint firstItem="BoI-fb-SOn" firstAttribute="top" secondItem="8Lx-3m-eQJ" secondAttribute="top" constant="8" id="Yk6-U8-1gD"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BoI-fb-SOn" secondAttribute="trailing" constant="8" id="gJS-Wm-lRl"/>
+                                                    <constraint firstAttribute="width" secondItem="8Lx-3m-eQJ" secondAttribute="height" multiplier="17:13" id="xUX-ZC-B6w"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-eL-RqR">
+                                                <rect key="frame" x="20" y="1622" width="374" height="128"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="E6j-eL-RqR" secondAttribute="trailing" constant="20" id="6NI-PP-eum"/>
+                                            <constraint firstItem="E6j-eL-RqR" firstAttribute="leading" secondItem="iUS-da-Pcy" secondAttribute="leading" constant="20" id="lo7-Gv-bxH"/>
                                             <constraint firstAttribute="width" constant="414" id="xtX-zf-VOC"/>
                                         </constraints>
                                     </stackView>
@@ -407,10 +467,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="leading" secondItem="arU-r4-w8R" secondAttribute="leading" id="2ri-r4-faW"/>
-                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="bottom" secondItem="arU-r4-w8R" secondAttribute="bottom" constant="135" id="AQE-mo-TnU"/>
-                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="top" secondItem="arU-r4-w8R" secondAttribute="top" id="Ac4-U7-5YB"/>
-                            <constraint firstItem="arU-r4-w8R" firstAttribute="trailing" secondItem="cRl-jc-Vtd" secondAttribute="trailing" id="pej-qg-gkt"/>
+                            <constraint firstItem="arU-r4-w8R" firstAttribute="trailing" secondItem="cRl-jc-Vtd" secondAttribute="trailing" id="2PE-pX-Qc2"/>
+                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="top" secondItem="arU-r4-w8R" secondAttribute="top" constant="52" id="AtS-F6-dei"/>
+                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="leading" secondItem="arU-r4-w8R" secondAttribute="leading" id="ETg-hQ-o0g"/>
+                            <constraint firstItem="cRl-jc-Vtd" firstAttribute="bottom" secondItem="arU-r4-w8R" secondAttribute="bottom" constant="135" id="GlF-Z2-syK"/>
+                            <constraint firstItem="E6j-eL-RqR" firstAttribute="height" secondItem="arU-r4-w8R" secondAttribute="height" multiplier="0.176552" id="gB6-Xg-kSp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="arU-r4-w8R"/>
                     </view>
@@ -424,6 +485,12 @@
                     <connections>
                         <outlet property="HomeScrollView" destination="cRl-jc-Vtd" id="iD8-D9-qkQ"/>
                         <outlet property="calendarButton" destination="Tdq-v8-ouf" id="F7G-U6-EMy"/>
+                        <outlet property="grafico1Button" destination="Z0b-ud-UmB" id="J3J-ZW-Idm"/>
+                        <outlet property="grafico1Label" destination="JMf-fD-8NA" id="PRh-hU-uBu"/>
+                        <outlet property="grafico1View" destination="YVW-kG-RyI" id="FTe-2F-2Hu"/>
+                        <outlet property="grafico2Button" destination="BoI-fb-SOn" id="ire-hf-URD"/>
+                        <outlet property="grafico2Label" destination="L27-Ia-JkF" id="BPS-uY-R2o"/>
+                        <outlet property="grafico2view" destination="8Lx-3m-eQJ" id="dxM-zF-Sci"/>
                         <outlet property="navBar" destination="2j4-Ms-tMl" id="lcd-JQ-Fl9"/>
                         <outlet property="numeroCasiTotali" destination="uCq-az-nv5" id="Fjx-Yu-EWD"/>
                         <outlet property="numeroDecessi" destination="K9a-lR-m5O" id="klV-0g-Ek7"/>
@@ -437,7 +504,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gaB-al-Ytz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3204" y="376"/>
+            <point key="canvasLocation" x="3202.898550724638" y="375.66964285714283"/>
         </scene>
         <!--Aggiungi Dati View Controller-->
         <scene sceneID="Pi8-4I-cmD">
@@ -1013,6 +1080,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0LZ-0h-pXy">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
                                                         <connections>
                                                             <action selector="grafico1ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="XS5-rB-VBo"/>
@@ -1040,6 +1108,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ir-Rv-LlR">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
                                                         <connections>
                                                             <action selector="grafico2ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="zsd-mo-35u"/>
@@ -1067,6 +1136,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcO-Vz-95r">
                                                         <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                         <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
                                                         <connections>
@@ -1158,10 +1228,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEi-Us-nXN">
-                                <rect key="frame" x="0.0" y="140" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="860"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="Jt0-aA-FO5" userLabel="Contiene tutto">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="296.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1244.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="61n-i5-TtS">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
@@ -1205,6 +1275,64 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grafico 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MtN-hl-bes">
+                                                <rect key="frame" x="155.5" y="334.5" width="103" height="29"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qFI-3M-1FG" customClass="LineChartView" customModule="Charts">
+                                                <rect key="frame" x="20" y="401.5" width="374" height="286"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJL-Qa-aye">
+                                                        <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="grafico2ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="zyQ-kt-3dJ"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="HJL-Qa-aye" firstAttribute="leading" secondItem="qFI-3M-1FG" secondAttribute="leading" constant="320" id="12R-LX-vM2"/>
+                                                    <constraint firstAttribute="width" secondItem="qFI-3M-1FG" secondAttribute="height" multiplier="17:13" id="76b-rt-u6R"/>
+                                                    <constraint firstItem="HJL-Qa-aye" firstAttribute="height" secondItem="qFI-3M-1FG" secondAttribute="height" multiplier="0.160839" id="NzZ-zC-cBd"/>
+                                                    <constraint firstAttribute="bottom" secondItem="HJL-Qa-aye" secondAttribute="bottom" constant="232" id="hJb-U4-hlT"/>
+                                                    <constraint firstAttribute="trailing" secondItem="HJL-Qa-aye" secondAttribute="trailing" constant="8" id="ipr-n4-RvP"/>
+                                                    <constraint firstItem="HJL-Qa-aye" firstAttribute="top" secondItem="qFI-3M-1FG" secondAttribute="top" constant="8" id="vro-g6-nE3"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grafico 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-5k-Gkk">
+                                                <rect key="frame" x="155.5" y="725.5" width="103" height="29"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQg-CI-63V" userLabel="Grafico1 View" customClass="LineChartView" customModule="Charts">
+                                                <rect key="frame" x="20" y="792.5" width="374" height="286"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJO-bP-a0p">
+                                                        <rect key="frame" x="320" y="8" width="46" height="46"/>
+                                                        <state key="normal" image="arrow.up.left.and.arrow.down.right" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="grafico1ZoomOut:" destination="vKM-Ow-vWc" eventType="touchUpInside" id="1u7-jt-Mlt"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="LQg-CI-63V" secondAttribute="height" multiplier="17:13" id="B9n-bn-edu"/>
+                                                    <constraint firstItem="uJO-bP-a0p" firstAttribute="leading" secondItem="LQg-CI-63V" secondAttribute="leading" constant="320" id="bKy-BU-1wR"/>
+                                                    <constraint firstAttribute="trailing" secondItem="uJO-bP-a0p" secondAttribute="trailing" constant="8" id="kXa-MO-dXp"/>
+                                                    <constraint firstItem="uJO-bP-a0p" firstAttribute="height" secondItem="LQg-CI-63V" secondAttribute="height" multiplier="0.160839" id="lA5-gt-rEm"/>
+                                                    <constraint firstItem="uJO-bP-a0p" firstAttribute="top" secondItem="LQg-CI-63V" secondAttribute="top" constant="8" id="mgc-5Z-jah"/>
+                                                    <constraint firstAttribute="bottom" secondItem="uJO-bP-a0p" secondAttribute="bottom" constant="232" id="wqY-FK-h68"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zN6-sZ-NOt">
+                                                <rect key="frame" x="20" y="1116.5" width="374" height="128"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" id="Y5b-16-oJP"/>
@@ -1226,6 +1354,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="zN6-sZ-NOt" firstAttribute="height" secondItem="1Ws-kv-gfl" secondAttribute="height" multiplier="0.142857" id="Tia-6F-zIf"/>
                             <constraint firstItem="JEi-Us-nXN" firstAttribute="top" secondItem="vmj-BG-o5y" secondAttribute="top" id="bQa-N8-QOd"/>
                             <constraint firstItem="JEi-Us-nXN" firstAttribute="leading" secondItem="vmj-BG-o5y" secondAttribute="leading" id="dqj-77-pkn"/>
                             <constraint firstItem="vmj-BG-o5y" firstAttribute="trailing" secondItem="JEi-Us-nXN" secondAttribute="trailing" id="jre-hc-JmK"/>
@@ -1244,6 +1373,12 @@
                         <outlet property="calendarButton" destination="KK0-Sy-SAW" id="z50-AP-j7P"/>
                         <outlet property="casiTotaliView" destination="hBG-mp-5OS" id="koD-aA-QpR"/>
                         <outlet property="casitotaliVariazione" destination="Ja0-80-9x2" id="Wdv-HT-ic0"/>
+                        <outlet property="grafico1Button" destination="HJL-Qa-aye" id="ULQ-bL-CPg"/>
+                        <outlet property="grafico1Label" destination="MtN-hl-bes" id="fkh-Lb-l1R"/>
+                        <outlet property="grafico2Button" destination="uJO-bP-a0p" id="vEc-1b-lZH"/>
+                        <outlet property="grafico2Label" destination="EPs-5k-Gkk" id="YDE-EQ-YUp"/>
+                        <outlet property="grafico2view" destination="LQg-CI-63V" id="8Rp-lg-Ing"/>
+                        <outlet property="grefico1View" destination="qFI-3M-1FG" id="POg-qg-ADf"/>
                         <outlet property="navBar" destination="U7A-5p-mVW" id="Bdm-Jk-3CO"/>
                         <outlet property="scrollView" destination="JEi-Us-nXN" id="Mf6-yv-JCi"/>
                     </connections>

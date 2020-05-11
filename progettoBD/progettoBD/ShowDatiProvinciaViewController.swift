@@ -7,14 +7,22 @@
 //
 
 import UIKit
+import Charts
 
 class ShowDatiProvinciaViewController: UIViewController {
-
+    
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var casiTotaliView: UILabel!
     @IBOutlet weak var casitotaliVariazione: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var calendarButton: UIBarButtonItem!
+    @IBOutlet weak var grafico1Label: UILabel!
+    @IBOutlet weak var grefico1View: LineChartView!
+    @IBOutlet weak var grafico1Button: UIButton!
+    @IBOutlet weak var grafico2Label: UILabel!
+    @IBOutlet weak var grafico2view: LineChartView!
+    @IBOutlet weak var grafico2Button: UIButton!
+    
     var dataPicker = UIDatePicker()
     
     let dbc = DBController.shared
@@ -22,6 +30,9 @@ class ShowDatiProvinciaViewController: UIViewController {
     var contagioArray : [Contagio] = []
     var dateArray : [Date] = []
     var dateToShow : Date = Date()
+    var datiVariazione:[(Date, Int64)] = []
+    var arrayDataForGrafici : [(Date, Int64)] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,22 +46,34 @@ class ShowDatiProvinciaViewController: UIViewController {
         
         chekAllProvince(selectedDate: dateToShow)
         labelCasiTotali(selectedDate: dateToShow)
+        
+        arrayDataForGrafici = dbc.getArrayAndamentoPerGraficoProvincia(provincia: "\(provinciaSelezionata.codiceProvincia)")
+        datiVariazione = variazione()
+        
+        createGrafico1()
+        createGrafico2()
+        
+        grafico1Button.tintColor = ColorManager.mainRedColor
+        grafico2Button.tintColor = ColorManager.mainRedColor
+        
+        grafico1Button.backgroundColor = UIColor.clear
+        grafico2Button.backgroundColor = UIColor.clear
         // Do any additional setup after loading the view.
     }
     
     var exit = false
-       var ricorsion = 1
-       
-       
-       //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
-       func chekAllProvince(selectedDate : Date) {
+    var ricorsion = 1
+    
+    
+    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
+    func chekAllProvince(selectedDate : Date) {
         for con in contagioArray where con.data == selectedDate && con.provincia == "\(provinciaSelezionata.codiceProvincia)" {
-               dateToShow = con.data
-               return
-           }
+            dateToShow = con.data
+            return
+        }
         ricorsion += 1
         chekAllProvince(selectedDate: dateArray[dateArray.count - ricorsion])
-       }
+    }
     
     //MARK: -Ultimo Giorno
     func labelCasiTotali(selectedDate: Date){
@@ -135,24 +158,31 @@ class ShowDatiProvinciaViewController: UIViewController {
                                               width: dataPicker.frame.width,
                                               height: dataPicker.frame.height/5))//1
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//2
-        let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: #selector(saveDate))//3
+        let barButton = UIBarButtonItem(title: "Done", style: .done, target: target, action: #selector(saveDate))//3
+        barButton.tintColor = ColorManager.mainRedColor
         toolBar.setItems([flexible, barButton], animated: false)//4
         toolBar.tag = 300
         view.addSubview(toolBar)
     }
     
+    var dateInterval = 0
+    
     @objc func saveDate() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-DD"
-        let oldDate = dateToShow
         dateToShow = Calendar.current.date(byAdding: .day, value: 1, to: dataPicker.date)!
         
-        if dateToShow > oldDate {
-            
-            ricorsion = dateToShow.interval(ofComponent: .day, fromDate: oldDate)
-        } else {
-            ricorsion = oldDate.interval(ofComponent: .day, fromDate: dateToShow)
+        dateInterval = 0
+        
+        for date in dateArray.reversed() {
+            if date == dateToShow {
+                dateInterval += 1
+                break
+            }
+            dateInterval += 1
         }
+        
+        ricorsion = dateInterval
         labelCasiTotali(selectedDate: dateToShow)
         
         calendarButton.isEnabled = true
@@ -164,6 +194,11 @@ class ShowDatiProvinciaViewController: UIViewController {
             navBar.title = "Contagi del \(dateString)"
             navigationController?.navigationBar.prefersLargeTitles = false
         }
+        
+        createGrafico1()
+        createGrafico2()
+        grefico1View.resetZoom()
+        grafico2view.resetZoom()
         navigationController?.navigationBar.barTintColor = ColorManager.navigationBar
         tabBarController?.tabBar.isHidden = false
         view.viewWithTag(100)?.removeFromSuperview()
@@ -179,14 +214,135 @@ class ShowDatiProvinciaViewController: UIViewController {
         view.viewWithTag(200)?.removeFromSuperview()
         view.viewWithTag(300)?.removeFromSuperview()
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    //MARK: -Grafico
+    func createGrafico1() {
+        //impostazioni grafico
+        grefico1View.noDataText = "No data available"
+        grefico1View.rightAxis.enabled = false
+        grefico1View.backgroundColor = UIColor.white
+        grefico1View.gridBackgroundColor = UIColor.white
+        grefico1View.xAxis.labelPosition = .bottom
+        grefico1View.xAxis.setLabelCount(5, force: false)
+        grefico1View.animate(xAxisDuration: 2.0, easingOption: .linear)
+        
+        
+        //aggiungere dati al grafico
+        let dataGraph = LineChartData()
+        
+        dataGraph.addDataSet(lineCasiTotali())
+        
+        dataGraph.setDrawValues(false)
+        grefico1View.data = dataGraph
+        
+        grafico1Label.text = "Andamento provinciale pandemia"
+        grafico1Button.addTarget(self, action: #selector(zoom1), for: .touchUpInside)
+        
+        grafico2Label.text = "Variazione provinciale pandemia"
+        grafico2Button.addTarget(self, action: #selector(zoom2), for: .touchUpInside)
     }
-    */
-
+    
+    @objc func zoom1(){
+        grefico1View.zoomOut()
+    }
+    
+    @objc func zoom2(){
+        grafico2view.zoomOut()
+    }
+    
+    func createGrafico2() {
+        //impostazioni grafico
+        grafico2view.noDataText = "No data available"
+        grafico2view.rightAxis.enabled = false
+        grafico2view.backgroundColor = UIColor.white
+        grafico2view.gridBackgroundColor = UIColor.white
+        grafico2view.xAxis.labelPosition = .bottom
+        grafico2view.xAxis.setLabelCount(5, force: false)
+        grafico2view.animate(xAxisDuration: 2.0, easingOption: .linear)
+        
+        //aggiungere dati al grafico
+        let dataGraph = LineChartData()
+        dataGraph.addDataSet(lineDeltaCasiTotali())
+        
+        dataGraph.setDrawValues(false)
+        grafico2view.data = dataGraph
+        
+    }
+    
+    func lineCasiTotali() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in arrayDataForGrafici where and.0 <= dateToShow {
+            valuesY.append(Int(and.1))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let CasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Casi Totali")
+        CasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+        CasiTotaliLineChartDataSet.lineWidth = 3
+        CasiTotaliLineChartDataSet.drawCirclesEnabled = true
+        CasiTotaliLineChartDataSet.circleRadius = 2
+        CasiTotaliLineChartDataSet.circleColors = [ColorManager.mainRedColor]
+        CasiTotaliLineChartDataSet.mode = .cubicBezier
+        
+        return CasiTotaliLineChartDataSet
+    }
+    
+    func lineDeltaCasiTotali() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+        for and in datiVariazione where and.0 <= dateToShow {
+            valuesY.append(Int(and.1))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let DeltaCasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Casi totali")
+        DeltaCasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+        DeltaCasiTotaliLineChartDataSet.lineWidth = 3
+        DeltaCasiTotaliLineChartDataSet.drawCirclesEnabled = true
+        DeltaCasiTotaliLineChartDataSet.circleRadius = 2
+        DeltaCasiTotaliLineChartDataSet.circleColors = [ColorManager.mainRedColor]
+        DeltaCasiTotaliLineChartDataSet.mode = .cubicBezier
+        return DeltaCasiTotaliLineChartDataSet
+    }
+    
+    
+    
+    //MARK: -VARIAZIONI
+    func variazione() -> [(Date, Int64)]{
+        var result: [(Date, Int64)] = []
+        var previousIndex = -1
+        for and in arrayDataForGrafici {
+            if previousIndex == -1{
+                result.append(and)
+                previousIndex += 1
+            }else{
+                var toAppend: (Date, Int64) = arrayDataForGrafici[previousIndex]
+                let dateDifference = and.0.interval(ofComponent: .day, fromDate: toAppend.0)
+                let newData = Calendar.current.date(byAdding: .day, value: dateDifference, to: toAppend.0)
+                toAppend = (newData, and.1 - toAppend.1) as! (Date, Int64)
+                
+                result.append(toAppend)
+                previousIndex += 1
+            }
+        }
+        return result
+    }
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

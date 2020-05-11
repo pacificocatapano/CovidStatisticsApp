@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,15 +12,61 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="© Catapano Pacifico, Giugliano Salvatore 2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2la-oH-aQr">
+                                <rect key="frame" x="20" y="788" width="374" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="TMQ-Of-RoC">
+                                <rect key="frame" x="57" y="303" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="TMQ-Of-RoC" secondAttribute="height" multiplier="1:1" id="j96-8Z-0Cd"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Covid App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kc3-mc-MiY">
+                                <rect key="frame" x="136.5" y="611" width="141" height="34"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Elaborato per il Professore Masciari Elio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgS-lV-xA2">
+                                <rect key="frame" x="46.5" y="828" width="321" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="GgS-lV-xA2" secondAttribute="height" multiplier="321:32" id="6Nf-tL-eIX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="2la-oH-aQr" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0357143" id="7ds-iu-7pD"/>
+                            <constraint firstItem="2la-oH-aQr" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="AhD-cJ-3DP"/>
+                            <constraint firstItem="GgS-lV-xA2" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0357143" id="JPT-uz-zGl"/>
+                            <constraint firstItem="GgS-lV-xA2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Mg4-7O-3pD"/>
+                            <constraint firstItem="kc3-mc-MiY" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SSR-BR-BZy"/>
+                            <constraint firstItem="TMQ-Of-RoC" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.334821" id="W7Y-A3-zDf"/>
+                            <constraint firstItem="kc3-mc-MiY" firstAttribute="top" secondItem="TMQ-Of-RoC" secondAttribute="bottom" constant="8" id="b5A-Ug-pAI"/>
+                            <constraint firstItem="TMQ-Of-RoC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="cr7-uN-vZp"/>
+                            <constraint firstItem="TMQ-Of-RoC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hcU-5N-0HA"/>
+                            <constraint firstItem="GgS-lV-xA2" firstAttribute="top" secondItem="2la-oH-aQr" secondAttribute="bottom" constant="8" id="jAl-Dr-6bb"/>
+                            <constraint firstItem="kc3-mc-MiY" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.0379464" id="k82-Zx-0an"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GgS-lV-xA2" secondAttribute="bottom" constant="2" id="xNz-3f-ocl"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="LaunchScreen" width="568" height="568"/>
+    </resources>
 </document>

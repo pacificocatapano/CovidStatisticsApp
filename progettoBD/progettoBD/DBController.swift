@@ -306,6 +306,65 @@ class DBController: NSObject {
         return []
     }
     
+    public func getArrayAndamentoPerGraficoRegione(regione: String) -> [(Date,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)]{
+        do {
+            let db = try Connection(path, readonly: true)
+            
+            let stmt = try db.prepare("SELECT a.dataAndamento, SUM(A.contagi), SUM(A.decessi), SUM(A.guariti), SUM(A.ricoverati), SUM(A.isolamentodomiciliare), SUM(A.terapiaintensiva), SUM(A.tamponieffettuati), SUM(A.totalePositivi) FROM andamento A WHERE A.REGIONE = '\(regione)' GROUP BY a.dataandamento")
+            
+            return stmt.map{ row in
+                
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
+                
+                let contagi = row[1] as! Int64
+                let decessi = row[2] as! Int64
+                let guariti = (row[3] as! Int64)
+                let ricoverati = (row[4] as! Int64)
+                let isolamentoDomiciliare = (row[5] as! Int64)
+                let terapiaIntensiva = (row[6] as! Int64)
+                let tamponiEffettuati = (row[7] as! Int64)
+                let totalePositivi = (row[8] as! Int64)
+                
+                let result :(Date,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64) = (dateObj, contagi,decessi,guariti,ricoverati,isolamentoDomiciliare,terapiaIntensiva,tamponiEffettuati,totalePositivi)
+                
+                return result
+            }
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
+    }
+    
+    public func getArrayAndamentoPerGraficoProvincia(provincia: String) -> [(Date,Int64)]{
+        do {
+            let db = try Connection(path, readonly: true)
+            
+            let stmt = try db.prepare("SELECT a.data, SUM(A.casi) FROM CONTAGIO A WHERE A.Provincia = '\(provincia)' GROUP BY a.data")
+            
+            return stmt.map{ row in
+                
+                var dateString = row[0] as! String
+                let range = dateString.index(dateString.startIndex, offsetBy: 10)..<dateString.endIndex
+                dateString.removeSubrange(range)
+                let dateObj = dateString.toDate()
+                
+                let contagi = row[1] as! Int64
+                
+                let result : (Date,Int64) = (dateObj, contagi)
+                
+                return result
+            }
+            
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+        return []
+    }
+    
     public func setAndamento(andamento: Andamento){
         do {
             let db = try Connection(path, readonly: false)

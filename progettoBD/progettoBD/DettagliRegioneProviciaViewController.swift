@@ -7,17 +7,15 @@
 //
 
 import UIKit
+import Charts
 
 class DettagliRegioneProviciaViewController: UIViewController {
     
     var dataToSet : (Bool, Any) = (true, 0)
     var selectedRegione = Regioni()
-    var selectedProvincia = Province()
     let dbc = DBController.shared
     var andamentoArray: [Andamento] = []
     var regioniArray :[Regioni] = []
-    var provinceArray : [Province] = []
-    var contagioArray : [Contagio] = []
     var dateArray : [Date] = []
     
     var dateToShow = Date()
@@ -34,7 +32,16 @@ class DettagliRegioneProviciaViewController: UIViewController {
     @IBOutlet weak var variazioneGuariti: UILabel!
     @IBOutlet weak var HomeScrollView: UIScrollView!
     @IBOutlet weak var calendarButton: UIBarButtonItem!
+    @IBOutlet weak var grafico1Label: UILabel!
+    @IBOutlet weak var grafico1View: LineChartView!
+    @IBOutlet weak var grafico1Button: UIButton!
+    @IBOutlet weak var grafico2Label: UILabel!
+    @IBOutlet weak var grafico2view: LineChartView!
+    @IBOutlet weak var grafico2Button: UIButton!
+    
     var dataPicker = UIDatePicker()
+    var datiVariazione:[(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
+    var arrayDataForGrafici : [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -55,12 +62,23 @@ class DettagliRegioneProviciaViewController: UIViewController {
         
         checkDati(selectedDate: dateToShow)
         
-        if dataToSet.0 == true {
-            labelPositiviRegione(selectedDate: dateToShow, Regione: selectedRegione)
-            labelDecessiRegione(selectedDate: dateToShow, regione: selectedRegione)
-            labelGuaritiRegione(selectedDate: dateToShow, regione: selectedRegione)
-            labelCasiTotaliRegione(selectedDate: dateToShow, regione: selectedRegione)
-        }
+        
+        arrayDataForGrafici = dbc.getArrayAndamentoPerGraficoRegione(regione: selectedRegione.denominazioneRegione)
+        datiVariazione = variazione()
+        
+        labelPositiviRegione(selectedDate: dateToShow, Regione: selectedRegione)
+        labelDecessiRegione(selectedDate: dateToShow, regione: selectedRegione)
+        labelGuaritiRegione(selectedDate: dateToShow, regione: selectedRegione)
+        labelCasiTotaliRegione(selectedDate: dateToShow, regione: selectedRegione)
+        
+        createGrafico1()
+        createGrafico2()
+        
+        grafico1Button.tintColor = ColorManager.mainRedColor
+        grafico2Button.tintColor = ColorManager.mainRedColor
+        
+        grafico1Button.backgroundColor = UIColor.clear
+        grafico2Button.backgroundColor = UIColor.clear
         // Do any additional setup after loading the view.
     }
     
@@ -68,7 +86,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
     var ricorsion = 1
     
     
-    //MARK: - Controlla se nel giorno indicato sono presenti i dati di tutte le regioni, se non lo sono, combia giorno finquando non trova quello con tutti i dati
+    //MARK: - Cambia il giorno da mostare
     func checkDati(selectedDate : Date) {
         for and in andamentoArray where and.data == selectedDate && and.regione == (dataToSet.1 as! Regioni).denominazioneRegione {
             dateToShow = and.data
@@ -102,15 +120,19 @@ class DettagliRegioneProviciaViewController: UIViewController {
     
     func variazioneAttualmentePositiviRegione(selectedDate: Date, regione: Regioni) -> Float {
         var result: Float = 0
-        let attPositivi = attualmentePositiviRegione(selectedDate: selectedDate, regione: regione)
+        let oggi = attualmentePositiviRegione(selectedDate: selectedDate, regione: regione)
+        var giornoPrima = Date()
         if selectedDate == dateArray.first {
             result = attualmentePositiviRegione(selectedDate: selectedDate, regione: regione)
             return result
+        }else if selectedDate == dateArray[1] {
+            giornoPrima = dateArray[0]
+        } else {
+            giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         }
-        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
-        let positiviGiornoPrima = attualmentePositiviRegione(selectedDate: giornoPrima, regione: regione)
+        let ieri = attualmentePositiviRegione(selectedDate: giornoPrima, regione: regione)
         
-        result = (((attPositivi - positiviGiornoPrima) * 100)/( positiviGiornoPrima ))
+        result = (((oggi - ieri) * 100)/( ieri ))
         return result
     }
     //END******************************************************
@@ -139,14 +161,19 @@ class DettagliRegioneProviciaViewController: UIViewController {
     
     func variazioneCasiTotaliRegione(selectedDate : Date ,regione:Regioni) -> Float {
         var result: Float = 0
-        let casiTotaliOggi = casiTotaliRegione(selectedDate: selectedDate, regione: regione)
+        let oggi = casiTotaliRegione(selectedDate: selectedDate, regione: regione)
+        var giornoPrima = Date()
         if selectedDate == dateArray.first {
             result = casiTotaliRegione(selectedDate: selectedDate, regione: regione)
+            return result
+        } else if selectedDate == dateArray[1] {
+            giornoPrima = dateArray[0]
+        } else {
+            giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         }
-        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
-        let casiTotaliGiornoPrima = casiTotaliRegione(selectedDate: giornoPrima, regione: regione)
+        let ieri = casiTotaliRegione(selectedDate: giornoPrima, regione: regione)
         
-        result = (((casiTotaliOggi - casiTotaliGiornoPrima) * 100)/( casiTotaliGiornoPrima ))
+        result = (((oggi - ieri) * 100)/( ieri ))
         return result
     }
     //END
@@ -177,10 +204,15 @@ class DettagliRegioneProviciaViewController: UIViewController {
     func variazioneDecessiRegione(selectedDate : Date ,regione:Regioni) -> Float {
         var result: Float = 0
         let oggi = decessiRegione(selectedDate: selectedDate, regione: regione)
+        var giornoPrima = Date()
         if selectedDate == dateArray.first {
             result = decessiRegione(selectedDate: selectedDate, regione: regione)
+            return result
+        } else if selectedDate == dateArray[1] {
+            giornoPrima = dateArray[0]
+        } else {
+            giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         }
-        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let ieri = decessiRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -205,7 +237,7 @@ class DettagliRegioneProviciaViewController: UIViewController {
     func guaritiRegione(selectedDate : Date ,regione:Regioni) -> Float {
         var result: Float = 0
         
-        for and in andamentoArray where and.data == selectedDate {
+        for and in andamentoArray where and.data == selectedDate && and.regione == regione.denominazioneRegione {
             result += Float(and.guariti)
         }
         return result
@@ -214,11 +246,15 @@ class DettagliRegioneProviciaViewController: UIViewController {
     func variazioneGuaritiRegione(selectedDate : Date ,regione:Regioni) -> Float {
         var result: Float = 0
         let oggi = guaritiRegione(selectedDate: selectedDate, regione: regione)
+        var giornoPrima = Date()
         if selectedDate == dateArray.first {
             result = guaritiRegione(selectedDate: selectedDate, regione: regione)
             return result
+        } else if selectedDate == dateArray[1] {
+            giornoPrima = dateArray[0]
+        } else {
+            giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         }
-        let giornoPrima = dateArray[dateArray.count - ricorsion - 1]
         let ieri = guaritiRegione(selectedDate: giornoPrima, regione: regione)
         
         result = (((oggi - ieri) * 100)/( ieri ))
@@ -228,9 +264,9 @@ class DettagliRegioneProviciaViewController: UIViewController {
     
     @IBAction func changeDate(_ sender: Any) {
         showCalendar()
-        print("OK")
     }
     
+    //MARK: -Calendar
     func showCalendar(){
         
         calendarButton.isEnabled = false
@@ -243,9 +279,9 @@ class DettagliRegioneProviciaViewController: UIViewController {
         dismissView.tag = 100
         
         dataPicker = UIDatePicker(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*2/3, width: view.frame.width, height: view.frame.height/3))
-        
+        dataPicker.date = Calendar.current.date(byAdding: .day, value: -1, to: dateToShow)!
         dataPicker.minimumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.first!)!
-        dataPicker.maximumDate = dateArray[dateArray.count - 1 - ricorsion]
+        dataPicker.maximumDate = Calendar.current.date(byAdding: .day, value: -1, to: dateArray.last!)!
         dataPicker.backgroundColor = UIColor.white
         dataPicker.datePickerMode = .date
         dataPicker.tag = 200
@@ -260,55 +296,32 @@ class DettagliRegioneProviciaViewController: UIViewController {
                                               width: dataPicker.frame.width,
                                               height: dataPicker.frame.height/5))//1
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//2
-        let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: #selector(saveDate))//3
+        toolBar.backgroundColor = UIColor.white
+        let barButton = UIBarButtonItem(title: "Done", style: .done, target: target, action: #selector(saveDate))//3
+        barButton.tintColor = ColorManager.mainRedColor
         toolBar.setItems([flexible, barButton], animated: false)//4
         toolBar.tag = 300
         view.addSubview(toolBar)
-        //        let style = CalendarView.Style()
-        //
-        //
-        //        style.cellShape                = .bevel(8.0)
-        //        style.cellColorDefault         = UIColor.clear
-        //        style.cellColorToday           = UIColor(red:1.00, green:0.84, blue:0.64, alpha:1.00)
-        //        style.cellSelectedBorderColor  = UIColor(red:1.00, green:0.63, blue:0.24, alpha:1.00)
-        //        style.cellEventColor           = UIColor(red:1.00, green:0.63, blue:0.24, alpha:1.00)
-        //        style.headerTextColor          = UIColor.gray
-        //
-        //        style.cellTextColorDefault     = UIColor(red: 249/255, green: 180/255, blue: 139/255, alpha: 1.0)
-        //        style.cellTextColorToday       = UIColor.orange
-        //        style.cellTextColorWeekend     = UIColor(red: 237/255, green: 103/255, blue: 73/255, alpha: 1.0)
-        //        style.cellColorOutOfRange      = UIColor(red: 249/255, green: 226/255, blue: 212/255, alpha: 1.0)
-        //
-        //        style.headerBackgroundColor    = UIColor.white
-        //        style.weekdaysBackgroundColor  = UIColor.white
-        //        style.firstWeekday             = .monday
-        //
-        //        style.locale                   = Locale(identifier: "it_IT")
-        //
-        //        style.cellFont = UIFont(name: "Helvetica", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
-        //        style.headerFont = UIFont(name: "Helvetica", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
-        //        style.weekdaysFont = UIFont(name: "Helvetica", size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
-        //
-        //
-        //        calendarView.style = style
-        //
-        //        calendarView.frame = CGRect(x: view1.frame.origin.x + 5, y: view1.frame.origin.y + 5, width: view1.frame.width - 10, height: view.frame.height - 5)
-        //        calendarView.direction = .horizontal
-        //        calendarView.multipleSelectionEnable = false
-        //        calendarView.marksWeekends = true
-        //
-        //
-        //
-        //        calendarView.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 1.0)
-        //
-        //        view.addSubview(calendarView)
-        //        calendarView.tag = 200
     }
+    
+    var dateInterval = 0
     
     @objc func saveDate() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-DD"
         dateToShow = Calendar.current.date(byAdding: .day, value: 1, to: dataPicker.date)!
+        
+        dateInterval = 0
+        
+        for date in dateArray.reversed() {
+            if date == dateToShow {
+                dateInterval += 1
+                break
+            }
+            dateInterval += 1
+        }
+        
+        ricorsion = dateInterval
         
         labelDecessiRegione(selectedDate: dateToShow, regione: selectedRegione)
         labelGuaritiRegione(selectedDate: dateToShow, regione: selectedRegione)
@@ -326,6 +339,10 @@ class DettagliRegioneProviciaViewController: UIViewController {
         }
         navigationController?.navigationBar.barTintColor = ColorManager.navigationBar
         tabBarController?.tabBar.isHidden = false
+        createGrafico1()
+        createGrafico2()
+        grafico1View.resetZoom()
+        grafico2view.resetZoom()
         view.viewWithTag(100)?.removeFromSuperview()
         view.viewWithTag(200)?.removeFromSuperview()
         view.viewWithTag(300)?.removeFromSuperview()
@@ -340,6 +357,267 @@ class DettagliRegioneProviciaViewController: UIViewController {
         view.viewWithTag(300)?.removeFromSuperview()
     }
     
+    //MARK: -Grafico
+    func createGrafico1() {
+        //impostazioni grafico
+        grafico1View.noDataText = "No data available"
+        grafico1View.rightAxis.enabled = false
+        grafico1View.backgroundColor = UIColor.white
+        grafico1View.gridBackgroundColor = UIColor.white
+        grafico1View.xAxis.labelPosition = .bottom
+        grafico1View.xAxis.setLabelCount(5, force: false)
+        grafico1View.animate(xAxisDuration: 2.0, easingOption: .linear)
+        
+        
+        //aggiungere dati al grafico
+        let dataGraph = LineChartData()
+        
+        dataGraph.addDataSet(lineCasiTotali())
+        dataGraph.addDataSet(lineAttualmentePositivi())
+        dataGraph.addDataSet(lineGuariti())
+        dataGraph.addDataSet(lineDecessi())
+        
+        dataGraph.setDrawValues(false)
+        grafico1View.data = dataGraph
+        
+        grafico1Label.text = "Andamento regionale pandemia"
+        grafico1Button.addTarget(self, action: #selector(zoom1), for: .touchUpInside)
+        
+        grafico2Label.text = "Variazione regionale pandemia"
+        grafico2Button.addTarget(self, action: #selector(zoom2), for: .touchUpInside)
+    }
+    
+    @objc func zoom1(){
+        grafico1View.zoomOut()
+    }
+    
+    @objc func zoom2(){
+        grafico2view.zoomOut()
+    }
+    
+    func createGrafico2() {
+        //impostazioni grafico
+        grafico2view.noDataText = "No data available"
+        grafico2view.rightAxis.enabled = false
+        grafico2view.backgroundColor = UIColor.white
+        grafico2view.gridBackgroundColor = UIColor.white
+        grafico2view.xAxis.labelPosition = .bottom
+        grafico2view.xAxis.setLabelCount(5, force: false)
+        grafico2view.animate(xAxisDuration: 4.0, easingOption: .linear)
+        
+        //aggiungere dati al grafico
+        let dataGraph = LineChartData()
+        dataGraph.addDataSet(lineDeltaAttPos())
+        dataGraph.addDataSet(lineDeltaCasiTotali())
+        dataGraph.addDataSet(lineDeltaGuariti())
+        dataGraph.addDataSet(lineDeltaDecessi())
+        
+        dataGraph.setDrawValues(false)
+        grafico2view.data = dataGraph
+        
+    }
+    
+    func lineCasiTotali() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in arrayDataForGrafici where and.0 <= dateToShow {
+            valuesY.append(Int(and.1))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let CasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Casi Totali")
+        CasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+        CasiTotaliLineChartDataSet.lineWidth = 3
+        CasiTotaliLineChartDataSet.drawCirclesEnabled = true
+        CasiTotaliLineChartDataSet.circleRadius = 2
+        CasiTotaliLineChartDataSet.circleColors = [ColorManager.mainRedColor]
+        CasiTotaliLineChartDataSet.mode = .cubicBezier
+        
+        return CasiTotaliLineChartDataSet
+    }
+    
+    func lineAttualmentePositivi() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in arrayDataForGrafici where and.0 <= dateToShow {
+            valuesY.append(Int(and.8))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        
+        let attualmentePositiviLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Attualmente Positivi")
+        attualmentePositiviLineChartDataSet.colors = [ColorManager.lighterRed]
+        attualmentePositiviLineChartDataSet.lineWidth = 3
+        attualmentePositiviLineChartDataSet.drawCirclesEnabled = true
+        attualmentePositiviLineChartDataSet.circleRadius = 2
+        attualmentePositiviLineChartDataSet.circleColors = [ColorManager.lighterRed]
+        attualmentePositiviLineChartDataSet.mode = .cubicBezier
+        
+        return attualmentePositiviLineChartDataSet
+    }
+    
+    func lineGuariti() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in arrayDataForGrafici where and.0 <= dateToShow {
+            valuesY.append(Int(and.3))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let guaritiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Guariti")
+        guaritiLineChartDataSet.colors = [ColorManager.green]
+        guaritiLineChartDataSet.lineWidth = 3
+        guaritiLineChartDataSet.drawCirclesEnabled = true
+        guaritiLineChartDataSet.circleRadius = 2
+        guaritiLineChartDataSet.circleColors = [ColorManager.green]
+        guaritiLineChartDataSet.circleRadius = 0.5
+        guaritiLineChartDataSet.mode = .cubicBezier
+        
+        return guaritiLineChartDataSet
+    }
+    
+    func lineDecessi() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in arrayDataForGrafici where and.0 <= dateToShow {
+            valuesY.append(Int(and.2))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let decessiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "Decessi")
+        decessiLineChartDataSet.colors = [ColorManager.black]
+        decessiLineChartDataSet.lineWidth = 3
+        decessiLineChartDataSet.drawCirclesEnabled = true
+        decessiLineChartDataSet.circleRadius = 2
+        decessiLineChartDataSet.circleColors = [ColorManager.black]
+        decessiLineChartDataSet.mode = .cubicBezier
+        
+        return decessiLineChartDataSet
+    }
+    
+    func lineDeltaAttPos() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+        for and in datiVariazione where and.0 <= dateToShow {
+            valuesY.append(Int(and.8))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        
+        let DeltaAttPosLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Attualmente positivi")
+        DeltaAttPosLineChartDataSet.colors = [ColorManager.lighterRed]
+        DeltaAttPosLineChartDataSet.lineWidth = 3
+        DeltaAttPosLineChartDataSet.drawCirclesEnabled = true
+        DeltaAttPosLineChartDataSet.circleRadius = 2
+        DeltaAttPosLineChartDataSet.circleColors = [ColorManager.lighterRed]
+        DeltaAttPosLineChartDataSet.mode = .cubicBezier
+        
+        return DeltaAttPosLineChartDataSet
+    }
+    
+    func lineDeltaCasiTotali() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+        for and in datiVariazione where and.0 <= dateToShow {
+            valuesY.append(Int(and.1))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let DeltaCasiTotaliLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Casi totali")
+        DeltaCasiTotaliLineChartDataSet.colors = [ColorManager.mainRedColor]
+        DeltaCasiTotaliLineChartDataSet.lineWidth = 3
+        DeltaCasiTotaliLineChartDataSet.drawCirclesEnabled = true
+        DeltaCasiTotaliLineChartDataSet.circleRadius = 2
+        DeltaCasiTotaliLineChartDataSet.circleColors = [ColorManager.mainRedColor]
+        DeltaCasiTotaliLineChartDataSet.mode = .cubicBezier
+        return DeltaCasiTotaliLineChartDataSet
+    }
+    
+    func lineDeltaGuariti() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+        for and in datiVariazione where and.0 <= dateToShow {
+            valuesY.append(Int(and.2))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let DeltaGuaritiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Guariti")
+        DeltaGuaritiLineChartDataSet.colors = [ColorManager.green]
+        DeltaGuaritiLineChartDataSet.lineWidth = 3
+        DeltaGuaritiLineChartDataSet.drawCirclesEnabled = true
+        DeltaGuaritiLineChartDataSet.circleRadius = 2
+        DeltaGuaritiLineChartDataSet.circleColors = [ColorManager.green]
+        DeltaGuaritiLineChartDataSet.mode = .cubicBezier
+        return DeltaGuaritiLineChartDataSet
+    }
+    
+    func lineDeltaDecessi() -> LineChartDataSet{
+        var dataEntries: [ChartDataEntry] = []
+        var valuesY : [Int] = []
+        
+        for and in datiVariazione where and.0 <= dateToShow {
+            valuesY.append(Int(and.3))
+        }
+        let valuesX : [Int] = Array(1...dateArray.count-ricorsion + 1)
+        for i in 0..<dateArray.count-ricorsion + 1 {
+            let dataEntry = ChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+            dataEntries.append(dataEntry)
+        }
+        let DeltaDecessiLineChartDataSet = LineChartDataSet(entries: dataEntries, label: "∆ Decessi")
+        DeltaDecessiLineChartDataSet.colors = [ColorManager.black]
+        DeltaDecessiLineChartDataSet.lineWidth = 3
+        DeltaDecessiLineChartDataSet.drawCirclesEnabled = true
+        DeltaDecessiLineChartDataSet.circleRadius = 2
+        DeltaDecessiLineChartDataSet.circleColors = [ColorManager.black]
+        DeltaDecessiLineChartDataSet.mode = .cubicBezier
+        return DeltaDecessiLineChartDataSet
+    }
+    
+    
+    //MARK: -VARIAZIONI
+    func variazione() -> [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)]{
+        var result: [(Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64)] = []
+        var previousIndex = -1
+        for and in arrayDataForGrafici {
+            if previousIndex == -1{
+                result.append(and)
+                previousIndex += 1
+            }else{
+                var toAppend: (Date, Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64) = arrayDataForGrafici[previousIndex]
+                let dateDifference = and.0.interval(ofComponent: .day, fromDate: toAppend.0)
+                let newData = Calendar.current.date(byAdding: .day, value: dateDifference, to: toAppend.0)
+                toAppend = (newData, and.1 - toAppend.1, and.2 - toAppend.2,and.3-toAppend.3, and.4 - toAppend.4, and.5 - toAppend.5,and.6-toAppend.6, and.7 - toAppend.7, and.8 - toAppend.8) as! (Date, Int64, Int64, Int64, Int64, Int64, Int64, Int64, Int64)
+                
+                result.append(toAppend)
+                previousIndex += 1
+            }
+        }
+        return result
+    }
     
     /*
      // MARK: - Navigation
