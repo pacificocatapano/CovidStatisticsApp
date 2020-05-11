@@ -51,7 +51,7 @@ class GraficiViewController: UIViewController {
         super.viewDidLoad()
         
         grafico1Label.text = "Andamento Epidemia"
-        grafico2Label.text = "Variazione Dati"
+        grafico2Label.text = "Variazione Giornaliera"
         grafico3Label.text = "Rapporto Tamponi/Contagi"
         
         arrayDataForGrafici = dbc.getArrayAndamentoPerGrafico()
