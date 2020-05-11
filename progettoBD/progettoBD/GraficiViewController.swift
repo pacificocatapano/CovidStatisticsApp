@@ -118,7 +118,7 @@ class GraficiViewController: UIViewController {
         grafico1View.gridBackgroundColor = UIColor.white
         grafico1View.xAxis.labelPosition = .bottom
         grafico1View.xAxis.setLabelCount(5, force: false)
-        grafico1View.animate(xAxisDuration: 3.0, easingOption: .linear)
+        grafico1View.animate(xAxisDuration: 2.0, easingOption: .linear)
 
         
         //aggiungere dati al grafico
@@ -142,7 +142,7 @@ class GraficiViewController: UIViewController {
         grafico2View.gridBackgroundColor = UIColor.white
         grafico2View.xAxis.labelPosition = .bottom
         grafico2View.xAxis.setLabelCount(5, force: false)
-        grafico2View.animate(xAxisDuration: 3.0, easingOption: .linear)
+        grafico2View.animate(xAxisDuration: 2.0, easingOption: .linear)
         
         //aggiungere dati al grafico
         let dataGraph = LineChartData()
@@ -158,15 +158,16 @@ class GraficiViewController: UIViewController {
         grafico3View.noDataText = "No data available"
         grafico3View.rightAxis.enabled = false
         grafico3View.backgroundColor = UIColor.white
-        //grafico3View.gridBackgroundColor = UIColor.white
+        grafico3View.gridBackgroundColor = UIColor.white
         grafico3View.xAxis.labelPosition = .bottom
-       //grafico3View.xAxis.setLabelCount(5, force: false)
+        grafico3View.xAxis.setLabelCount(5, force: false)
+        grafico3View.animate(xAxisDuration: 4.0, easingOption: .linear)
         
         //aggiungere dati al grafico
         let dataGraph = BarChartData()
-        
+        dataGraph.addDataSet(barTamponi())
         dataGraph.addDataSet(barNuoviContagi())
-        dataGraph.setDrawValues(true)
+        dataGraph.setDrawValues(false)
         grafico3View.data = dataGraph
         
     }
@@ -279,23 +280,37 @@ class GraficiViewController: UIViewController {
     }
     
     func barNuoviContagi() -> BarChartDataSet{
-        //NON FUNZIONA
         var dataEntries: [BarChartDataEntry] = []
         var valuesY : [Int] = []
         for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
-            valuesY.append(Int(and.1))
+            valuesY.append(Int(and.8))
         }
         let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
          for i in 0..<dateArray.count - ricorsion + 1 {
               let dataEntry = BarChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
               dataEntries.append(dataEntry)
           }
-        
-        
-        let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Nuovi Contagi")
+        let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Totale positivi")
         nuoviContagiBarChartDataSet.colors = [ColorManager.lighterRed]
-        nuoviContagiBarChartDataSet.barBorderColor = ColorManager.lighterRed
-        nuoviContagiBarChartDataSet.barBorderWidth = 0.2
+        nuoviContagiBarChartDataSet.barBorderWidth = 0.5
+        print(valuesX)
+        return nuoviContagiBarChartDataSet
+    }
+    
+    func barTamponi() -> BarChartDataSet{
+        var dataEntries: [BarChartDataEntry] = []
+        var valuesY : [Int] = []
+        for and in dbc.getArrayAndamentoPerGrafico() where and.0 <= dateToShow {
+            valuesY.append(Int(and.7))
+        }
+        let valuesX : [Int] = Array(0...dateArray.count-ricorsion)
+         for i in 0..<dateArray.count - ricorsion + 1 {
+              let dataEntry = BarChartDataEntry(x: Double(valuesX[i]), y: Double(valuesY[i]))
+              dataEntries.append(dataEntry)
+          }
+        let nuoviContagiBarChartDataSet = BarChartDataSet(entries: dataEntries, label: "Tamponi effettuati")
+        nuoviContagiBarChartDataSet.colors = [ColorManager.grey]
+        nuoviContagiBarChartDataSet.barBorderWidth = 0.5
         print(valuesX)
         return nuoviContagiBarChartDataSet
     }

@@ -15,6 +15,7 @@ struct ColorManager {
     static let green = UIColor(red: 25/255, green: 178/255, blue: 144/255, alpha: 1.0)
     static let black = UIColor(red: 61/255, green: 61/255, blue: 60/255, alpha: 1.0)
     static let lighterRed = UIColor(red: 241/255, green: 147/255, blue: 144/255, alpha: 1.0)
+    static let grey = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1.0)
     static let navigationBar = UIColor(red: 248/255, green: 247/255, blue: 248/255, alpha: 1.0)
     //Add here the name of constants declared above
     static let allColors = [mainRedColor, green, black, lighterRed, navigationBar]
