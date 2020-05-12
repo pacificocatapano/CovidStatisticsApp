@@ -41,30 +41,24 @@ class ShowDatiProvinciaViewController: UIViewController, GMSMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         navigationController?.navigationBar.prefersLargeTitles = false
-        navBar.title = provinciaSelezionata.denominazioneProvincia
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.showsVerticalScrollIndicator = false
-        
+        navBar.title = provinciaSelezionata.denominazioneProvincia
         navigationController?.navigationBar.tintColor = ColorManager.mainRedColor
-        
         navigationController?.navigationBar.prefersLargeTitles = false
         
         let originY = navigationController?.navigationBar.frame.maxY
-        
         let camera = GMSCameraPosition.camera(withLatitude: 41.8928, longitude: 12.4837, zoom: 5.0)
-        
         mapView1 = GMSMapView.map(withFrame: CGRect(x: view.frame.origin.x, y: originY!, width: view.frame.width, height: view.frame.height/4), camera: camera)
-        
         mapView1.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         mapView1.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         mapView1.layer.shadowOpacity = 10.0
         mapView1.layer.shadowRadius = 2.0
         mapView1.layer.masksToBounds = false
-        
         self.view.addSubview(mapView1)
         mapView1.mapType = .normal
         mapView1.settings.zoomGestures = true

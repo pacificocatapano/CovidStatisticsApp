@@ -80,11 +80,6 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        navigationController?.navigationItem.title = ""
-    }
-    
     var exit = false
     var ricorsion = 1
     
@@ -205,7 +200,6 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         navBar.title = ""
-        
         if searchActive == false {
             let selectedItem = regioniPiùColpite[indexPath.row]
             dataToPass = (true, getRegioneData(regioneName: selectedItem.regione))
@@ -217,11 +211,15 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
                 dataToPass = (true, selectedItem)
                 self.performSegue(withIdentifier: "ShowInfoRegione", sender: self)
                 tableView.deselectRow(at: indexPath, animated: true)
+                self.navigationItem.searchController?.isActive = false
+                self.tableView.reloadData()
             } else {
                 let selectedItem = (filteredDataProvincie[indexPath.row - filteredDataRegioni.count] as! Province)
                 dataToPass = (false, selectedItem)
                 self.performSegue(withIdentifier: "ShowInfoProvincia", sender: self)
                 tableView.deselectRow(at: indexPath, animated: true)
+                self.navigationItem.searchController?.isActive = false
+                self.tableView.reloadData()
             }
         }
         
