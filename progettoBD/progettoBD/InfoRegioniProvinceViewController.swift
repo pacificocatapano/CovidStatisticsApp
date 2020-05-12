@@ -22,6 +22,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var addDataButton: UIButton!
+    @IBOutlet weak var navBar: UINavigationItem!
     
     let searchResultTableView = UITableView()
     var tableViewWidth : CGFloat = 0
@@ -35,6 +36,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.prefersLargeTitles = true
+        navBar.title = "Dati regione e province"
     }
     
     override func viewDidLoad() {
@@ -60,7 +62,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
             regioniPiùColpite.append(RegioniEAndamento(regione: and.regione, contagiTotali: and.contagi))
         }
         
-        //MARK: Ordinamento tramite QUERY
+        //MARK: Ordinamento tramite QUERY e Funzione sorted
         regioniPiùColpite = regioniPiùColpite.sorted(by: { (img0: RegioniEAndamento, img1: RegioniEAndamento) -> Bool in
             return img0.contagiTotali > img1.contagiTotali //MARK: Ordinamneto decrescente, se si vuole il crescente basta mettere <
         })
@@ -202,6 +204,7 @@ class InfoRegioniProvinceViewController: UIViewController, UISearchBarDelegate, 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        navBar.title = ""
         
         if searchActive == false {
             let selectedItem = regioniPiùColpite[indexPath.row]

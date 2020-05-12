@@ -257,6 +257,7 @@
                     <connections>
                         <outlet property="addDataButton" destination="5Re-MF-QYx" id="SR9-an-lsm"/>
                         <outlet property="label" destination="ddG-mx-ynD" id="pWS-jr-7yl"/>
+                        <outlet property="navBar" destination="U9P-1s-9Qg" id="dpc-id-d9U"/>
                         <outlet property="newData" destination="5Re-MF-QYx" id="aA9-TY-BGh"/>
                         <outlet property="tableView" destination="9zi-Hi-5o8" id="d7T-Kn-r6S"/>
                         <segue destination="wcx-JV-eF3" kind="show" identifier="ShowInfoRegione" id="XBB-SA-Qw3"/>
@@ -1233,7 +1234,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEi-Us-nXN">
-                                <rect key="frame" x="0.0" y="88" width="414" height="860"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="Jt0-aA-FO5" userLabel="Contiene tutto">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1321.5"/>

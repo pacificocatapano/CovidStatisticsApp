@@ -36,6 +36,7 @@
 		CF4378F72469AE940075E9DB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F62469AE940075E9DB /* SystemConfiguration.framework */; };
 		CF4378F92469AE9A0075E9DB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4378F82469AE990075E9DB /* UIKit.framework */; };
 		CF4378FB2469BF910075E9DB /* progettoBD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4378FA2469BF910075E9DB /* progettoBD.swift */; };
+		CF437909246AA1650075E9DB /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = CF437908246AA1650075E9DB /* data.sqlite */; };
 		CF96C2CC24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CA24616B05004491C0 /* DatiAppenaAggiuntiViewController.swift */; };
 		CF96C2CD24616B05004491C0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2C924616B05004491C0 /* HomeViewController.swift */; };
 		CF96C2CE24616B05004491C0 /* InfoRegioniProvinceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */; };
@@ -43,7 +44,6 @@
 		CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF96C2C4246169C5004491C0 /* Main.storyboard */; };
 		CFBFADB7246588680020526F /* GraficiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBFADB6246588680020526F /* GraficiViewController.swift */; };
 		CFBFADC22465AAAD0020526F /* ShowDatiProvinciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBFADC12465AAAD0020526F /* ShowDatiProvinciaViewController.swift */; };
-		CFC4D94E2461ADDE0067494A /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = CFC4D94D2461AC670067494A /* data.sqlite */; };
 		CFC4D9502462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC4D94F2462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift */; };
 		CFC4D955246411360067494A /* DettagliRegioneProviciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC4D954246411360067494A /* DettagliRegioneProviciaViewController.swift */; };
 		CFDF7F1D245EB0C300E34546 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDF7F10245EB0B500E34546 /* SQLite.framework */; };
@@ -181,6 +181,7 @@
 		CF4378F62469AE940075E9DB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CF4378F82469AE990075E9DB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CF4378FA2469BF910075E9DB /* progettoBD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = progettoBD.swift; sourceTree = "<group>"; };
+		CF437908246AA1650075E9DB /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		CF96C2C4246169C5004491C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CF96C2C824616B04004491C0 /* AggiungiDatiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggiungiDatiViewController.swift; sourceTree = "<group>"; };
 		CF96C2C924616B05004491C0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -188,7 +189,6 @@
 		CF96C2CB24616B05004491C0 /* InfoRegioniProvinceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRegioniProvinceViewController.swift; sourceTree = "<group>"; };
 		CFBFADB6246588680020526F /* GraficiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficiViewController.swift; sourceTree = "<group>"; };
 		CFBFADC12465AAAD0020526F /* ShowDatiProvinciaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDatiProvinciaViewController.swift; sourceTree = "<group>"; };
-		CFC4D94D2461AC670067494A /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		CFC4D94F2462C2AD0067494A /* RegioniPiúColpiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegioniPiúColpiteTableViewCell.swift"; sourceTree = "<group>"; };
 		CFC4D954246411360067494A /* DettagliRegioneProviciaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DettagliRegioneProviciaViewController.swift; sourceTree = "<group>"; };
 		CFC4D96E246428B20067494A /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-master 3/Charts.xcodeproj"; sourceTree = "<group>"; };
@@ -299,7 +299,7 @@
 				3E7C51182453773E00DEB311 /* LaunchScreen.storyboard */,
 				3E7C511B2453773E00DEB311 /* Info.plist */,
 				CF40AC5A245B10EF0073A158 /* DBController.swift */,
-				CFC4D94D2461AC670067494A /* data.sqlite */,
+				CF437908246AA1650075E9DB /* data.sqlite */,
 			);
 			path = progettoBD;
 			sourceTree = "<group>";
@@ -540,10 +540,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E7C511A2453773E00DEB311 /* LaunchScreen.storyboard in Resources */,
-				CFC4D94E2461ADDE0067494A /* data.sqlite in Resources */,
 				3E7C51172453773E00DEB311 /* Assets.xcassets in Resources */,
 				CF96C2DB24616C4B004491C0 /* Main.storyboard in Resources */,
 				CF4378DB2469ADFF0075E9DB /* GoogleMaps.bundle in Resources */,
+				CF437909246AA1650075E9DB /* data.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -66,21 +66,30 @@ class DettagliRegioneProviciaViewController: UIViewController,UIScrollViewDelega
             selectedRegione = dataToSet.1 as! Regioni
         }
         
+        scrollView.showsVerticalScrollIndicator = false
+        
         navigationController?.navigationBar.prefersLargeTitles = false
         
         let originY = navigationController?.navigationBar.frame.maxY
         
-        var camera = GMSCameraPosition.camera(withLatitude: 41.8928, longitude: 12.4837, zoom: 5.0)
+        let camera = GMSCameraPosition.camera(withLatitude: 41.8928, longitude: 12.4837, zoom: 5.0)
         
         mapView1 = GMSMapView.map(withFrame: CGRect(x: view.frame.origin.x, y: originY!, width: view.frame.width, height: view.frame.height/4), camera: camera)
         
+        mapView1.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        mapView1.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        mapView1.layer.shadowOpacity = 10.0
+        mapView1.layer.shadowRadius = 2.0
+        mapView1.layer.masksToBounds = false
+        
         self.view.addSubview(mapView1)
-        mapView1.mapType = .hybrid
+        mapView1.mapType = .normal
         
         progettoBD.getLocation(fromAddress: selectedRegione.denominazioneRegione , completion: {(location) -> Void in
             
             if location != nil {
                 self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude)))
+                self.mapView1.animate(toZoom: 6.35)
                 let marker = GMSMarker()
                 marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
                 marker.title = self.selectedRegione.denominazioneRegione
