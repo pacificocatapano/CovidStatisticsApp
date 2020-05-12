@@ -88,15 +88,17 @@ class DettagliRegioneProviciaViewController: UIViewController,UIScrollViewDelega
         progettoBD.getLocation(fromAddress: selectedRegione.denominazioneRegione , completion: {(location) -> Void in
             
             if location != nil {
-                self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude)))
-                self.mapView1.animate(toZoom: 6.35)
-                let marker = GMSMarker()
-                marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
-                marker.title = self.selectedRegione.denominazioneRegione
-                marker.snippet = "Italia"
-                marker.map = self.mapView1
-                marker.appearAnimation = .pop
-                marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n Autostrade e SS \(self.selectedRegione.numeroDiAutostrade + self.selectedRegione.numeroDiSuperStrade)"
+                DispatchQueue.main.async {
+                    self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude)))
+                    self.mapView1.animate(toZoom: 6.35)
+                    let marker = GMSMarker()
+                    marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
+                    marker.title = self.selectedRegione.denominazioneRegione
+                    marker.snippet = "Italia"
+                    marker.map = self.mapView1
+                    marker.appearAnimation = .pop
+                    marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n Autostrade e SS \(self.selectedRegione.numeroDiAutostrade + self.selectedRegione.numeroDiSuperStrade)"
+                }
             }
         })
         

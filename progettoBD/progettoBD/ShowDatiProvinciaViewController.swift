@@ -67,27 +67,29 @@ class ShowDatiProvinciaViewController: UIViewController, GMSMapViewDelegate {
         
         self.view.addSubview(mapView1)
         mapView1.mapType = .normal
-        
-        mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(provinciaSelezionata.latitudine), longitude: CLLocationDegrees(provinciaSelezionata.longitudine)))
-        
-        mapView1.animate(toZoom: 10)
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(provinciaSelezionata.latitudine), longitude: CLLocationDegrees(provinciaSelezionata.longitudine))
-        marker.title = provinciaSelezionata.denominazioneProvincia
-        marker.map = mapView1
-        marker.appearAnimation = .pop
-        
-        var alberghi = ""
-        
-        if self.provinciaSelezionata.numeroDiAlberghi < 0 {
-            alberghi = ": (Non disponibile)"
-        } else {
-            alberghi = "\(self.provinciaSelezionata.numeroDiAlberghi)"
-        }
-        
-        marker.snippet = "Popolazione : \(self.provinciaSelezionata.abitanti) \n Scuole: \(self.provinciaSelezionata.numeroDiScuole) \n Alberghi \(alberghi) \n Ospedali: \(self.provinciaSelezionata.numeroDiOspedali)"
-        
         mapView1.settings.zoomGestures = true
+        
+        DispatchQueue.main.async {
+            self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(self.provinciaSelezionata.latitudine), longitude: CLLocationDegrees(self.provinciaSelezionata.longitudine)))
+            
+            self.mapView1.animate(toZoom: 10)
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.provinciaSelezionata.latitudine), longitude: CLLocationDegrees(self.provinciaSelezionata.longitudine))
+            marker.title = self.provinciaSelezionata.denominazioneProvincia
+            marker.map = self.mapView1
+            marker.appearAnimation = .pop
+            
+            var alberghi = ""
+            
+            if self.provinciaSelezionata.numeroDiAlberghi < 0 {
+                alberghi = ": (Non disponibile)"
+            } else {
+                alberghi = "\(self.provinciaSelezionata.numeroDiAlberghi)"
+            }
+            
+            marker.snippet = "Popolazione : \(self.provinciaSelezionata.abitanti) \n Scuole: \(self.provinciaSelezionata.numeroDiScuole) \n Alberghi \(alberghi) \n Ospedali: \(self.provinciaSelezionata.numeroDiOspedali)"
+
+        }
         
         contagioArray = dbc.getContagio()
         dateArray = dbc.getDataArray()
