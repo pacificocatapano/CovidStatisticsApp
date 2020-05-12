@@ -92,7 +92,7 @@ class DettagliRegioneProviciaViewController: UIViewController,UIScrollViewDelega
                     marker.snippet = "Italia"
                     marker.map = self.mapView1
                     marker.appearAnimation = .pop
-                    marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n Autostrade e SS \(self.selectedRegione.numeroDiAutostrade + self.selectedRegione.numeroDiSuperStrade)"
+                    marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n \(self.selectedRegione.numeroDiAutostrade) Autostrade e \(self.selectedRegione.numeroDiSuperStrade) SS"
                 }
             }
         })
