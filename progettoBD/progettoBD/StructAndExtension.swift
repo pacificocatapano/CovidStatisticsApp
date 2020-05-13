@@ -119,6 +119,8 @@ struct Regioni : Codable {
     
     var codiceRegione : Int
     var denominazioneRegione : String
+    var latitudine : Float
+    var longitudine : Float
     var abitanti : Int
     var densitàAbitanti : Float
     var estensione : Float
@@ -130,6 +132,8 @@ struct Regioni : Codable {
     init() {
         self.codiceRegione = Int()
         self.denominazioneRegione = String()
+        self.latitudine = Float()
+        self.longitudine = Float()
         self.abitanti = Int()
         self.densitàAbitanti = Float()
         self.estensione = Float()
@@ -139,9 +143,11 @@ struct Regioni : Codable {
         self.numeroDiStazioni = Int()
     }
     
-    init(codiceRegione: Int, denominazioneRegione:String, abitanti: Int, densitàAbitanti: Float, estensione: Float,numeroDiAutostrade: Int, numeroDiSuperStrade: Int, numeroDiAereoporti: Int, numeroDiStazioni: Int) {
+    init(codiceRegione: Int, denominazioneRegione:String,latitudine:Float, longitudine: Float, abitanti: Int, densitàAbitanti: Float, estensione: Float,numeroDiAutostrade: Int, numeroDiSuperStrade: Int, numeroDiAereoporti: Int, numeroDiStazioni: Int) {
         self.codiceRegione = codiceRegione
         self.denominazioneRegione = denominazioneRegione
+        self.latitudine = latitudine
+        self.longitudine = longitudine
         self.abitanti = abitanti
         self.densitàAbitanti = densitàAbitanti
         self.estensione = estensione
@@ -154,6 +160,8 @@ struct Regioni : Codable {
     enum CodingKeys: String, CodingKey {
         case codiceRegione
         case denominazioneRegione
+        case latitudine
+        case longitudine
         case abitanti
         case densitàAbitanti
         case estensione
@@ -167,6 +175,8 @@ struct Regioni : Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.codiceRegione = try container.decode(Int.self, forKey: .codiceRegione)
         self.denominazioneRegione = try container.decode(String.self, forKey: .denominazioneRegione)
+        self.latitudine = try container.decode(Float.self, forKey: .latitudine)
+        self.longitudine = try container.decode(Float.self, forKey: .longitudine)
         self.abitanti = try container.decode(Int.self, forKey: .abitanti)
         self.densitàAbitanti = try container.decode(Float.self, forKey: .densitàAbitanti)
         self.estensione = try container.decode(Float.self, forKey: .estensione)
@@ -180,6 +190,8 @@ struct Regioni : Codable {
         var conteiner = encoder.container(keyedBy: CodingKeys.self)
         try conteiner.encode(codiceRegione, forKey: .codiceRegione)
         try conteiner.encode(denominazioneRegione, forKey: .denominazioneRegione)
+        try conteiner.encode(latitudine, forKey: .latitudine)
+        try conteiner.encode(longitudine, forKey: .longitudine)
         try conteiner.encode(abitanti, forKey: .abitanti)
         try conteiner.encode(densitàAbitanti, forKey: .densitàAbitanti)
         try conteiner.encode(estensione, forKey: .estensione)

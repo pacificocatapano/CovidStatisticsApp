@@ -68,15 +68,17 @@ class DBController: NSObject {
             return stmt.map{ row in
                 let codiceRegione = Int(row[0] as!String)!
                 let denominazioneRegione = row[1] as! String
-                let abitanti = Int(row[2] as! String)
-                let densitàAbitanti = Float(row[3] as! String)
-                let estensione = Float(row[4] as! String)
-                let numeroDiAutostrade = Int(row[5] as! String)
-                let numeroDiSuperStrade = Int(row[6] as! String)
-                let numeroDiAereoporti = Int(row[7] as! String)
-                let numeroDiStazioni = Int(row[8] as! String)
+                let latitudine = Float(row[2] as! String)
+                let longitudine = Float(row[3] as! String)
+                let abitanti = Int(row[4] as! String)
+                let densitàAbitanti = Float(row[5] as! String)
+                let estensione = Float(row[6] as! String)
+                let numeroDiAutostrade = Int(row[7] as! String)
+                let numeroDiSuperStrade = Int(row[8] as! String)
+                let numeroDiAereoporti = Int(row[9] as! String)
+                let numeroDiStazioni = Int(row[10] as! String)
                 
-                return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, estensione: estensione ?? -1, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
+                return Regioni(codiceRegione: codiceRegione, denominazioneRegione: denominazioneRegione,latitudine: latitudine!, longitudine: longitudine!, abitanti: abitanti!, densitàAbitanti: densitàAbitanti!, estensione: estensione ?? -1, numeroDiAutostrade: numeroDiAutostrade ?? -1, numeroDiSuperStrade: numeroDiSuperStrade ?? -1, numeroDiAereoporti: numeroDiAereoporti ?? -1, numeroDiStazioni: numeroDiStazioni ?? -1)
             }
             
         } catch {

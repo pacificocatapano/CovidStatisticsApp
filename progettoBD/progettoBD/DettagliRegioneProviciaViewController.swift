@@ -80,22 +80,14 @@ class DettagliRegioneProviciaViewController: UIViewController,UIScrollViewDelega
         self.view.addSubview(mapView1)
         mapView1.mapType = .normal
         
-        progettoBD.getLocation(fromAddress: selectedRegione.denominazioneRegione , completion: {(location) -> Void in
-            
-            if location != nil {
-                DispatchQueue.main.async {
-                    self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude)))
-                    self.mapView1.animate(toZoom: 6.35)
-                    let marker = GMSMarker()
-                    marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(location!.latitude), longitude: CLLocationDegrees(location!.longitude))
-                    marker.title = self.selectedRegione.denominazioneRegione
-                    marker.snippet = "Italia"
-                    marker.map = self.mapView1
-                    marker.appearAnimation = .pop
-                    marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n \(self.selectedRegione.numeroDiAutostrade) Autostrade e \(self.selectedRegione.numeroDiSuperStrade) SS"
-                }
-            }
-        })
+            self.mapView1.animate(toLocation: CLLocationCoordinate2D(latitude: CLLocationDegrees(self.selectedRegione.latitudine), longitude: CLLocationDegrees(self.selectedRegione.longitudine)))
+            self.mapView1.animate(toZoom: 6.35)
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.selectedRegione.latitudine), longitude: CLLocationDegrees(self.selectedRegione.longitudine))
+            marker.title = self.selectedRegione.denominazioneRegione
+            marker.map = self.mapView1
+            marker.appearAnimation = .pop
+            marker.snippet = "Popolazione : \(self.selectedRegione.abitanti) \n \(self.selectedRegione.numeroDiStazioni) Stazioni e  \(self.selectedRegione.numeroDiAereoporti) Aereoporti  \n \(self.selectedRegione.numeroDiAutostrade) Autostrade e \(self.selectedRegione.numeroDiSuperStrade) SS"
         
         mapView1.settings.zoomGestures = true
         
