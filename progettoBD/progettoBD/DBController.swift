@@ -2,8 +2,9 @@
 //  DBController.swift
 //  UTaste
 //
-//  Created by Andrea Bello on 08/02/2019.
-//  Copyright © 2019 Boeing 752. All rights reserved.
+//  Created by Salvatore Giugliano on 05/05/2020.
+//  Copyright © 2020 Pacifico Catapano. All rights reserved.
+//
 //
 
 import Foundation
@@ -17,6 +18,7 @@ class DBController: NSObject {
     private let null : NSNull = NSNull()
     
     //private let fileManager = FileManager.default
+
     var path = Bundle.main.path(forResource: "data", ofType: "sqlite")!
     
     func copyDatabaseIfNeeded() {
